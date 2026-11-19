@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="su">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aksara Sunda ⇄ Aksara Latén</title>
+  <meta name="description" content="Alat alih aksara / transliterasi / konversi dua arah antara Aksara Latén sareng Aksara Sunda Baku atanapi Sunda Buhun, dilengkepan ku kibor virtual, pituduh rarangkén, sarta karakter Bindu.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sundanese:wght@400;600&family=Noto+Serif+Sundanese:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-decoration"></div>
+
+  <main class="container">
+    <header>
+      <div class="badge">ᮃᮊ᮪ᮞᮛ ᮞᮥᮔ᮪ᮓ</div>
+      <h1 id="main-title">Aksara Latén <span class="arrow">→</span> Aksara Sunda</h1>
+      <p class="subtitle" id="subtitle-text">
+        Ketik téks basa Sunda nganggo <strong>e</strong> (pamepet), <strong>é</strong> (panéléng), sareng <strong>eu</strong> (paneuleung) anu leres supados hasilna merenah.
+      </p>
+
+      <!-- Liron Arah -->
+      <div class="mode-bar">
+        <button type="button" id="btn-swap" class="swap-btn" title="Liron arah alih aksara">
+          <svg class="swap-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4M7 4L3 8M7 4l4 4"/><path d="M17 8v12m0 0 4-4m-4 4-4-4"/></svg>
+          <span>Liron Arah</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="editor-grid">
+      <!-- Input -->
+      <section class="card">
+        <div class="card-header">
+          <label for="input-text" id="input-label">Aksara Latén</label>
+          <div class="helper-buttons">
+            <div id="latin-helpers" class="inline-helpers">
+              <button type="button" class="char-btn" data-char="é" title="Selapkeun aksara é">é</button>
+              <button type="button" class="char-btn" data-char="É" title="Selapkeun aksara É">É</button>
+            </div>
+            <button type="button" id="btn-popup-kb" class="action-btn hidden" title="Buka popup kibor ringkes Aksara Sunda">
+              ⌨ Kibor Sunda
+            </button>
+            <button type="button" id="btn-clear" class="action-btn danger">Hapus</button>
+          </div>
+        </div>
+        <textarea 
+          id="input-text" 
+          placeholder="Ketik téks basa Sunda di dieu...&#10;Conto: Wilujeng sumping di Bandung."
+          autofocus
+        ></textarea>
+        <div class="card-footer">
+          <span id="char-count">0 aksara</span>
+          <button type="button" id="btn-sample" class="link-btn">Cobi conto kalimah</button>
+        </div>
+      </section>
+
+      <!-- Output -->
+      <section class="card output-card">
+        <div class="card-header">
+          <label for="output-text" id="output-label">Aksara Sunda</label>
+          <div class="helper-buttons output-controls">
+            <!-- Modeu Sunda Buhun + Dropdown Gaya Naskah (Modeu Latén -> Sunda) -->
+            <div id="buhun-controls" class="inline-helpers buhun-group">
+              <select id="buhun-style" class="style-select hidden" title="Pilih gaya tanda baca naskah Sunda Buhun">
+                <option value="sajarah">Naskah Sajarah</option>
+                <option value="religi">Naskah Religi</option>
+                <option value="prasasti">Gaya Prasasti</option>
+              </select>
+              <label class="toggle-pill compact" title="Aktipkeun papagon aksara sareng tanda baca Sunda Buhun">
+                <input type="checkbox" id="toggle-buhun">
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">Sunda Buhun</span>
+              </label>
+            </div>
+
+            <!-- Alih Aksara Simbol Bindu (Modeu Sunda -> Latén) -->
+            <label id="bindu-translate-wrapper" class="toggle-pill compact hidden" title="Alih aksarakeun simbol Bindu sareng garis prasasti kana tanda baca modéren">
+              <input type="checkbox" id="toggle-translate-bindu">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">Alih Aksara Simbol Bindu</span>
+            </label>
+
+            <button type="button" id="btn-copy" class="action-btn primary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Tiron</span>
+            </button>
+          </div>
+        </div>
+        <textarea 
+          id="output-text" 
+          class="sunda-font" 
+          readonly 
+          placeholder="ᮝᮤᮜᮥᮏᮨᮀ ᮞᮥᮙ᮪ᮕᮤᮀ ᮓᮤ ᮘᮔ᮪ᮓᮥᮀ..."
+        ></textarea>
+        <div class="card-footer">
+          <span class="hint-text" id="standard-hint">Standar Unicode Aksara Sunda Baku</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- Pituduh Ringkes Vokal e / é / eu -->
+    <section class="guide-box">
+      <div class="guide-item">
+        <span class="guide-key">e</span>
+        <span class="guide-desc">Pamepet (<em>seblak, segah</em>)</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-key">é</span>
+        <span class="guide-desc">Panéléng (<em>sapédah, kasép</em>)</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-key">eu</span>
+        <span class="guide-desc">Paneuleung (<em>Ciumbuleuit, peuyeum</em>)</span>
+      </div>
+    </section>
+
+    <!-- Daptar Pituduh -->
+    <section id="sunda-reference" class="keyboard-box">
+      <div class="ref-header">
+        <h2>Pituduh & Daptar Aksara Sunda</h2>
+        <span class="ref-sub" id="ref-subtitle">Sorot aksara kanggo ningali kateranganana, atanapi toél kanggo nyelapkeun kana kotak input.</span>
+      </div>
+
+      <div class="kb-group">
+        <span class="kb-title">Angka Sunda</span>
+        <div class="kb-keys" id="kb-angka"></div>
+      </div>
+
+      <div class="kb-group">
+        <span class="kb-title">Aksara Swara</span>
+        <div class="kb-keys" id="kb-swara"></div>
+      </div>
+
+      <div class="kb-group">
+        <span class="kb-title">Rarangkén (Baku & Buhun)</span>
+        <div class="kb-keys" id="kb-rarangken"></div>
+      </div>
+
+      <div class="kb-group">
+        <span class="kb-title">Aksara Ngalagena</span>
+        <div class="kb-keys" id="kb-ngalagena"></div>
+      </div>
+
+      <div class="kb-group">
+        <div class="kb-title-row">
+          <span class="kb-title">Aksara Khusus Sunda Buhun</span>
+          <label class="mini-toggle" title="Témbongkeun atanapi sumputkeun katerangan unggal aksara">
+            <input type="checkbox" id="toggle-desc-buhun">
+            <span class="mini-slider"></span>
+            <span>Katerangan</span>
+          </label>
+        </div>
+        <div class="kb-keys" id="kb-buhun-khusus"></div>
+      </div>
+
+      <div class="kb-group">
+        <div class="kb-title-row">
+          <span class="kb-title">Karakter Bindu (Tanda Baca Naskah Kuna / Sunda Buhun)</span>
+          <label class="mini-toggle" title="Témbongkeun atanapi sumputkeun katerangan karakter Bindu sareng papagon struktur naskah">
+            <input type="checkbox" id="toggle-desc-bindu">
+            <span class="mini-slider"></span>
+            <span>Katerangan</span>
+          </label>
+        </div>
+        <div class="kb-keys" id="kb-bindu"></div>
+
+        <!-- Pola Satanga & Prasasti -->
+        <div id="bindu-extra-notes" class="bindu-notes hidden">
+          <div class="note-card">
+            <h4>Pola Struktur Téks (Satanga di Awal)</h4>
+            <ul>
+              <li><strong>1. Hiji Satanga di Awal (Poin Wincikan Hampang):</strong> Dianggo kanggo daptar atanapi butir papagon supados hémat rohangan dina daun lontar. Conto: <span class="sunda-inline">᳇</span> Poin kahiji <span class="sunda-inline">᳇</span> Poin kadua <em>(dina input Latén tiasa nganggo tanda <code>- </code> di awal baris)</em>.</li>
+              <li><strong>2. Dua Satanga Kembar di Awal (Gentosan Bait / Subbab):</strong> Nandakeun gentosan bait pupuh atanapi paragraf/jejer anyar anu langkung ageung (<span class="sunda-inline">᳇᳇</span> di awal bagéan anyar).</li>
+              <li><strong>3. Tilu Simbol di Awal (Bubuka Bab Utami):</strong> Susunan hiji buleudan Bindu diapit dua satanga di awal wungkul (<span class="sunda-inline">᳆᳀᳆</span> / <span class="sunda-inline">᳆᳁᳆</span> kanggo religi, <span class="sunda-inline">᳅᳂᳅</span> kanggo sajarah, atanapi ditambih bingkai luar <span class="sunda-inline">᳄᳆᳀᳆᳄</span>).</li>
+            </ul>
+          </div>
+          <div class="note-card">
+            <h4>Tanda Garis Prasasti (Média Batu)</h4>
+            <p>Khusus dina média batu (prasasti) anu sesah dipahat wangun buleud baréka, juru pahat sering ngagentos Bindu ku <strong>hiji garis tegak (<code>|</code>)</strong> kanggo tanda koma (<code>,</code>) sarta <strong>dua garis tegak (<code>||</code>)</strong> kanggo titik panutup akhir (<code>.</code>), tanpa tanda pananya atanapi tanda panyeluk.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <a href="https://github.com/hodakova" target="_blank" rel="noopener noreferrer">
+        hodakova 2026
+      </a>
+    </footer>
+  </main>
+
+  <!-- Kibor Sunda -->
+  <div id="kb-popup" class="kb-popup hidden" role="dialog" aria-label="Kibor Aksara Sunda">
+    <div id="kb-popup-header" class="kb-popup-header" title="Séréd kanggo ngalihkeun posisi kibor">
+      <span>⌨ Kibor Aksara Sunda <small class="hover-only-hint">(sorot kanggo katerangan)</small></span>
+      <button type="button" id="btn-close-popup" class="popup-close-btn" title="Tutup kibor">✕</button>
+    </div>
+
+    <div class="kb-popup-body">
+      <div class="popup-section">
+        <span class="popup-cat">Angka</span>
+        <div class="popup-grid" id="pop-angka"></div>
+      </div>
+      <div class="popup-section">
+        <span class="popup-cat">Swara</span>
+        <div class="popup-grid" id="pop-swara"></div>
+      </div>
+      <div class="popup-section">
+        <span class="popup-cat">Rarangkén</span>
+        <div class="popup-grid" id="pop-rarangken"></div>
+      </div>
+      <div class="popup-section">
+        <span class="popup-cat">Ngalagena</span>
+        <div class="popup-grid" id="pop-ngalagena"></div>
+      </div>
+      <div class="popup-section">
+        <span class="popup-cat">Khusus Buhun</span>
+        <div class="popup-grid" id="pop-buhun-khusus"></div>
+      </div>
+      <div class="popup-section">
+        <span class="popup-cat">Bindu</span>
+        <div class="popup-grid" id="pop-bindu"></div>
+      </div>
+    </div>
+
+    <div class="kb-popup-dock">
+      <div class="popup-grid" id="pop-dock-row1"></div>
+      <div class="popup-grid" id="pop-dock-row2"></div>
+    </div>
+  </div>
+
+  <script src="transliterate.js"></script>
+</body>
+</html>

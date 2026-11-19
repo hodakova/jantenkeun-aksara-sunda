@@ -729,7 +729,9 @@ btnSwap.addEventListener('click', () => {
   }
 
   updateOutput();
-  inputEl.focus();
+  if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+    inputEl.focus();
+  }
 });
 
 // Button Input é / É
@@ -802,7 +804,9 @@ btnSample.addEventListener('click', () => {
   }
 
   updateOutput();
-  inputEl.focus();
+  if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+    inputEl.focus();
+  }
 });
 
 // Hapus
@@ -810,7 +814,9 @@ btnClear.addEventListener('click', () => {
   inputEl.value = '';
   outputEl.value = '';
   updateOutput();
-  inputEl.focus();
+  if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+    inputEl.focus();
+  }
 });
 
 // Tiron

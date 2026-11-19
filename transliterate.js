@@ -550,6 +550,15 @@ const btnCopy = document.getElementById('btn-copy');
 const btnSample = document.getElementById('btn-sample');
 const charBtns = document.querySelectorAll('.char-btn');
 
+function syncMobileInputMode() {
+  const isPopupOpen = !kbPopupEl.classList.contains('hidden');
+  if (isPopupOpen) {
+    inputEl.setAttribute('inputmode', 'none');
+  } else {
+    inputEl.removeAttribute('inputmode');
+  }
+}
+
 function insertAtCursor(char) {
   const start = inputEl.selectionStart;
   const end = inputEl.selectionEnd;
@@ -567,7 +576,8 @@ function insertAtCursor(char) {
     inputEl.selectionStart = inputEl.selectionEnd = nextPos;
   }
 
-  inputEl.focus();
+  syncMobileInputMode();
+  inputEl.focus({ preventScroll: true });
   updateOutput();
 }
 
@@ -586,7 +596,9 @@ function backspaceAtCursor() {
     inputEl.value = newBefore + text.substring(end);
     inputEl.selectionStart = inputEl.selectionEnd = newBefore.length;
   }
-  inputEl.focus();
+
+  syncMobileInputMode();
+  inputEl.focus({ preventScroll: true });
   updateOutput();
 }
 
@@ -728,10 +740,16 @@ charBtns.forEach(btn => {
 // Toggle Popup Kibor Sunda
 btnPopupKb.addEventListener('click', () => {
   kbPopupEl.classList.toggle('hidden');
+  syncMobileInputMode();
+  if (!kbPopupEl.classList.contains('hidden')) {
+    inputEl.blur(); // sembunyikan keyboard bawaan HP jika sebelumnya sedang terbuka
+    inputEl.focus({ preventScroll: true });
+  }
 });
 
 btnClosePopup.addEventListener('click', () => {
   kbPopupEl.classList.add('hidden');
+  syncMobileInputMode();
 });
 
 // Fitur Séréd Kibor Sunda

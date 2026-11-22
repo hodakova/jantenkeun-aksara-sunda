@@ -180,6 +180,21 @@ header .arrow {
   animation: cardSwapPulse 0.45s ease-out;
 }
 
+@keyframes controlSwapIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.control-swap-in {
+  animation: controlSwapIn 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .toggle-pill {
   display: inline-flex;
   align-items: center;
@@ -249,6 +264,7 @@ header .arrow {
   outline: none;
   cursor: pointer;
   accent-color: var(--primary);
+  white-space: nowrap;
   transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -447,6 +463,31 @@ button.primary:hover {
   background: var(--primary-hover);
 }
 
+@keyframes btnLabelPop {
+  0% {
+    opacity: 0.35;
+    transform: translateY(3px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.label-pop {
+  display: inline-block;
+  animation: btnLabelPop 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+button.danger.is-feedback {
+  background: var(--danger-hover);
+  border-color: #f87171;
+}
+
+button.primary.is-feedback {
+  background: var(--primary-hover);
+}
+
 textarea {
   width: 100%;
   min-height: 250px;
@@ -475,6 +516,64 @@ textarea.sunda-font {
   background-color: #fbfdfc;
 }
 
+.textarea-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.floating-paste-btn {
+  position: absolute;
+  left: 1.15rem;
+  bottom: 0.9rem;
+  z-index: 2;
+  background: var(--surface);
+  color: var(--primary);
+  border: 1px solid rgba(27, 107, 69, 0.3);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(19, 42, 28, 0.08);
+  transition: opacity 0.18s ease, transform 0.18s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.floating-paste-btn:hover {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+
+@keyframes pastePopIn {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pastePopOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.92);
+  }
+}
+
+.floating-paste-btn.is-entering {
+  animation: pastePopIn 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.floating-paste-btn.is-leaving {
+  animation: pastePopOut 0.18s cubic-bezier(0.4, 0, 1, 1) forwards;
+  pointer-events: none;
+}
+
 .card-footer {
   display: flex;
   justify-content: space-between;
@@ -499,6 +598,21 @@ textarea.sunda-font {
 .link-btn:hover {
   background: transparent;
   color: var(--primary-hover);
+}
+
+@keyframes sampleCardFlash {
+  0% {
+    border-color: rgba(27, 107, 69, 0.55);
+    box-shadow: 0 0 0 2px rgba(27, 107, 69, 0.1), var(--shadow);
+  }
+  100% {
+    border-color: var(--border);
+    box-shadow: var(--shadow);
+  }
+}
+
+.card.sample-animate-card {
+  animation: sampleCardFlash 0.38s ease-out;
 }
 
 .guide-box {
@@ -633,6 +747,17 @@ textarea.sunda-font {
   transform: translateX(11px);
 }
 
+@keyframes kbItemPopIn {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .kb-keys {
   display: flex;
   flex-wrap: wrap;
@@ -673,6 +798,12 @@ textarea.sunda-font {
   background: var(--amber-soft);
   border-color: #d97706;
   color: var(--amber-text);
+}
+
+.kb-key.kb-item-animate {
+  opacity: 0;
+  animation: kbItemPopIn 0.24s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 22ms);
 }
 
 .kb-keys.show-details {
@@ -728,11 +859,33 @@ textarea.sunda-font {
   color: var(--muted);
 }
 
+@keyframes binduNotesIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .bindu-notes {
   margin-top: 0.5rem;
   display: grid;
   grid-template-columns: 1.4fr 1fr;
   gap: 0.75rem;
+}
+
+.bindu-notes.is-entering {
+  animation: binduNotesIn 0.26s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.bindu-notes.is-collapsing {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.4, 0, 1, 1);
+  pointer-events: none;
 }
 
 .note-card {
@@ -785,6 +938,56 @@ textarea.sunda-font {
 /* =========================================================
    KIBOR SUNDA
    ========================================================= */
+#btn-popup-kb.is-active {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+@keyframes kbPopupInDesktop {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes kbPopupOutDesktop {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.95);
+  }
+}
+
+@keyframes kbPopupInMobile {
+  0% {
+    opacity: 0.6;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes kbPopupOutMobile {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0.6;
+    transform: translateY(100%);
+  }
+}
+
 .kb-popup {
   position: fixed;
   bottom: 20px;
@@ -800,6 +1003,16 @@ textarea.sunda-font {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transform-origin: bottom right;
+}
+
+.kb-popup.is-opening {
+  animation: kbPopupInDesktop 0.24s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.kb-popup.is-closing {
+  animation: kbPopupOutDesktop 0.19s cubic-bezier(0.4, 0, 1, 1) forwards;
+  pointer-events: none;
 }
 
 .kb-popup-header {
@@ -949,7 +1162,7 @@ textarea.sunda-font {
 
 /* Responsive */
 
-@media (max-width: 1042px) {
+@media (max-width: 1064px) {
   body {
     padding: 1.25rem 0.9rem;
   }
@@ -991,6 +1204,10 @@ textarea.sunda-font {
     font-size: 1.4rem;
     line-height: 1.7;
   }
+  .floating-paste-btn {
+    left: 0.9rem;
+    bottom: 0.75rem;
+  }
   .card-footer {
     padding: 0.45rem 0.9rem;
   }
@@ -1007,9 +1224,9 @@ textarea.sunda-font {
 }
 
 @media (max-width: 540px) {
-  textarea {
+  /* textarea {
     min-height: 112px;
-  }
+  } */
 
   .kb-popup {
     left: 0 !important;
@@ -1023,6 +1240,14 @@ textarea.sunda-font {
     border-left: none;
     border-right: none;
     border-bottom: none;
+  }
+
+  .kb-popup.is-opening {
+    animation: kbPopupInMobile 0.26s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .kb-popup.is-closing {
+    animation: kbPopupOutMobile 0.21s cubic-bezier(0.4, 0, 1, 1) forwards;
   }
 
   .kb-popup-header {
@@ -1056,12 +1281,13 @@ textarea.sunda-font {
   }
 }
 
-@media (max-width: 516px) {
+@media (max-width: 522px) {
   .output-card .card-header {
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: center;
     row-gap: 0.65rem;
+    column-gap: 0.5rem;
   }
 
   .output-card .helper-buttons.output-controls {
@@ -1069,28 +1295,32 @@ textarea.sunda-font {
   }
 
   .output-card #output-label {
-    order: 1;
+    grid-column: 1;
+    grid-row: 1;
   }
 
   .output-card #btn-copy {
-    order: 2;
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
   }
 
   .output-card #buhun-controls {
-    order: 3;
-    flex-basis: 100%;
-    width: 100%;
-    justify-content: flex-end;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: end;
+    width: auto;
   }
 
   .output-card #bindu-translate-wrapper {
-    order: 3;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: end;
     width: fit-content;
-    margin-left: auto;
   }
 }
 
-@media (max-width: 356px) {
+@media (max-width: 403px) {
   .card:not(.output-card) .card-header {
     flex-direction: column;
     align-items: flex-start;
@@ -1103,6 +1333,7 @@ textarea.sunda-font {
   }
 
   .output-card .card-header {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.55rem;

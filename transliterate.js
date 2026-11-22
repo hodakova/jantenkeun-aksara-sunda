@@ -23,8 +23,8 @@ const RARANGKEN_VOKAL = {
   'a': '',
   'i': 'ᮤ',   // panghulu
   'u': 'ᮥ',   // panyuku
-  'é': 'ᮦ',   // panéléng
-  'o': 'ᮧ',   // panolong
+  'é': 'ᮦ',  // panéléng
+  'o': 'ᮧ',  // panolong
   'e': 'ᮨ',   // pamepet
   'eu': 'ᮩ'   // paneuleung
 };
@@ -32,12 +32,12 @@ const RARANGKEN_VOKAL = {
 const RARANGKEN_AKHIR_BAKU = {
   'ng': 'ᮀ',  // panyecek
   'r': 'ᮁ',   // panglayar
-  'h': 'ᮂ'    // pangwisad
+  'h': 'ᮂ'   // pangwisad
 };
 
 const RARANGKEN_AKHIR_BUHUN = {
   ...RARANGKEN_AKHIR_BAKU,
-  'k': 'ᮾ',   // akhiran -k
+  'k': 'ᮾ',  // akhiran -k
   'm': 'ᮿ'    // akhiran -m
 };
 
@@ -61,7 +61,7 @@ const ANGKA = Object.fromEntries(ANGKA_ORDERED);
 
 const PAMAEH = '᮪';
 const AVAGRAHA = 'ᮺ';
-const PANGREUREU = 'ᮻ'; // reu
+const PANGREUREU = 'ᮻ';  // reu
 const PANGWILET = 'ᮼ';  // leu
 
 const BUHUN_KHUSUS_LIST = [
@@ -72,12 +72,14 @@ const BUHUN_KHUSUS_LIST = [
   },
   {
     s: 'ᮻ',
-    label: 'pangreureu (reu)',
+    label: 'pangreureu',
+    sound: '(reu)',
     desc: 'Aksara khusus Sunda Buhun kanggo soanten reu.'
   },
   {
     s: 'ᮼ',
-    label: 'pangwilet (leu)',
+    label: 'pangwilet',
+    sound: '(leu)',
     desc: 'Aksara khusus Sunda Buhun kanggo soanten leu.'
   }
 ];
@@ -521,6 +523,14 @@ function sundaToLatin(text, translateBindu = false, capitalize = true) {
 // --- State & DOM Elements ---
 let mode = 'LATIN_TO_SUNDA';
 let isComposing = false;
+let pasteFeedbackTimer = null;
+let pasteHideTimer = null;
+let clearFeedbackTimer = null;
+let copyFeedbackTimer = null;
+let buhunSelectAnimToken = 0;
+let lastBuhunSelectWidth = 0;
+let isKbPopupOpen = false;
+let kbPopupAnimToken = 0;
 
 const mainTitleEl = document.getElementById('main-title');
 const subtitleTextEl = document.getElementById('subtitle-text');
@@ -546,16 +556,40 @@ const btnClosePopup = document.getElementById('btn-close-popup');
 
 const btnSwap = document.getElementById('btn-swap');
 const btnClear = document.getElementById('btn-clear');
+const btnPaste = document.getElementById('btn-paste');
 const btnCopy = document.getElementById('btn-copy');
 const btnSample = document.getElementById('btn-sample');
 const charBtns = document.querySelectorAll('.char-btn');
 
 function syncMobileInputMode() {
-  const isPopupOpen = !kbPopupEl.classList.contains('hidden');
-  if (isPopupOpen) {
+  if (isKbPopupOpen) {
     inputEl.setAttribute('inputmode', 'none');
   } else {
     inputEl.removeAttribute('inputmode');
+  }
+}
+
+function setKbPopupVisible(show) {
+  const token = ++kbPopupAnimToken;
+  isKbPopupOpen = show;
+  btnPopupKb.classList.toggle('is-active', show);
+  syncMobileInputMode();
+
+  if (show) {
+    kbPopupEl.classList.remove('hidden', 'is-closing', 'is-opening');
+    void kbPopupEl.offsetWidth;
+    kbPopupEl.classList.add('is-opening');
+  } else {
+    if (kbPopupEl.classList.contains('hidden')) return;
+    kbPopupEl.classList.remove('is-opening');
+    void kbPopupEl.offsetWidth;
+    kbPopupEl.classList.add('is-closing');
+
+    setTimeout(() => {
+      if (token !== kbPopupAnimToken) return;
+      kbPopupEl.classList.add('hidden');
+      kbPopupEl.classList.remove('is-closing');
+    }, 220);
   }
 }
 
@@ -604,6 +638,21 @@ function backspaceAtCursor() {
 
 function updateOutput() {
   const val = inputEl.value;
+
+  if (!pasteFeedbackTimer) {
+    setPasteButtonVisible(val.length === 0);
+  }
+  if (!pasteFeedbackTimer && !pasteHideTimer) {
+    const shouldHide = val.length > 0;
+    const wasHidden = btnPaste.classList.contains('hidden');
+    btnPaste.classList.toggle('hidden', shouldHide);
+
+    if (!shouldHide && wasHidden) {
+      btnPaste.classList.remove('is-leaving', 'is-entering');
+      void btnPaste.offsetWidth;
+      btnPaste.classList.add('is-entering');
+    }
+  }
   if (mode === 'LATIN_TO_SUNDA') {
     const isBuhun = toggleBuhunEl.checked;
     const style = buhunStyleEl.value;
@@ -654,12 +703,131 @@ inputEl.addEventListener('input', () => {
 });
 
 // Event Toggle Modeu Sunda Buhun & Dropdown Gaya Naskah
+function animateSelectWidth(selectEl, prevWidth) {
+  if (!prevWidth || selectEl.classList.contains('hidden')) return;
+
+  selectEl.style.transition = 'none';
+  selectEl.style.width = 'auto';
+  const nextWidth = selectEl.getBoundingClientRect().width;
+
+  if (Math.abs(nextWidth - prevWidth) < 0.5) {
+    selectEl.style.width = '';
+    selectEl.style.transition = '';
+    return;
+  }
+
+  selectEl.style.width = `${prevWidth}px`;
+  void selectEl.offsetWidth;
+
+  selectEl.style.transition = 'width 0.24s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, border-color 0.2s ease';
+  selectEl.style.width = `${nextWidth}px`;
+
+  clearTimeout(selectEl._widthTimer);
+  selectEl._widthTimer = setTimeout(() => {
+    selectEl.style.width = '';
+    selectEl.style.transition = '';
+    lastBuhunSelectWidth = selectEl.getBoundingClientRect().width;
+  }, 250);
+}
+
+function setBuhunSelectVisible(show) {
+  const token = ++buhunSelectAnimToken;
+  const el = buhunStyleEl;
+
+  if (show) {
+    const wasHidden = el.classList.contains('hidden');
+    const startWidth = wasHidden ? 0 : el.getBoundingClientRect().width;
+
+    el.classList.remove('hidden');
+    el.style.transition = 'none';
+    el.style.width = 'auto';
+    el.style.paddingLeft = '';
+    el.style.paddingRight = '';
+    el.style.borderWidth = '';
+    el.style.opacity = '';
+    el.style.transform = '';
+    el.style.overflow = '';
+
+    const targetWidth = el.getBoundingClientRect().width;
+    lastBuhunSelectWidth = targetWidth;
+
+    el.style.overflow = 'hidden';
+    el.style.width = `${startWidth}px`;
+    if (wasHidden) {
+      el.style.paddingLeft = '0px';
+      el.style.paddingRight = '0px';
+      el.style.borderWidth = '0px';
+      el.style.opacity = '0';
+      el.style.transform = 'scale(0.92)';
+    }
+    void el.offsetWidth;
+
+    el.style.transition = 'width 0.24s cubic-bezier(0.22, 1, 0.36, 1), padding 0.24s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease, transform 0.24s cubic-bezier(0.22, 1, 0.36, 1)';
+    el.style.width = `${targetWidth}px`;
+    el.style.paddingLeft = '';
+    el.style.paddingRight = '';
+    el.style.borderWidth = '';
+    el.style.opacity = '1';
+    el.style.transform = 'scale(1)';
+
+    setTimeout(() => {
+      if (token !== buhunSelectAnimToken) return;
+      el.style.width = '';
+      el.style.transition = '';
+      el.style.overflow = '';
+      el.style.opacity = '';
+      el.style.transform = '';
+    }, 250);
+  } else {
+    if (el.classList.contains('hidden')) return;
+
+    const startWidth = el.getBoundingClientRect().width;
+    el.style.transition = 'none';
+    el.style.overflow = 'hidden';
+    el.style.width = `${startWidth}px`;
+    el.style.opacity = '1';
+    el.style.transform = 'scale(1)';
+    void el.offsetWidth;
+
+    el.style.transition = 'width 0.2s cubic-bezier(0.22, 1, 0.36, 1), padding 0.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.16s ease, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1)';
+    el.style.width = '0px';
+    el.style.paddingLeft = '0px';
+    el.style.paddingRight = '0px';
+    el.style.borderWidth = '0px';
+    el.style.opacity = '0';
+    el.style.transform = 'scale(0.92)';
+
+    setTimeout(() => {
+      if (token !== buhunSelectAnimToken) return;
+      el.classList.add('hidden');
+      el.style.width = '';
+      el.style.paddingLeft = '';
+      el.style.paddingRight = '';
+      el.style.borderWidth = '';
+      el.style.opacity = '';
+      el.style.transform = '';
+      el.style.overflow = '';
+      el.style.transition = '';
+    }, 210);
+  }
+}
 toggleBuhunEl.addEventListener('change', () => {
-  buhunStyleEl.classList.toggle('hidden', !toggleBuhunEl.checked);
+  setBuhunSelectVisible(toggleBuhunEl.checked);
   updateOutput();
 });
 
-buhunStyleEl.addEventListener('change', updateOutput);
+['pointerdown', 'focus', 'keydown'].forEach(evt => {
+  buhunStyleEl.addEventListener(evt, () => {
+    if (!buhunStyleEl.classList.contains('hidden')) {
+      lastBuhunSelectWidth = buhunStyleEl.getBoundingClientRect().width;
+    }
+  });
+});
+
+buhunStyleEl.addEventListener('change', () => {
+  animateSelectWidth(buhunStyleEl, lastBuhunSelectWidth);
+  updateOutput();
+});
 
 // Event Toggle Alih Aksara Bindu
 toggleTranslateBinduEl.addEventListener('change', updateOutput);
@@ -685,6 +853,9 @@ function triggerSwapAnimation() {
 }
 
 btnSwap.addEventListener('click', () => {
+  const prevClearLeft = btnClear.getBoundingClientRect().left;
+  const prevCopyLeft = btnCopy.getBoundingClientRect().left;
+
   triggerSwapAnimation();
   const prevOutput = outputEl.value;
 
@@ -698,7 +869,7 @@ btnSwap.addEventListener('click', () => {
     inputEl.classList.add('sunda-font');
     outputEl.classList.remove('sunda-font');
     inputEl.placeholder = 'ᮊᮨᮒᮤᮊ᮪ ᮊᮥ ᮃᮊ᮪ᮞᮛ ᮞᮥᮔ᮪ᮓ ᮓᮤ ᮓᮤᮉ...';
-    outputEl.placeholder = 'Conto hasil: Wilujeng sumping di Bandung.';
+    outputEl.placeholder = 'Hasilna bakal kaluar di dieu...';
 
     buhunControlsEl.classList.add('hidden');
     binduTranslateWrapper.classList.remove('hidden');
@@ -710,14 +881,14 @@ btnSwap.addEventListener('click', () => {
   } else {
     mode = 'LATIN_TO_SUNDA';
     mainTitleEl.innerHTML = 'Aksara Latén <span class="arrow">→</span> Aksara Sunda';
-    subtitleTextEl.innerHTML = 'Ketik téks basa Sunda nganggo <strong>e</strong> (pamepet), <strong>é</strong> (panéléng), sareng <strong>eu</strong> (paneuleung) anu leres supados hasilna merenah.';
+    subtitleTextEl.innerHTML = 'Ketik téks basa Sunda nganggo huruf <strong class="notranslate" translate="no">e</strong> (pamepet), <strong class="notranslate" translate="no">é</strong> (panéléng), sareng <strong class="notranslate" translate="no">eu</strong> (paneuleung) anu leres supados hasilna merenah.';
     inputLabelEl.textContent = 'Aksara Latén';
     outputLabelEl.textContent = 'Aksara Sunda';
 
     inputEl.classList.remove('sunda-font');
     outputEl.classList.add('sunda-font');
-    inputEl.placeholder = 'Ketik téks basa Sunda di dieu...\nConto: Wilujeng sumping di Bandung.';
-    outputEl.placeholder = 'ᮝᮤᮜᮥᮏᮨᮀ ᮞᮥᮙ᮪ᮕᮤᮀ ᮓᮤ ᮘᮔ᮪ᮓᮥᮀ...';
+    inputEl.placeholder = 'Ketik téks basa Sunda di dieu, pastikeun nganggo huruf e/é/eu anu leres...';
+    outputEl.placeholder = 'ᮠᮞᮤᮜ᮪ᮔ ᮘᮊᮜ᮪ ᮊᮜᮥᮃᮁ ᮓᮤ ᮓᮤᮉ...';
 
     buhunControlsEl.classList.remove('hidden');
     binduTranslateWrapper.classList.add('hidden');
@@ -727,6 +898,35 @@ btnSwap.addEventListener('click', () => {
 
     inputEl.value = prevOutput;
   }
+
+  const enteringControls = mode === 'SUNDA_TO_LATIN'
+    ? [btnPopupKb, binduTranslateWrapper]
+    : [latinHelpersEl, buhunControlsEl];
+
+  enteringControls.forEach(el => {
+    el.classList.remove('control-swap-in');
+    void el.offsetWidth;
+    el.classList.add('control-swap-in');
+  });
+
+  [
+    [btnClear, prevClearLeft],
+    [btnCopy, prevCopyLeft]
+  ].forEach(([btn, prevLeft]) => {
+    const deltaX = prevLeft - btn.getBoundingClientRect().left;
+    if (Math.abs(deltaX) > 0.5) {
+      btn.style.transition = 'none';
+      btn.style.transform = `translateX(${deltaX}px)`;
+      void btn.offsetWidth;
+      btn.style.transition = 'transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)';
+      btn.style.transform = 'translateX(0)';
+      clearTimeout(btn._flipTimer);
+      btn._flipTimer = setTimeout(() => {
+        btn.style.transform = '';
+        btn.style.transition = '';
+      }, 290);
+    }
+  });
 
   updateOutput();
   if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
@@ -741,17 +941,16 @@ charBtns.forEach(btn => {
 
 // Toggle Popup Kibor Sunda
 btnPopupKb.addEventListener('click', () => {
-  kbPopupEl.classList.toggle('hidden');
-  syncMobileInputMode();
-  if (!kbPopupEl.classList.contains('hidden')) {
-    inputEl.blur(); // sembunyikan keyboard bawaan HP jika sebelumnya sedang terbuka
+  const nextState = !isKbPopupOpen;
+  setKbPopupVisible(nextState);
+  if (nextState) {
+    inputEl.blur();
     inputEl.focus({ preventScroll: true });
   }
 });
 
 btnClosePopup.addEventListener('click', () => {
-  kbPopupEl.classList.add('hidden');
-  syncMobileInputMode();
+  setKbPopupVisible(false);
 });
 
 // Fitur Séréd Kibor Sunda
@@ -787,7 +986,21 @@ btnClosePopup.addEventListener('click', () => {
   });
 })();
 
-// Conto Kalimah Latén
+// Conto Kalimah
+function triggerSampleAnimation() {
+  [inputEl, outputEl].forEach(el => {
+    el.classList.remove('swap-animate-text');
+    void el.offsetWidth;
+    el.classList.add('swap-animate-text');
+  });
+
+  document.querySelectorAll('.editor-grid .card').forEach(card => {
+    card.classList.remove('sample-animate-card');
+    void card.offsetWidth;
+    card.classList.add('sample-animate-card');
+  });
+}
+
 btnSample.addEventListener('click', () => {
   const currentVal = inputEl.value.trim();
 
@@ -796,7 +1009,12 @@ btnSample.addEventListener('click', () => {
     const pool = candidates.length > 0 ? candidates : LATIN_SAMPLES;
     const chosen = pool[Math.floor(Math.random() * pool.length)];
     inputEl.value = chosen.text;
+
+    const prevWidth = !buhunStyleEl.classList.contains('hidden')
+      ? buhunStyleEl.getBoundingClientRect().width
+      : 0;
     buhunStyleEl.value = chosen.style;
+    animateSelectWidth(buhunStyleEl, prevWidth);
   } else {
     const candidates = SUNDA_SAMPLES.filter(item => item.trim() !== currentVal);
     const pool = candidates.length > 0 ? candidates : SUNDA_SAMPLES;
@@ -804,17 +1022,143 @@ btnSample.addEventListener('click', () => {
   }
 
   updateOutput();
+  triggerSampleAnimation();
+
   if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
     inputEl.focus();
   }
 });
 
+// Animasi Tombol Tiron, Hapus, Témpél
+function animateButtonMorph(btn, nextLabel, isFeedback = false) {
+  const span = btn.querySelector('span');
+  if (!span || span.textContent === nextLabel) return;
+
+  const startWidth = btn.getBoundingClientRect().width;
+
+  span.textContent = nextLabel;
+  btn.classList.toggle('is-feedback', isFeedback);
+
+  span.classList.remove('label-pop');
+  void span.offsetWidth;
+  span.classList.add('label-pop');
+
+  btn.style.transition = 'none';
+  btn.style.width = 'auto';
+  const endWidth = btn.getBoundingClientRect().width;
+
+  btn.style.width = `${startWidth}px`;
+  void btn.offsetWidth;
+
+  btn.style.transition = 'width 0.24s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease';
+  btn.style.width = `${endWidth}px`;
+
+  clearTimeout(btn._widthTimer);
+  btn._widthTimer = setTimeout(() => {
+    btn.style.width = '';
+    btn.style.transition = '';
+  }, 250);
+}
+
 // Hapus
 btnClear.addEventListener('click', () => {
+  const hadText = inputEl.value.length > 0;
   inputEl.value = '';
   outputEl.value = '';
+
+  if (pasteFeedbackTimer || pasteHideTimer) {
+    clearTimeout(pasteFeedbackTimer);
+    clearTimeout(pasteHideTimer);
+    pasteFeedbackTimer = null;
+    pasteHideTimer = null;
+    btnPaste.classList.remove('is-leaving', 'is-feedback');
+    btnPaste.querySelector('span').textContent = 'Témpél';
+  }
+
   updateOutput();
+
+  if (hadText) {
+    animateButtonMorph(btnClear, 'Dihapus!', true);
+    clearTimeout(clearFeedbackTimer);
+    clearFeedbackTimer = setTimeout(() => {
+      animateButtonMorph(btnClear, 'Hapus', false);
+    }, 1500);
+  }
+
   if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+    inputEl.focus();
+  }
+});
+
+// Témpél
+function setPasteButtonVisible(show) {
+  if (show) {
+    clearTimeout(pasteHideTimer);
+    pasteHideTimer = null;
+
+    const wasHidden = btnPaste.classList.contains('hidden');
+    const wasLeaving = btnPaste.classList.contains('is-leaving');
+
+    if (wasHidden || wasLeaving) {
+      btnPaste.classList.remove('hidden', 'is-leaving', 'is-entering', 'is-feedback');
+      btnPaste.querySelector('span').textContent = 'Témpél';
+      void btnPaste.offsetWidth;
+      btnPaste.classList.add('is-entering');
+    }
+  } else {
+    if (btnPaste.classList.contains('hidden') || btnPaste.classList.contains('is-leaving')) {
+      return;
+    }
+
+    btnPaste.classList.remove('is-entering');
+    void btnPaste.offsetWidth;
+    btnPaste.classList.add('is-leaving');
+
+    clearTimeout(pasteHideTimer);
+    pasteHideTimer = setTimeout(() => {
+      pasteHideTimer = null;
+      btnPaste.classList.add('hidden');
+      btnPaste.classList.remove('is-leaving', 'is-feedback');
+      btnPaste.querySelector('span').textContent = 'Témpél';
+    }, 185);
+  }
+}
+
+btnPaste.addEventListener('click', async () => {
+  try {
+    const clipText = await navigator.clipboard.readText();
+    if (!clipText) return;
+
+    if (mode === 'SUNDA_TO_LATIN') {
+      const converted = liveConvertInputToSunda(clipText, clipText.length);
+      inputEl.value = converted.text;
+      inputEl.selectionStart = inputEl.selectionEnd = converted.cursor;
+    } else {
+      inputEl.value = clipText;
+      inputEl.selectionStart = inputEl.selectionEnd = clipText.length;
+    }
+
+    clearTimeout(pasteFeedbackTimer);
+    clearTimeout(pasteHideTimer);
+    pasteHideTimer = null;
+
+    btnPaste.classList.remove('hidden', 'is-leaving', 'is-entering');
+    animateButtonMorph(btnPaste, 'Ditémpél!', true);
+
+    pasteFeedbackTimer = setTimeout(() => {
+      pasteFeedbackTimer = null;
+      if (inputEl.value.length > 0) {
+        setPasteButtonVisible(false);
+      } else {
+        animateButtonMorph(btnPaste, 'Témpél', false);
+      }
+    }, 850);
+
+    updateOutput();
+    if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+      inputEl.focus();
+    }
+  } catch (err) {
     inputEl.focus();
   }
 });
@@ -823,11 +1167,10 @@ btnClear.addEventListener('click', () => {
 btnCopy.addEventListener('click', async () => {
   if (!outputEl.value) return;
   await navigator.clipboard.writeText(outputEl.value);
-  const labelSpan = btnCopy.querySelector('span');
-  const originalText = labelSpan.textContent;
-  labelSpan.textContent = 'Katiron!';
-  setTimeout(() => {
-    labelSpan.textContent = originalText;
+  animateButtonMorph(btnCopy, 'Ditiron!', true);
+  clearTimeout(copyFeedbackTimer);
+  copyFeedbackTimer = setTimeout(() => {
+    animateButtonMorph(btnCopy, 'Tiron', false);
   }, 1500);
 });
 
@@ -849,7 +1192,7 @@ function initSundaKeyboards() {
     btn.type = 'button';
     btn.className = `kb-key ${isBuhun ? 'buhun-tag' : ''}`;
     btn.title = tooltip;
-    btn.innerHTML = `${displayChar}<small>${label}</small>`;
+    btn.innerHTML = `<span class="notranslate" translate="no">${displayChar}</span><small>${label}</small>`;
     btn.addEventListener('click', () => insertAtCursor(insertChar));
     return btn;
   }
@@ -859,7 +1202,7 @@ function initSundaKeyboards() {
     btn.type = 'button';
     btn.className = `pop-key ${isBuhun ? 'buhun-tag' : ''}`;
     btn.title = tooltip;
-    btn.textContent = displayChar;
+    btn.innerHTML = `<span class="notranslate" translate="no">${displayChar}</span>`;
     btn.addEventListener('click', () => insertAtCursor(insertChar));
     return btn;
   }
@@ -868,6 +1211,39 @@ function initSundaKeyboards() {
     const span = document.createElement('span');
     span.className = 'pop-spacer';
     return span;
+  }
+
+  function animateKbGroupHeight(groupEl, updateDomFn, onCompleteFn) {
+    const token = (groupEl._animToken || 0) + 1;
+    groupEl._animToken = token;
+
+    const startHeight = groupEl.getBoundingClientRect().height;
+
+    groupEl.style.transition = 'none';
+    groupEl.style.height = 'auto';
+
+    const afterMeasureFn = updateDomFn();
+    const endHeight = groupEl.getBoundingClientRect().height;
+
+    if (afterMeasureFn) {
+      afterMeasureFn();
+    }
+
+    groupEl.style.height = `${startHeight}px`;
+    groupEl.style.overflow = 'hidden';
+    void groupEl.offsetWidth;
+
+    groupEl.style.transition = 'height 0.28s cubic-bezier(0.22, 1, 0.36, 1)';
+    groupEl.style.height = `${endHeight}px`;
+
+    clearTimeout(groupEl._heightTimer);
+    groupEl._heightTimer = setTimeout(() => {
+      if (groupEl._animToken !== token) return;
+      groupEl.style.height = '';
+      groupEl.style.overflow = '';
+      groupEl.style.transition = '';
+      if (onCompleteFn) onCompleteFn();
+    }, 290);
   }
 
   // ANGKA
@@ -902,7 +1278,7 @@ function initSundaKeyboards() {
     const item = {
       insertChar: s,
       displayChar: s,
-      label: l,
+      label: `<span class="notranslate" translate="no">${l}</span>`,
       tooltip: `Aksara Swara: ${l}`
     };
     refSwara.appendChild(createRefBtn(item));
@@ -911,26 +1287,26 @@ function initSundaKeyboards() {
 
   // RARANGKÉN
   const rarangkenRow1 = [
-    { s: 'ᮤ', display: '◌ᮤ', label: 'panghulu (-i)', buhun: false },
-    { s: 'ᮥ', display: '◌ᮥ', label: 'panyuku (-u)', buhun: false },
-    { s: 'ᮦ', display: '◌ᮦ', label: 'panéléng (-é)', buhun: false },
-    { s: 'ᮧ', display: '◌ᮧ', label: 'panolong (-o)', buhun: false },
-    { s: 'ᮨ', display: '◌ᮨ', label: 'pamepet (e)', buhun: false },
-    { s: 'ᮩ', display: '◌ᮩ', label: 'paneuleung (eu)', buhun: false }
+    { s: 'ᮤ', display: '◌ᮤ', label: 'panghulu', morpheme: '(-i)', buhun: false },
+    { s: 'ᮥ', display: '◌ᮥ', label: 'panyuku', morpheme: '(-u)', buhun: false },
+    { s: 'ᮦ', display: '◌ᮦ', label: 'panéléng', morpheme: '(-é)', buhun: false },
+    { s: 'ᮧ', display: '◌ᮧ', label: 'panolong', morpheme: '(-o)', buhun: false },
+    { s: 'ᮨ', display: '◌ᮨ', label: 'pamepet', morpheme: '(-e)', buhun: false },
+    { s: 'ᮩ', display: '◌ᮩ', label: 'paneuleung', morpheme: '(-eu)', buhun: false }
   ];
 
   const rarangkenRow2 = [
-    { s: 'ᮡ', display: '◌ᮡ', label: 'pamingkal (-y-)', buhun: false },
-    { s: 'ᮢ', display: '◌ᮢ', label: 'panyakra (-r-)', buhun: false },
-    { s: 'ᮣ', display: '◌ᮣ', label: 'panyiku (-l-)', buhun: false },
-    { s: 'ᮁ', display: '◌ᮁ', label: 'panglayar (-r)', buhun: false },
-    { s: 'ᮀ', display: '◌ᮀ', label: 'panyecek (-ng)', buhun: false },
-    { s: 'ᮂ', display: '◌ᮂ', label: 'pangwisad (-h)', buhun: false },
+    { s: 'ᮡ', display: '◌ᮡ', label: 'pamingkal', morpheme: '(-y-)', buhun: false },
+    { s: 'ᮢ', display: '◌ᮢ', label: 'panyakra', morpheme: '(-r-)', buhun: false },
+    { s: 'ᮣ', display: '◌ᮣ', label: 'panyiku', morpheme: '(-l-)', buhun: false },
+    { s: 'ᮁ', display: '◌ᮁ', label: 'panglayar', morpheme: '(-r)', buhun: false },
+    { s: 'ᮀ', display: '◌ᮀ', label: 'panyecek', morpheme: '(-ng)', buhun: false },
+    { s: 'ᮂ', display: '◌ᮂ', label: 'pangwisad', morpheme: '(-h)', buhun: false },
     { s: '᮪', display: '◌᮪', label: 'pamaéh', buhun: false },
-    { s: 'ᮭ', display: '◌ᮭ', label: 'papasangan (-wa)', buhun: true },
-    { s: 'ᮬ', display: '◌ᮬ', label: 'papasangan (-ma)', buhun: true },
-    { s: 'ᮾ', display: 'ᮾ', label: 'akhiran (-k)', buhun: true },
-    { s: 'ᮿ', display: 'ᮿ', label: 'akhiran (-m)', buhun: true }
+    { s: 'ᮭ', display: '◌ᮭ', label: 'papasangan', morpheme: '(-wa)', buhun: true },
+    { s: 'ᮬ', display: '◌ᮬ', label: 'papasangan', morpheme: '(-ma)', buhun: true },
+    { s: 'ᮾ', display: 'ᮾ', label: 'akhiran', morpheme: '(-k)', buhun: true },
+    { s: 'ᮿ', display: 'ᮿ', label: 'akhiran', morpheme: '(-m)', buhun: true }
   ];
 
   const refRarangken = document.getElementById('kb-rarangken');
@@ -941,8 +1317,8 @@ function initSundaKeyboards() {
     const cfg = {
       insertChar: item.s,
       displayChar: item.display,
-      label: item.label,
-      tooltip: `Rarangkén: ${item.label}`,
+      label: `${item.label}${item.morpheme ? `<span class="notranslate" translate="no"> ${item.morpheme}</span> ` : ''}`,
+      tooltip: `Rarangkén: ${item.label}${item.morpheme ? ` ${item.morpheme}` : ''}`,
       isBuhun: item.buhun
     };
     refRarangken.appendChild(createRefBtn(cfg));
@@ -956,8 +1332,8 @@ function initSundaKeyboards() {
     const cfg = {
       insertChar: item.s,
       displayChar: item.display,
-      label: item.label,
-      tooltip: item.buhun ? `Rarangkén Sunda Buhun: ${item.label}` : `Rarangkén: ${item.label}`,
+      label: `${item.label}${item.morpheme ? `<span class="notranslate" translate="no"> ${item.morpheme}</span>` : ''}`,
+      tooltip: item.buhun ? `Rarangkén Sunda Buhun: ${item.label}${item.morpheme ? ` ${item.morpheme}` : ''}` : `Rarangkén: ${item.label}${item.morpheme ? ` ${item.morpheme}` : ''}`,
       isBuhun: item.buhun
     };
     refRarangken.appendChild(createRefBtn(cfg));
@@ -979,20 +1355,20 @@ function initSundaKeyboards() {
   const ngalagenaRow3 = [
     { label: 'kha', s: 'ᮮ', buhun: false },
     { label: 'sya', s: 'ᮯ', buhun: false },
-    { label: 'bha (buhun)', s: 'ᮽ', buhun: true }
+    { label: 'bha', s: 'ᮽ', buhun: true }
   ];
 
   const refNgalagena = document.getElementById('kb-ngalagena');
   const popNgalagena = document.getElementById('pop-ngalagena');
 
   ngalagenaRow1.forEach(([label, s]) => {
-    const cfg = { insertChar: s, displayChar: s, label, tooltip: `Aksara Ngalagena: ${label}` };
+    const cfg = { insertChar: s, displayChar: s, label: `<span class="notranslate" translate="no">${label}</span>`, tooltip: `Aksara Ngalagena: ${label}` };
     refNgalagena.appendChild(createRefBtn(cfg));
     popNgalagena.appendChild(createPopBtn(cfg));
   });
 
   ngalagenaRow2.forEach(([label, s]) => {
-    const cfg = { insertChar: s, displayChar: s, label, tooltip: `Aksara Ngalagena: ${label}` };
+    const cfg = { insertChar: s, displayChar: s, label: `<span class="notranslate" translate="no">${label}</span>`, tooltip: `Aksara Ngalagena: ${label}` };
     refNgalagena.appendChild(createRefBtn(cfg));
     popNgalagena.appendChild(createPopBtn(cfg));
   });
@@ -1002,8 +1378,8 @@ function initSundaKeyboards() {
     const cfg = {
       insertChar: item.s,
       displayChar: item.s,
-      label: item.label,
-      tooltip: item.buhun ? `Aksara Ngalagena Sunda Buhun: bha` : `Aksara Ngalagena: ${item.label}`,
+      label: `<span class="notranslate" translate="no">${item.label}</span>`,
+      tooltip: item.buhun ? `Aksara Ngalagena Sunda Buhun: ${item.label}` : `Aksara Ngalagena: ${item.label}`,
       isBuhun: item.buhun
     };
     refNgalagena.appendChild(createRefBtn(cfg));
@@ -1014,30 +1390,44 @@ function initSundaKeyboards() {
   const refBuhunKhusus = document.getElementById('kb-buhun-khusus');
   const popBuhunKhusus = document.getElementById('pop-buhun-khusus');
   const toggleDescBuhun = document.getElementById('toggle-desc-buhun');
+  const buhunGroupEl = refBuhunKhusus.closest('.kb-group');
 
-  function renderBuhunRef(showDesc) {
-    refBuhunKhusus.innerHTML = '';
-    refBuhunKhusus.classList.toggle('show-details', showDesc);
+  function renderBuhunRef(showDesc, animate = true) {
+    const buildItems = () => {
+      refBuhunKhusus.innerHTML = '';
+      refBuhunKhusus.classList.toggle('show-details', showDesc);
 
-    BUHUN_KHUSUS_LIST.forEach(item => {
-      const tooltip = `${item.label}: ${item.desc}`;
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'kb-key buhun-tag';
-      btn.title = tooltip;
-      if (showDesc) {
-        btn.innerHTML = `
-          <div class="kb-key-head">
-            <span class="sym">${item.s}</span>
-            <span class="lbl">${item.label}</span>
-          </div>
-          <span class="kb-key-desc">${item.desc}</span>
-        `;
-      } else {
-        btn.innerHTML = `${item.s}<small>${item.label}</small>`;
-      }
-      btn.addEventListener('click', () => insertAtCursor(item.s));
-      refBuhunKhusus.appendChild(btn);
+      BUHUN_KHUSUS_LIST.forEach((item, idx) => {
+        const tooltip = `${item.label}${item.sound ? ` ${item.sound}` : ''}: ${item.desc}`;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `kb-key buhun-tag${animate ? ' kb-item-animate' : ''}`;
+        if (animate) btn.style.setProperty('--i', idx);
+        btn.title = tooltip;
+
+        if (showDesc) {
+          btn.innerHTML = `
+            <div class="kb-key-head">
+              <span class="sym">${item.s}</span>
+              <span class="lbl">${item.label}${item.sound ? `<span class="notranslate" translate="no"> ${item.sound}</span>` : ''}</span>
+            </div>
+            <span class="kb-key-desc">${item.desc}</span>
+          `;
+        } else {
+          btn.innerHTML = `${item.s}<small>${item.label}${item.sound ? `<span class="notranslate" translate="no"> ${item.sound}</span>` : ''}</small>`;
+        }
+        btn.addEventListener('click', () => insertAtCursor(item.s));
+        refBuhunKhusus.appendChild(btn);
+      });
+    };
+
+    if (!animate) {
+      buildItems();
+      return;
+    }
+
+    animateKbGroupHeight(buhunGroupEl, () => {
+      buildItems();
     });
   }
 
@@ -1050,41 +1440,79 @@ function initSundaKeyboards() {
     }));
   });
 
-  renderBuhunRef(false);
-  toggleDescBuhun.addEventListener('change', (e) => renderBuhunRef(e.target.checked));
+  renderBuhunRef(false, false);
+  toggleDescBuhun.addEventListener('change', (e) => renderBuhunRef(e.target.checked, true));
 
   // KARAKTER BINDU
   const refBindu = document.getElementById('kb-bindu');
   const popBindu = document.getElementById('pop-bindu');
   const toggleDescBindu = document.getElementById('toggle-desc-bindu');
   const binduExtraNotes = document.getElementById('bindu-extra-notes');
+  const binduGroupEl = refBindu.closest('.kb-group');
 
-  function renderBinduRef(showDesc) {
-    refBindu.innerHTML = '';
-    refBindu.classList.toggle('show-details', showDesc);
-    binduExtraNotes.classList.toggle('hidden', !showDesc);
+  function renderBinduRef(showDesc, animate = true) {
+    const buildItems = () => {
+      refBindu.innerHTML = '';
+      refBindu.classList.toggle('show-details', showDesc);
 
-    BINDU_LIST.forEach(item => {
-      const tooltip = `${item.name} (${item.category}): ${item.desc}`;
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'kb-key buhun-tag';
-      btn.title = tooltip;
-      if (showDesc) {
-        btn.innerHTML = `
-          <div class="kb-key-head">
-            <span class="sym">${item.char}</span>
-            <span class="lbl">${item.name}</span>
-            <span class="cat-pill">${item.category}</span>
-          </div>
-          <span class="kb-key-desc">${item.desc}</span>
-        `;
-      } else {
-        btn.innerHTML = `${item.char}<small>${item.name}</small>`;
+      BINDU_LIST.forEach((item, idx) => {
+        const tooltip = `${item.name} (${item.category}): ${item.desc}`;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `kb-key buhun-tag${animate ? ' kb-item-animate' : ''}`;
+        if (animate) btn.style.setProperty('--i', idx);
+        btn.title = tooltip;
+
+        if (showDesc) {
+          btn.innerHTML = `
+            <div class="kb-key-head">
+              <span class="sym">${item.char}</span>
+              <span class="lbl">${item.name}</span>
+              <span class="cat-pill">${item.category}</span>
+            </div>
+            <span class="kb-key-desc">${item.desc}</span>
+          `;
+        } else {
+          btn.innerHTML = `${item.char}<small>${item.name}</small>`;
+        }
+        btn.addEventListener('click', () => insertAtCursor(item.char));
+        refBindu.appendChild(btn);
+      });
+    };
+
+    if (!animate) {
+      buildItems();
+      binduExtraNotes.classList.toggle('hidden', !showDesc);
+      return;
+    }
+
+    animateKbGroupHeight(
+      binduGroupEl,
+      () => {
+        buildItems();
+
+        if (showDesc) {
+          binduExtraNotes.classList.remove('hidden', 'is-collapsing', 'is-entering');
+          void binduExtraNotes.offsetWidth;
+          binduExtraNotes.classList.add('is-entering');
+          return null;
+        } else {
+          // Sembunyikan sementara agar tinggi akhir kontainer terukur akurat
+          binduExtraNotes.classList.add('hidden');
+          return () => {
+            // Tampilkan kembali selama transisi menyusut agar ikut memudar halus
+            binduExtraNotes.classList.remove('hidden', 'is-entering');
+            binduExtraNotes.classList.add('is-collapsing');
+          };
+        }
+      },
+      () => {
+        if (!showDesc) {
+          binduExtraNotes.classList.add('hidden');
+          binduExtraNotes.classList.remove('is-collapsing');
+        }
       }
-      btn.addEventListener('click', () => insertAtCursor(item.char));
-      refBindu.appendChild(btn);
-    });
+    );
   }
 
   BINDU_LIST.forEach(item => {
@@ -1096,8 +1524,8 @@ function initSundaKeyboards() {
     }));
   });
 
-  renderBinduRef(false);
-  toggleDescBindu.addEventListener('change', (e) => renderBinduRef(e.target.checked));
+  renderBinduRef(false, false);
+  toggleDescBindu.addEventListener('change', (e) => renderBinduRef(e.target.checked, true));
 
   // =========================================================
   // DOCK HANDAP KIBOR

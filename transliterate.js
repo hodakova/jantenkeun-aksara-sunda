@@ -1,3 +1,6 @@
+// =========================================================
+// 1. KAMUS & DATA AKSARA SUNDA
+// =========================================================
 const SWARA = {
   'a': 'ᮃ', 'i': 'ᮄ', 'u': 'ᮅ', 'é': 'ᮆ', 'o': 'ᮇ', 'e': 'ᮈ', 'eu': 'ᮉ'
 };
@@ -24,7 +27,7 @@ const RARANGKEN_VOKAL = {
   'i': 'ᮤ',   // panghulu
   'u': 'ᮥ',   // panyuku
   'é': 'ᮦ',  // panéléng
-  'o': 'ᮧ',  // panolong
+  'o': 'ᮧ',   // panolong
   'e': 'ᮨ',   // pamepet
   'eu': 'ᮩ'   // paneuleung
 };
@@ -32,12 +35,12 @@ const RARANGKEN_VOKAL = {
 const RARANGKEN_AKHIR_BAKU = {
   'ng': 'ᮀ',  // panyecek
   'r': 'ᮁ',   // panglayar
-  'h': 'ᮂ'   // pangwisad
+  'h': 'ᮂ'    // pangwisad
 };
 
 const RARANGKEN_AKHIR_BUHUN = {
   ...RARANGKEN_AKHIR_BAKU,
-  'k': 'ᮾ',  // akhiran -k
+  'k': 'ᮾ',   // akhiran -k
   'm': 'ᮿ'    // akhiran -m
 };
 
@@ -61,9 +64,35 @@ const ANGKA = Object.fromEntries(ANGKA_ORDERED);
 
 const PAMAEH = '᮪';
 const AVAGRAHA = 'ᮺ';
-const PANGREUREU = 'ᮻ';  // reu
+const PANGREUREU = 'ᮻ'; // reu
 const PANGWILET = 'ᮼ';  // leu
 
+// Pametaan balik (Aksara Sunda -> Latén)
+const REV_SWARA = Object.fromEntries(Object.entries(SWARA).map(([k, v]) => [v, k]));
+const REV_NGALAGENA = {
+  ...Object.fromEntries(Object.entries(NGALAGENA_BAKU).map(([k, v]) => [v, k])),
+  'ᮽ': 'bh'
+};
+const REV_RARANGKEN_VOKAL = {
+  'ᮤ': 'i', 'ᮥ': 'u', 'ᮦ': 'é', 'ᮧ': 'o', 'ᮨ': 'e', 'ᮩ': 'eu'
+};
+const REV_RARANGKEN_AKHIR = {
+  'ᮀ': 'ng',
+  'ᮁ': 'r',
+  'ᮂ': 'h',
+  'ᮾ': 'k',
+  'ᮿ': 'm'
+};
+const REV_ANGKA = Object.fromEntries(ANGKA_ORDERED.map(([k, v]) => [v, k]));
+const REV_SISIPAN = {
+  'ᮡ': 'y',
+  'ᮢ': 'r',
+  'ᮣ': 'l',
+  'ᮭ': 'w',
+  'ᮬ': 'm'
+};
+
+// Metadata Pituduh & Kibor
 const BUHUN_KHUSUS_LIST = [
   {
     s: 'ᮺ',
@@ -135,7 +164,7 @@ const BINDU_LIST = [
   }
 ];
 
-// Conto kalimah Latén
+// Conto Kalimah
 const LATIN_SAMPLES = [
   {
     style: 'sajarah',
@@ -194,33 +223,8 @@ const SUNDA_SAMPLES = [
   '᳆᳁᳆ ᮕᮤᮒᮥᮓᮥᮂ ᮊᮛᮥᮠᮥᮔ᮪ ᮊᮀᮌᮧ ᮠᮤᮛᮥᮕ᮪ ᮞᮅᮚᮥᮔᮔ᮪ ᳁\n᳇ ᮞᮧᮜᮒ᮪ ᮜᮤᮙ ᮝᮊ᮪ᮒᮥ ᳃\n᳇ ᮞᮘᮁ ᮓᮤᮔ ᮍᮏᮜᮔᮔ᮪ ᮅᮏᮤᮃᮔ᮪ ᳃\n᳇ ᮞᮤᮓᮨᮊᮂ ᮊ ᮃᮔᮥ ᮙᮤᮘᮥᮒᮥᮂᮊᮩᮔ᮪ ᳀'
 ];
 
-// Pametaan balik (Aksara Sunda -> Latén)
-const REV_SWARA = Object.fromEntries(Object.entries(SWARA).map(([k, v]) => [v, k]));
-const REV_NGALAGENA = {
-  ...Object.fromEntries(Object.entries(NGALAGENA_BAKU).map(([k, v]) => [v, k])),
-  'ᮽ': 'bh'
-};
-const REV_RARANGKEN_VOKAL = {
-  'ᮤ': 'i', 'ᮥ': 'u', 'ᮦ': 'é', 'ᮧ': 'o', 'ᮨ': 'e', 'ᮩ': 'eu'
-};
-const REV_RARANGKEN_AKHIR = {
-  'ᮀ': 'ng',
-  'ᮁ': 'r',
-  'ᮂ': 'h',
-  'ᮾ': 'k',
-  'ᮿ': 'm'
-};
-const REV_ANGKA = Object.fromEntries(ANGKA_ORDERED.map(([k, v]) => [v, k]));
-const REV_SISIPAN = {
-  'ᮡ': 'y',
-  'ᮢ': 'r',
-  'ᮣ': 'l',
-  'ᮭ': 'w',
-  'ᮬ': 'm'
-};
-
 // =========================================================
-// NORMALISASI AKSARA LATÉN
+// 2. MESIN ALIH AKSARA (LATÉN <-> SUNDA)
 // =========================================================
 const SH_TO_S_EXCEPTIONS = [
   'sholat', 'shalat',
@@ -250,7 +254,7 @@ function normalizeLatin(text, isBuhun = false) {
     s = s.replace(/bh/g, 'b');
   }
 
-  s = s
+  return s
     .replace(/sh/g, 'sy')
     .replace(/(nh|ñ)/g, 'ny')
     .replace(/(ph|fh)/g, 'f')
@@ -259,18 +263,9 @@ function normalizeLatin(text, isBuhun = false) {
     .replace(/(dh|dz)/g, 'd')
     .replace(/th/g, 's')
     .replace(/gh/g, 'g')
-    // .replace(/rh/g, 'r')
-    // .replace(/(lh|ll)/g, 'l')
-    // .replace(/wh/g, 'w')
-    // .replace(/mh/g, 'm')
     .replace(/oe/g, 'u');
-
-  return s;
 }
 
-// =========================================================
-// LATÉN -> AKSARA SUNDA
-// =========================================================
 function latinToSunda(text, isBuhun = false, buhunStyle = 'sajarah') {
   let processed = normalizeLatin(text, isBuhun);
 
@@ -372,9 +367,6 @@ function latinToSunda(text, isBuhun = false, buhunStyle = 'sajarah') {
   });
 }
 
-// =========================================================
-// LIVE IME INPUT AKSARA SUNDA (MENGGUNAKAN latinToSunda BAKU)
-// =========================================================
 function liveConvertInputToSunda(rawText, cursorPos) {
   const before = rawText.slice(0, cursorPos);
   const after = rawText.slice(cursorPos);
@@ -416,9 +408,6 @@ function liveConvertInputToSunda(rawText, cursorPos) {
   };
 }
 
-// =========================================================
-// AKSARA SUNDA -> LATÉN
-// =========================================================
 function applyLatinCapitalization(text) {
   let out = text.replace(/(^|\n)([^a-zéA-ZÉ\n]*)([a-zé])/g, (m, lineStart, prefix, firstLetter) => {
     return lineStart + prefix + firstLetter.toUpperCase();
@@ -470,33 +459,15 @@ function sundaToLatin(text, translateBindu = false, capitalize = true) {
       }
       return base + 'a';
     }
-    if (akhir) {
-      return REV_RARANGKEN_AKHIR[akhir] || '';
-    }
-    if (swara) {
-      return REV_SWARA[swara] || '';
-    }
-    if (avagraha) {
-      return "'";
-    }
-    if (pangreureu) {
-      return 'reu';
-    }
-    if (pangwilet) {
-      return 'leu';
-    }
-    if (pipedAngka) {
-      return pipedAngka.split('').map(d => REV_ANGKA[d] || d).join('');
-    }
-    if (singleAngka) {
-      return REV_ANGKA[singleAngka] || '';
-    }
-    if (doublePipe) {
-      return translateBindu ? '.' : '||';
-    }
-    if (singlePipe) {
-      return translateBindu ? ',' : '|';
-    }
+    if (akhir) return REV_RARANGKEN_AKHIR[akhir] || '';
+    if (swara) return REV_SWARA[swara] || '';
+    if (avagraha) return "'";
+    if (pangreureu) return 'reu';
+    if (pangwilet) return 'leu';
+    if (pipedAngka) return pipedAngka.split('').map(d => REV_ANGKA[d] || d).join('');
+    if (singleAngka) return REV_ANGKA[singleAngka] || '';
+    if (doublePipe) return translateBindu ? '.' : '||';
+    if (singlePipe) return translateBindu ? ',' : '|';
     if (bindu) {
       if (!translateBindu) return bindu;
       if (bindu === '᳃') return ',';
@@ -513,33 +484,51 @@ function sundaToLatin(text, translateBindu = false, capitalize = true) {
     result = result.replace(/\s+([.,;])/g, '$1').trim();
   }
 
-  if (capitalize) {
-    result = applyLatinCapitalization(result);
-  }
-
-  return result;
+  return capitalize ? applyLatinCapitalization(result) : result;
 }
 
-// --- State & DOM Elements ---
+// =========================================================
+// 3. STATE & ELEMEN DOM
+// =========================================================
+const IS_TOUCH_DEVICE =
+  window.matchMedia('(hover: none) and (pointer: coarse)').matches ||
+  'ontouchstart' in window;
+
 let mode = 'LATIN_TO_SUNDA';
 let isComposing = false;
-let pasteFeedbackTimer = null;
-let pasteHideTimer = null;
-let clearFeedbackTimer = null;
-let copyFeedbackTimer = null;
-let buhunSelectAnimToken = 0;
-let lastBuhunSelectWidth = 0;
 let isKbPopupOpen = false;
 let kbPopupAnimToken = 0;
+let pasteFeedbackTimer = null;
+let pasteHideTimer = null;
+let copyActionToken = 0;
+let buhunSelectAnimToken = 0;
+let lastBuhunSelectWidth = 0;
+let isFloatingPreviewVisible = false;
+let floatingPreviewAnimToken = 0;
+let wasFpInputFocused = false;
 
+// Header & Mode Bar
 const mainTitleEl = document.getElementById('main-title');
 const subtitleTextEl = document.getElementById('subtitle-text');
+const btnSwap = document.getElementById('btn-swap');
+
+// Editor Cards
+const editorGridEl = document.querySelector('.editor-grid');
 const inputLabelEl = document.getElementById('input-label');
 const outputLabelEl = document.getElementById('output-label');
 const inputEl = document.getElementById('input-text');
 const outputEl = document.getElementById('output-text');
 const charCountEl = document.getElementById('char-count');
 const standardHintEl = document.getElementById('standard-hint');
+
+// Editor Controls & Helper Buttons
+const latinHelpersEl = document.getElementById('latin-helpers');
+const charBtns = document.querySelectorAll('.char-btn');
+const btnPopupKb = document.getElementById('btn-popup-kb');
+const btnPaste = document.getElementById('btn-paste');
+const btnClear = document.getElementById('btn-clear');
+const btnCopy = document.getElementById('btn-copy');
+const btnSample = document.getElementById('btn-sample');
 
 const buhunControlsEl = document.getElementById('buhun-controls');
 const toggleBuhunEl = document.getElementById('toggle-buhun');
@@ -548,19 +537,27 @@ const buhunStyleEl = document.getElementById('buhun-style');
 const binduTranslateWrapper = document.getElementById('bindu-translate-wrapper');
 const toggleTranslateBinduEl = document.getElementById('toggle-translate-bindu');
 
-const latinHelpersEl = document.getElementById('latin-helpers');
-const btnPopupKb = document.getElementById('btn-popup-kb');
+// Kibor Sunda Popup
 const kbPopupEl = document.getElementById('kb-popup');
 const kbPopupHeaderEl = document.getElementById('kb-popup-header');
 const btnClosePopup = document.getElementById('btn-close-popup');
 
-const btnSwap = document.getElementById('btn-swap');
-const btnClear = document.getElementById('btn-clear');
-const btnPaste = document.getElementById('btn-paste');
-const btnCopy = document.getElementById('btn-copy');
-const btnSample = document.getElementById('btn-sample');
-const charBtns = document.querySelectorAll('.char-btn');
+// Floating Preview Bar
+const floatingPreviewEl = document.getElementById('floating-preview');
+const fpInputTagEl = document.getElementById('fp-input-tag');
+const fpOutputTagEl = document.getElementById('fp-output-tag');
+const fpInputTextEl = document.getElementById('fp-input-text');
+const fpOutputTextEl = document.getElementById('fp-output-text');
+const fpBtnSpace = document.getElementById('fp-btn-space');
+const fpBtnBackspace = document.getElementById('fp-btn-backspace');
+const fpBtnClear = document.getElementById('fp-btn-clear');
+const fpBtnSwap = document.getElementById('fp-btn-swap');
+const fpBtnCopy = document.getElementById('fp-btn-copy');
+const fpBtnTop = document.getElementById('fp-btn-top');
 
+// =========================================================
+// 4. SINKRONISASI INPUT, OUTPUT & PREVIEW BAR
+// =========================================================
 function syncMobileInputMode() {
   if (isKbPopupOpen) {
     inputEl.setAttribute('inputmode', 'none');
@@ -569,33 +566,13 @@ function syncMobileInputMode() {
   }
 }
 
-function setKbPopupVisible(show) {
-  const token = ++kbPopupAnimToken;
-  isKbPopupOpen = show;
-  btnPopupKb.classList.toggle('is-active', show);
-  syncMobileInputMode();
-
-  if (show) {
-    kbPopupEl.classList.remove('hidden', 'is-closing', 'is-opening');
-    void kbPopupEl.offsetWidth;
-    kbPopupEl.classList.add('is-opening');
-  } else {
-    if (kbPopupEl.classList.contains('hidden')) return;
-    kbPopupEl.classList.remove('is-opening');
-    void kbPopupEl.offsetWidth;
-    kbPopupEl.classList.add('is-closing');
-
-    setTimeout(() => {
-      if (token !== kbPopupAnimToken) return;
-      kbPopupEl.classList.add('hidden');
-      kbPopupEl.classList.remove('is-closing');
-    }, 220);
+function insertAtCursor(char, { fromReference = false, autoSwapIfEmpty = false } = {}) {
+  if (autoSwapIfEmpty && mode === 'LATIN_TO_SUNDA' && inputEl.value.length === 0) {
+    swapDirection({ fromFloatingBar: fromReference });
   }
-}
 
-function insertAtCursor(char) {
-  const start = inputEl.selectionStart;
-  const end = inputEl.selectionEnd;
+  const start = inputEl.selectionStart ?? inputEl.value.length;
+  const end = inputEl.selectionEnd ?? inputEl.value.length;
   const text = inputEl.value;
 
   const nextVal = text.substring(0, start) + char + text.substring(end);
@@ -611,13 +588,18 @@ function insertAtCursor(char) {
   }
 
   syncMobileInputMode();
-  inputEl.focus({ preventScroll: true });
+
+  const shouldFocus = !(fromReference && (IS_TOUCH_DEVICE || isFloatingPreviewVisible) && !isKbPopupOpen);
+  if (shouldFocus) {
+    inputEl.focus({ preventScroll: true });
+  }
+
   updateOutput();
 }
 
-function backspaceAtCursor() {
-  const start = inputEl.selectionStart;
-  const end = inputEl.selectionEnd;
+function backspaceAtCursor({ skipFocus = false } = {}) {
+  const start = inputEl.selectionStart ?? inputEl.value.length;
+  const end = inputEl.selectionEnd ?? inputEl.value.length;
   const text = inputEl.value;
 
   if (start !== end) {
@@ -632,27 +614,63 @@ function backspaceAtCursor() {
   }
 
   syncMobileInputMode();
-  inputEl.focus({ preventScroll: true });
+  if (!skipFocus) {
+    inputEl.focus({ preventScroll: true });
+  }
   updateOutput();
 }
 
-function updateOutput() {
+function syncFpTagWidth() {
+  if (floatingPreviewEl.classList.contains('hidden')) return;
+
+  fpInputTagEl.style.width = '';
+  fpOutputTagEl.style.width = '';
+
+  const maxWidth = Math.max(
+    fpInputTagEl.getBoundingClientRect().width,
+    fpOutputTagEl.getBoundingClientRect().width
+  );
+
+  if (maxWidth > 0) {
+    const unifiedWidth = `${Math.ceil(maxWidth)}px`;
+    fpInputTagEl.style.width = unifiedWidth;
+    fpOutputTagEl.style.width = unifiedWidth;
+  }
+}
+
+function syncFloatingPreview(skipFpInputSync = false) {
+  const isSundaInput = mode === 'SUNDA_TO_LATIN';
+  fpInputTagEl.textContent = isSundaInput ? 'Sunda' : 'Latén';
+  fpInputTextEl.placeholder = isSundaInput
+    ? 'ᮊᮨᮒᮤᮊ᮪ ᮓᮤ ᮓᮤᮉ...'
+    : 'Ketik nganggo e/é/eu anu leres...';
+
+  fpOutputTagEl.textContent = isSundaInput ? 'Latén' : 'Sunda';
+  fpOutputTextEl.dataset.placeholder = isSundaInput
+    ? 'Hasil alih aksara...'
+    : 'ᮠᮞᮤᮜ᮪ ᮃᮜᮤᮂ ᮃᮊ᮪ᮞᮛ...';
+
+  fpInputTextEl.classList.toggle('sunda-font', isSundaInput);
+  fpOutputTextEl.classList.toggle('sunda-font', !isSundaInput);
+
+  syncFpTagWidth();
+
+  if (!skipFpInputSync) {
+    fpInputTextEl.value = inputEl.value.replace(/\n+/g, ' ');
+    fpInputTextEl.scrollLeft = fpInputTextEl.scrollWidth;
+  }
+
+  fpOutputTextEl.textContent = outputEl.value.replace(/\n+/g, ' ↵ ');
+  fpOutputTextEl.scrollLeft = fpOutputTextEl.scrollWidth;
+}
+
+function updateOutput(skipFpInputSync = false) {
   const val = inputEl.value;
 
   if (!pasteFeedbackTimer) {
     setPasteButtonVisible(val.length === 0);
   }
-  if (!pasteFeedbackTimer && !pasteHideTimer) {
-    const shouldHide = val.length > 0;
-    const wasHidden = btnPaste.classList.contains('hidden');
-    btnPaste.classList.toggle('hidden', shouldHide);
 
-    if (!shouldHide && wasHidden) {
-      btnPaste.classList.remove('is-leaving', 'is-entering');
-      void btnPaste.offsetWidth;
-      btnPaste.classList.add('is-entering');
-    }
-  }
   if (mode === 'LATIN_TO_SUNDA') {
     const isBuhun = toggleBuhunEl.checked;
     const style = buhunStyleEl.value;
@@ -675,34 +693,89 @@ function updateOutput() {
       ? 'Alih Aksara Latén (Simbol Bindu Dialihaksarakeun)'
       : 'Alih Aksara Diplomatik (Simbol Bindu Dipertahankeun)';
   }
+
   charCountEl.textContent = `${val.length} aksara`;
+  syncFloatingPreview(skipFpInputSync);
 }
 
-// Event Input (ngadukung Live-IME dina modeu Sunda -> Latén)
-inputEl.addEventListener('compositionstart', () => {
-  isComposing = true;
-});
+// =========================================================
+// 5. ANIMASI & FEEDBACK UI
+// =========================================================
+function animateButtonMorph(btn, nextLabel, isFeedback = false) {
+  if (!btn) return;
+  const span = btn.querySelector('span');
+  if (!span) return;
 
-inputEl.addEventListener('compositionend', () => {
-  isComposing = false;
-  if (mode === 'SUNDA_TO_LATIN') {
-    const converted = liveConvertInputToSunda(inputEl.value, inputEl.selectionStart);
-    inputEl.value = converted.text;
-    inputEl.selectionStart = inputEl.selectionEnd = converted.cursor;
+  clearTimeout(btn._widthTimer);
+  btn.style.width = '';
+  btn.style.overflow = '';
+  btn.style.transition = '';
+
+  const isSameLabel = span.textContent === nextLabel;
+  btn.classList.toggle('is-feedback', isFeedback);
+
+  const isVisible = btn.offsetParent !== null;
+  if (!isVisible) {
+    span.textContent = nextLabel;
+    return;
   }
-  updateOutput();
-});
 
-inputEl.addEventListener('input', () => {
-  if (mode === 'SUNDA_TO_LATIN' && !isComposing) {
-    const converted = liveConvertInputToSunda(inputEl.value, inputEl.selectionStart);
-    inputEl.value = converted.text;
-    inputEl.selectionStart = inputEl.selectionEnd = converted.cursor;
+  if (isSameLabel) {
+    if (isFeedback) {
+      span.classList.remove('label-pop');
+      void span.offsetWidth;
+      span.classList.add('label-pop');
+    }
+    return;
   }
-  updateOutput();
-});
 
-// Event Toggle Modeu Sunda Buhun & Dropdown Gaya Naskah
+  const startWidth = btn.getBoundingClientRect().width;
+  span.textContent = nextLabel;
+
+  span.classList.remove('label-pop');
+  void span.offsetWidth;
+  span.classList.add('label-pop');
+
+  btn.style.transition = 'none';
+  btn.style.width = '';
+  const endWidth = btn.getBoundingClientRect().width;
+
+  if (Math.abs(endWidth - startWidth) < 0.5) {
+    btn.style.width = '';
+    btn.style.transition = '';
+    return;
+  }
+
+  btn.style.overflow = 'hidden';
+  btn.style.width = `${startWidth}px`;
+  void btn.offsetWidth;
+
+  btn.style.transition = 'width 0.24s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease';
+  btn.style.width = `${endWidth}px`;
+
+  btn._widthTimer = setTimeout(() => {
+    btn.style.width = '';
+    btn.style.overflow = '';
+    btn.style.transition = '';
+  }, 250);
+}
+
+function triggerButtonFeedback(btn, feedbackLabel, defaultLabel, duration = 1500) {
+  if (!btn) return;
+  clearTimeout(btn._feedbackTimer);
+
+  if (btn.classList.contains('is-feedback')) {
+    btn.classList.remove('is-feedback');
+    void btn.offsetWidth;
+  }
+
+  animateButtonMorph(btn, feedbackLabel, true);
+  btn._feedbackTimer = setTimeout(() => {
+    btn._feedbackTimer = null;
+    animateButtonMorph(btn, defaultLabel, false);
+  }, duration);
+}
+
 function animateSelectWidth(selectEl, prevWidth) {
   if (!prevWidth || selectEl.classList.contains('hidden')) return;
 
@@ -811,286 +884,7 @@ function setBuhunSelectVisible(show) {
     }, 210);
   }
 }
-toggleBuhunEl.addEventListener('change', () => {
-  setBuhunSelectVisible(toggleBuhunEl.checked);
-  updateOutput();
-});
 
-['pointerdown', 'focus', 'keydown'].forEach(evt => {
-  buhunStyleEl.addEventListener(evt, () => {
-    if (!buhunStyleEl.classList.contains('hidden')) {
-      lastBuhunSelectWidth = buhunStyleEl.getBoundingClientRect().width;
-    }
-  });
-});
-
-buhunStyleEl.addEventListener('change', () => {
-  animateSelectWidth(buhunStyleEl, lastBuhunSelectWidth);
-  updateOutput();
-});
-
-// Event Toggle Alih Aksara Bindu
-toggleTranslateBinduEl.addEventListener('change', updateOutput);
-
-// Event Button Liron Arah Alih Aksara
-function triggerSwapAnimation() {
-  btnSwap.classList.remove('spin-clockwise');
-  void btnSwap.offsetWidth;
-  btnSwap.classList.add('spin-clockwise');
-
-  const textTargets = [mainTitleEl, subtitleTextEl, inputLabelEl, outputLabelEl, inputEl, outputEl];
-  textTargets.forEach(el => {
-    el.classList.remove('swap-animate-text');
-    void el.offsetWidth;
-    el.classList.add('swap-animate-text');
-  });
-
-  document.querySelectorAll('.editor-grid .card').forEach(card => {
-    card.classList.remove('swap-animate-card');
-    void card.offsetWidth;
-    card.classList.add('swap-animate-card');
-  });
-}
-
-btnSwap.addEventListener('click', () => {
-  const prevClearLeft = btnClear.getBoundingClientRect().left;
-  const prevCopyLeft = btnCopy.getBoundingClientRect().left;
-
-  triggerSwapAnimation();
-  const prevOutput = outputEl.value;
-
-  if (mode === 'LATIN_TO_SUNDA') {
-    mode = 'SUNDA_TO_LATIN';
-    mainTitleEl.innerHTML = 'Aksara Sunda <span class="arrow">→</span> Aksara Latén';
-    subtitleTextEl.textContent = 'Ketik langsung ku kibor Latén anu téksna otomatis robih janten Aksara Sunda atanapi ketik / témpél Aksara Sunda, teras kaluar hasil Laténna.';
-    inputLabelEl.textContent = 'Aksara Sunda';
-    outputLabelEl.textContent = 'Aksara Latén';
-
-    inputEl.classList.add('sunda-font');
-    outputEl.classList.remove('sunda-font');
-    inputEl.placeholder = 'ᮊᮨᮒᮤᮊ᮪ ᮊᮥ ᮃᮊ᮪ᮞᮛ ᮞᮥᮔ᮪ᮓ ᮓᮤ ᮓᮤᮉ...';
-    outputEl.placeholder = 'Hasilna bakal kaluar di dieu...';
-
-    buhunControlsEl.classList.add('hidden');
-    binduTranslateWrapper.classList.remove('hidden');
-    latinHelpersEl.classList.add('hidden');
-    btnPopupKb.classList.remove('hidden');
-
-    const converted = liveConvertInputToSunda(prevOutput, prevOutput.length);
-    inputEl.value = converted.text;
-  } else {
-    mode = 'LATIN_TO_SUNDA';
-    mainTitleEl.innerHTML = 'Aksara Latén <span class="arrow">→</span> Aksara Sunda';
-    subtitleTextEl.innerHTML = 'Ketik téks basa Sunda nganggo huruf <strong class="notranslate" translate="no">e</strong> (pamepet), <strong class="notranslate" translate="no">é</strong> (panéléng), sareng <strong class="notranslate" translate="no">eu</strong> (paneuleung) anu leres supados hasilna merenah.';
-    inputLabelEl.textContent = 'Aksara Latén';
-    outputLabelEl.textContent = 'Aksara Sunda';
-
-    inputEl.classList.remove('sunda-font');
-    outputEl.classList.add('sunda-font');
-    inputEl.placeholder = 'Ketik téks basa Sunda di dieu, pastikeun nganggo huruf e/é/eu anu leres...';
-    outputEl.placeholder = 'ᮠᮞᮤᮜ᮪ᮔ ᮘᮊᮜ᮪ ᮊᮜᮥᮃᮁ ᮓᮤ ᮓᮤᮉ...';
-
-    buhunControlsEl.classList.remove('hidden');
-    binduTranslateWrapper.classList.add('hidden');
-    latinHelpersEl.classList.remove('hidden');
-    btnPopupKb.classList.add('hidden');
-    kbPopupEl.classList.add('hidden');
-
-    inputEl.value = prevOutput;
-  }
-
-  const enteringControls = mode === 'SUNDA_TO_LATIN'
-    ? [btnPopupKb, binduTranslateWrapper]
-    : [latinHelpersEl, buhunControlsEl];
-
-  enteringControls.forEach(el => {
-    el.classList.remove('control-swap-in');
-    void el.offsetWidth;
-    el.classList.add('control-swap-in');
-  });
-
-  [
-    [btnClear, prevClearLeft],
-    [btnCopy, prevCopyLeft]
-  ].forEach(([btn, prevLeft]) => {
-    const deltaX = prevLeft - btn.getBoundingClientRect().left;
-    if (Math.abs(deltaX) > 0.5) {
-      btn.style.transition = 'none';
-      btn.style.transform = `translateX(${deltaX}px)`;
-      void btn.offsetWidth;
-      btn.style.transition = 'transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)';
-      btn.style.transform = 'translateX(0)';
-      clearTimeout(btn._flipTimer);
-      btn._flipTimer = setTimeout(() => {
-        btn.style.transform = '';
-        btn.style.transition = '';
-      }, 290);
-    }
-  });
-
-  updateOutput();
-  if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
-    inputEl.focus();
-  }
-});
-
-// Button Input é / É
-charBtns.forEach(btn => {
-  btn.addEventListener('click', () => insertAtCursor(btn.dataset.char));
-});
-
-// Toggle Popup Kibor Sunda
-btnPopupKb.addEventListener('click', () => {
-  const nextState = !isKbPopupOpen;
-  setKbPopupVisible(nextState);
-  if (nextState) {
-    inputEl.blur();
-    inputEl.focus({ preventScroll: true });
-  }
-});
-
-btnClosePopup.addEventListener('click', () => {
-  setKbPopupVisible(false);
-});
-
-// Fitur Séréd Kibor Sunda
-(function makePopupDraggable() {
-  let isDragging = false;
-  let offsetX = 0;
-  let offsetY = 0;
-
-  kbPopupHeaderEl.addEventListener('mousedown', (e) => {
-    if (window.innerWidth <= 540 || e.target === btnClosePopup) return;
-    isDragging = true;
-    const rect = kbPopupEl.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
-    kbPopupEl.style.bottom = 'auto';
-    kbPopupEl.style.right = 'auto';
-    kbPopupEl.style.left = `${rect.left}px`;
-    kbPopupEl.style.top = `${rect.top}px`;
-  });
-
-  document.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    const maxLeft = window.innerWidth - kbPopupEl.offsetWidth;
-    const maxTop = window.innerHeight - kbPopupEl.offsetHeight;
-    const nextLeft = Math.max(0, Math.min(e.clientX - offsetX, maxLeft));
-    const nextTop = Math.max(0, Math.min(e.clientY - offsetY, maxTop));
-    kbPopupEl.style.left = `${nextLeft}px`;
-    kbPopupEl.style.top = `${nextTop}px`;
-  });
-
-  document.addEventListener('mouseup', () => {
-    isDragging = false;
-  });
-})();
-
-// Conto Kalimah
-function triggerSampleAnimation() {
-  [inputEl, outputEl].forEach(el => {
-    el.classList.remove('swap-animate-text');
-    void el.offsetWidth;
-    el.classList.add('swap-animate-text');
-  });
-
-  document.querySelectorAll('.editor-grid .card').forEach(card => {
-    card.classList.remove('sample-animate-card');
-    void card.offsetWidth;
-    card.classList.add('sample-animate-card');
-  });
-}
-
-btnSample.addEventListener('click', () => {
-  const currentVal = inputEl.value.trim();
-
-  if (mode === 'LATIN_TO_SUNDA') {
-    const candidates = LATIN_SAMPLES.filter(item => item.text.trim() !== currentVal);
-    const pool = candidates.length > 0 ? candidates : LATIN_SAMPLES;
-    const chosen = pool[Math.floor(Math.random() * pool.length)];
-    inputEl.value = chosen.text;
-
-    const prevWidth = !buhunStyleEl.classList.contains('hidden')
-      ? buhunStyleEl.getBoundingClientRect().width
-      : 0;
-    buhunStyleEl.value = chosen.style;
-    animateSelectWidth(buhunStyleEl, prevWidth);
-  } else {
-    const candidates = SUNDA_SAMPLES.filter(item => item.trim() !== currentVal);
-    const pool = candidates.length > 0 ? candidates : SUNDA_SAMPLES;
-    inputEl.value = pool[Math.floor(Math.random() * pool.length)];
-  }
-
-  updateOutput();
-  triggerSampleAnimation();
-
-  if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
-    inputEl.focus();
-  }
-});
-
-// Animasi Tombol Tiron, Hapus, Témpél
-function animateButtonMorph(btn, nextLabel, isFeedback = false) {
-  const span = btn.querySelector('span');
-  if (!span || span.textContent === nextLabel) return;
-
-  const startWidth = btn.getBoundingClientRect().width;
-
-  span.textContent = nextLabel;
-  btn.classList.toggle('is-feedback', isFeedback);
-
-  span.classList.remove('label-pop');
-  void span.offsetWidth;
-  span.classList.add('label-pop');
-
-  btn.style.transition = 'none';
-  btn.style.width = 'auto';
-  const endWidth = btn.getBoundingClientRect().width;
-
-  btn.style.width = `${startWidth}px`;
-  void btn.offsetWidth;
-
-  btn.style.transition = 'width 0.24s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease';
-  btn.style.width = `${endWidth}px`;
-
-  clearTimeout(btn._widthTimer);
-  btn._widthTimer = setTimeout(() => {
-    btn.style.width = '';
-    btn.style.transition = '';
-  }, 250);
-}
-
-// Hapus
-btnClear.addEventListener('click', () => {
-  const hadText = inputEl.value.length > 0;
-  inputEl.value = '';
-  outputEl.value = '';
-
-  if (pasteFeedbackTimer || pasteHideTimer) {
-    clearTimeout(pasteFeedbackTimer);
-    clearTimeout(pasteHideTimer);
-    pasteFeedbackTimer = null;
-    pasteHideTimer = null;
-    btnPaste.classList.remove('is-leaving', 'is-feedback');
-    btnPaste.querySelector('span').textContent = 'Témpél';
-  }
-
-  updateOutput();
-
-  if (hadText) {
-    animateButtonMorph(btnClear, 'Dihapus!', true);
-    clearTimeout(clearFeedbackTimer);
-    clearFeedbackTimer = setTimeout(() => {
-      animateButtonMorph(btnClear, 'Hapus', false);
-    }, 1500);
-  }
-
-  if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
-    inputEl.focus();
-  }
-});
-
-// Témpél
 function setPasteButtonVisible(show) {
   if (show) {
     clearTimeout(pasteHideTimer);
@@ -1124,6 +918,367 @@ function setPasteButtonVisible(show) {
   }
 }
 
+function setKbPopupVisible(show) {
+  const token = ++kbPopupAnimToken;
+  isKbPopupOpen = show;
+  btnPopupKb.classList.toggle('is-active', show);
+  syncMobileInputMode();
+
+  if (show) {
+    kbPopupEl.classList.remove('hidden', 'is-closing', 'is-opening');
+    void kbPopupEl.offsetWidth;
+    kbPopupEl.classList.add('is-opening');
+  } else {
+    if (kbPopupEl.classList.contains('hidden')) return;
+    kbPopupEl.classList.remove('is-opening');
+    void kbPopupEl.offsetWidth;
+    kbPopupEl.classList.add('is-closing');
+
+    setTimeout(() => {
+      if (token !== kbPopupAnimToken) return;
+      kbPopupEl.classList.add('hidden');
+      kbPopupEl.classList.remove('is-closing');
+    }, 220);
+  }
+}
+
+function setFloatingPreviewVisible(show) {
+  if (isFloatingPreviewVisible === show) return;
+  isFloatingPreviewVisible = show;
+  const token = ++floatingPreviewAnimToken;
+
+  if (show) {
+    if (isKbPopupOpen) {
+      setKbPopupVisible(false);
+    }
+    if (!fpBtnSwap._feedbackTimer) animateButtonMorph(fpBtnSwap, 'Liron', false);
+    if (!fpBtnClear._feedbackTimer) animateButtonMorph(fpBtnClear, 'Hapus', false);
+    if (!fpBtnCopy._feedbackTimer) animateButtonMorph(fpBtnCopy, 'Tiron', false);
+
+    floatingPreviewEl.classList.remove('hidden', 'is-closing', 'is-opening');
+    void floatingPreviewEl.offsetWidth;
+    floatingPreviewEl.classList.add('is-opening');
+    syncFloatingPreview();
+  } else {
+    if (floatingPreviewEl.classList.contains('hidden')) return;
+    floatingPreviewEl.classList.remove('is-opening');
+    void floatingPreviewEl.offsetWidth;
+    floatingPreviewEl.classList.add('is-closing');
+
+    setTimeout(() => {
+      if (token !== floatingPreviewAnimToken) return;
+      floatingPreviewEl.classList.add('hidden');
+      floatingPreviewEl.classList.remove('is-closing');
+    }, 200);
+  }
+}
+
+function triggerSwapAnimation() {
+  [btnSwap, fpBtnSwap].forEach(btn => {
+    if (!btn) return;
+    btn.classList.remove('spin-clockwise');
+    void btn.offsetWidth;
+    btn.classList.add('spin-clockwise');
+    clearTimeout(btn._spinTimer);
+    btn._spinTimer = setTimeout(() => {
+      btn.classList.remove('spin-clockwise');
+    }, 440);
+  });
+
+  [mainTitleEl, subtitleTextEl, inputLabelEl, outputLabelEl, inputEl, outputEl].forEach(el => {
+    el.classList.remove('swap-animate-text');
+    void el.offsetWidth;
+    el.classList.add('swap-animate-text');
+  });
+
+  document.querySelectorAll('.editor-grid .card').forEach(card => {
+    card.classList.remove('swap-animate-card');
+    void card.offsetWidth;
+    card.classList.add('swap-animate-card');
+  });
+
+  document.querySelectorAll('.floating-preview .fp-box').forEach(box => {
+    box.classList.remove('fp-swap-box');
+    void box.offsetWidth;
+    box.classList.add('fp-swap-box');
+  });
+
+  [
+    [fpInputTextEl, 'fp-swap-in'],
+    [fpOutputTextEl, 'fp-swap-out'],
+    [fpInputTagEl, 'label-pop'],
+    [fpOutputTagEl, 'label-pop']
+  ].forEach(([el, cls]) => {
+    if (!el) return;
+    el.classList.remove(cls);
+    void el.offsetWidth;
+    el.classList.add(cls);
+  });
+}
+
+function triggerSampleAnimation() {
+  [inputEl, outputEl].forEach(el => {
+    el.classList.remove('swap-animate-text');
+    void el.offsetWidth;
+    el.classList.add('swap-animate-text');
+  });
+
+  document.querySelectorAll('.editor-grid .card').forEach(card => {
+    card.classList.remove('sample-animate-card');
+    void card.offsetWidth;
+    card.classList.add('sample-animate-card');
+  });
+}
+
+function triggerClearAnimation() {
+  [inputEl, outputEl, fpInputTextEl, fpOutputTextEl].forEach(el => {
+    if (!el) return;
+    el.classList.remove('clear-animate-text');
+    void el.offsetWidth;
+    el.classList.add('clear-animate-text');
+  });
+
+  document.querySelectorAll('.editor-grid .card').forEach(card => {
+    card.classList.remove('clear-animate-card');
+    void card.offsetWidth;
+    card.classList.add('clear-animate-card');
+  });
+
+  document.querySelectorAll('.floating-preview .fp-box').forEach(box => {
+    box.classList.remove('fp-clear-box');
+    void box.offsetWidth;
+    box.classList.add('fp-clear-box');
+  });
+}
+
+// =========================================================
+// 6. ACTION HANDLERS & EVENT LISTENERS
+// =========================================================
+function swapDirection({ fromFloatingBar = false } = {}) {
+  const prevClearLeft = btnClear.getBoundingClientRect().left;
+  const prevCopyLeft = btnCopy.getBoundingClientRect().left;
+
+  triggerSwapAnimation();
+  const prevOutput = outputEl.value;
+
+  if (mode === 'LATIN_TO_SUNDA') {
+    mode = 'SUNDA_TO_LATIN';
+    mainTitleEl.innerHTML = 'Aksara Sunda <span class="arrow">→</span> Aksara Latén';
+    subtitleTextEl.textContent = 'Ketik langsung ku kibor Latén anu téksna otomatis robih janten Aksara Sunda atanapi ketik / témpél Aksara Sunda, teras kaluar hasil Laténna.';
+    inputLabelEl.textContent = 'Aksara Sunda';
+    outputLabelEl.textContent = 'Aksara Latén';
+
+    inputEl.classList.add('sunda-font');
+    outputEl.classList.remove('sunda-font');
+    inputEl.placeholder = 'ᮊᮨᮒᮤᮊ᮪ ᮊᮥ ᮃᮊ᮪ᮞᮛ ᮞᮥᮔ᮪ᮓ ᮓᮤ ᮓᮤᮉ...';
+    outputEl.placeholder = 'Conto hasil: Wilujeng sumping di Bandung.';
+
+    buhunControlsEl.classList.add('hidden');
+    binduTranslateWrapper.classList.remove('hidden');
+    latinHelpersEl.classList.add('hidden');
+    btnPopupKb.classList.remove('hidden');
+
+    const converted = liveConvertInputToSunda(prevOutput, prevOutput.length);
+    inputEl.value = converted.text;
+  } else {
+    mode = 'LATIN_TO_SUNDA';
+    mainTitleEl.innerHTML = 'Aksara Latén <span class="arrow">→</span> Aksara Sunda';
+    subtitleTextEl.innerHTML = 'Ketik téks basa Sunda nganggo huruf <strong class="notranslate" translate="no">e</strong> (pamepet), <strong class="notranslate" translate="no">é</strong> (panéléng), sareng <strong class="notranslate" translate="no">eu</strong> (paneuleung) anu leres supados hasilna merenah.';
+    inputLabelEl.textContent = 'Aksara Latén';
+    outputLabelEl.textContent = 'Aksara Sunda';
+
+    inputEl.classList.remove('sunda-font');
+    outputEl.classList.add('sunda-font');
+    inputEl.placeholder = 'Ketik téks basa Sunda di dieu, pastikeun nganggo huruf e/é/eu anu leres...';
+    outputEl.placeholder = 'ᮠᮞᮤᮜ᮪ᮔ ᮘᮊᮜ᮪ ᮊᮜᮥᮃᮁ ᮓᮤ ᮓᮤᮉ...';
+
+    buhunControlsEl.classList.remove('hidden');
+    binduTranslateWrapper.classList.add('hidden');
+    latinHelpersEl.classList.remove('hidden');
+    btnPopupKb.classList.add('hidden');
+
+    setKbPopupVisible(false);
+    inputEl.value = prevOutput;
+  }
+
+  const enteringControls = mode === 'SUNDA_TO_LATIN'
+    ? [btnPopupKb, binduTranslateWrapper]
+    : [latinHelpersEl, buhunControlsEl];
+
+  enteringControls.forEach(el => {
+    el.classList.remove('control-swap-in');
+    void el.offsetWidth;
+    el.classList.add('control-swap-in');
+  });
+
+  [
+    [btnClear, prevClearLeft],
+    [btnCopy, prevCopyLeft]
+  ].forEach(([btn, prevLeft]) => {
+    const deltaX = prevLeft - btn.getBoundingClientRect().left;
+    if (Math.abs(deltaX) > 0.5) {
+      btn.style.transition = 'none';
+      btn.style.transform = `translateX(${deltaX}px)`;
+      void btn.offsetWidth;
+      btn.style.transition = 'transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)';
+      btn.style.transform = 'translateX(0)';
+      clearTimeout(btn._flipTimer);
+      btn._flipTimer = setTimeout(() => {
+        btn.style.transform = '';
+        btn.style.transition = '';
+      }, 290);
+    }
+  });
+
+  triggerButtonFeedback(btnSwap, 'Arah Dilironkeun!', 'Liron Arah', 1500);
+  triggerButtonFeedback(fpBtnSwap, 'Diliron!', 'Liron', 1500);
+
+  updateOutput();
+  if (!fromFloatingBar && !IS_TOUCH_DEVICE) {
+    inputEl.focus();
+  }
+}
+
+function handleClearAction(skipFocus = false) {
+  const hadText = inputEl.value.length > 0;
+  inputEl.value = '';
+  outputEl.value = '';
+
+  if (pasteFeedbackTimer || pasteHideTimer) {
+    clearTimeout(pasteFeedbackTimer);
+    clearTimeout(pasteHideTimer);
+    pasteFeedbackTimer = null;
+    pasteHideTimer = null;
+    btnPaste.classList.remove('is-leaving', 'is-feedback');
+    btnPaste.querySelector('span').textContent = 'Témpél';
+  }
+
+  updateOutput();
+
+  if (hadText) {
+    triggerClearAnimation();
+    triggerButtonFeedback(btnClear, 'Dihapus!', 'Hapus', 1500);
+    triggerButtonFeedback(fpBtnClear, 'Dihapus!', 'Hapus', 1500);
+  }
+
+  if (!skipFocus && !IS_TOUCH_DEVICE) {
+    inputEl.focus();
+  }
+}
+
+async function handleCopyAction() {
+  if (!outputEl.value) return;
+  const token = ++copyActionToken;
+  await navigator.clipboard.writeText(outputEl.value);
+  if (token !== copyActionToken) return;
+
+  triggerButtonFeedback(btnCopy, 'Ditiron!', 'Tiron', 1500);
+  triggerButtonFeedback(fpBtnCopy, 'Ditiron!', 'Tiron', 1500);
+
+  const outputCardEl = document.querySelector('.output-card');
+  const fpOutputBoxEl = document.querySelector('.fp-output-box');
+
+  if (outputCardEl) {
+    outputCardEl.classList.remove('copy-animate-card');
+    void outputCardEl.offsetWidth;
+    outputCardEl.classList.add('copy-animate-card');
+  }
+  if (fpOutputBoxEl) {
+    fpOutputBoxEl.classList.remove('fp-copy-box');
+    void fpOutputBoxEl.offsetWidth;
+    fpOutputBoxEl.classList.add('fp-copy-box');
+  }
+
+  [outputEl, fpOutputTextEl].forEach(el => {
+    if (!el) return;
+    el.classList.remove('swap-animate-text');
+    void el.offsetWidth;
+    el.classList.add('swap-animate-text');
+  });
+}
+
+// Editor Input & IME Events
+inputEl.addEventListener('compositionstart', () => {
+  isComposing = true;
+});
+
+inputEl.addEventListener('compositionend', () => {
+  isComposing = false;
+  if (mode === 'SUNDA_TO_LATIN') {
+    const converted = liveConvertInputToSunda(inputEl.value, inputEl.selectionStart);
+    inputEl.value = converted.text;
+    inputEl.selectionStart = inputEl.selectionEnd = converted.cursor;
+  }
+  updateOutput();
+});
+
+inputEl.addEventListener('input', () => {
+  if (mode === 'SUNDA_TO_LATIN' && !isComposing) {
+    const converted = liveConvertInputToSunda(inputEl.value, inputEl.selectionStart);
+    inputEl.value = converted.text;
+    inputEl.selectionStart = inputEl.selectionEnd = converted.cursor;
+  }
+  updateOutput();
+});
+
+// Buhun & Bindu Controls
+toggleBuhunEl.addEventListener('change', () => {
+  setBuhunSelectVisible(toggleBuhunEl.checked);
+  updateOutput();
+});
+
+['pointerdown', 'focus', 'keydown'].forEach(evt => {
+  buhunStyleEl.addEventListener(evt, () => {
+    if (!buhunStyleEl.classList.contains('hidden')) {
+      lastBuhunSelectWidth = buhunStyleEl.getBoundingClientRect().width;
+    }
+  });
+});
+
+buhunStyleEl.addEventListener('change', () => {
+  animateSelectWidth(buhunStyleEl, lastBuhunSelectWidth);
+  updateOutput();
+});
+
+toggleTranslateBinduEl.addEventListener('change', updateOutput);
+
+// Main Toolbar & Helper Buttons
+btnSwap.addEventListener('click', () => swapDirection());
+btnClear.addEventListener('click', () => handleClearAction(false));
+btnCopy.addEventListener('click', handleCopyAction);
+
+charBtns.forEach(btn => {
+  btn.addEventListener('click', () => insertAtCursor(btn.dataset.char));
+});
+
+btnSample.addEventListener('click', () => {
+  const currentVal = inputEl.value.trim();
+
+  if (mode === 'LATIN_TO_SUNDA') {
+    const candidates = LATIN_SAMPLES.filter(item => item.text.trim() !== currentVal);
+    const pool = candidates.length > 0 ? candidates : LATIN_SAMPLES;
+    const chosen = pool[Math.floor(Math.random() * pool.length)];
+    inputEl.value = chosen.text;
+
+    const prevWidth = !buhunStyleEl.classList.contains('hidden')
+      ? buhunStyleEl.getBoundingClientRect().width
+      : 0;
+    buhunStyleEl.value = chosen.style;
+    animateSelectWidth(buhunStyleEl, prevWidth);
+  } else {
+    const candidates = SUNDA_SAMPLES.filter(item => item.trim() !== currentVal);
+    const pool = candidates.length > 0 ? candidates : SUNDA_SAMPLES;
+    inputEl.value = pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  updateOutput();
+  triggerSampleAnimation();
+
+  if (!IS_TOUCH_DEVICE) {
+    inputEl.focus();
+  }
+});
+
 btnPaste.addEventListener('click', async () => {
   try {
     const clipText = await navigator.clipboard.readText();
@@ -1145,6 +1300,18 @@ btnPaste.addEventListener('click', async () => {
     btnPaste.classList.remove('hidden', 'is-leaving', 'is-entering');
     animateButtonMorph(btnPaste, 'Ditémpél!', true);
 
+    const inputCardEl = document.querySelector('.editor-grid .card:not(.output-card)');
+    if (inputCardEl) {
+      inputCardEl.classList.remove('paste-animate-card');
+      void inputCardEl.offsetWidth;
+      inputCardEl.classList.add('paste-animate-card');
+    }
+    [inputEl, outputEl].forEach(el => {
+      el.classList.remove('swap-animate-text');
+      void el.offsetWidth;
+      el.classList.add('swap-animate-text');
+    });
+
     pasteFeedbackTimer = setTimeout(() => {
       pasteFeedbackTimer = null;
       if (inputEl.value.length > 0) {
@@ -1155,7 +1322,7 @@ btnPaste.addEventListener('click', async () => {
     }, 850);
 
     updateOutput();
-    if (!window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+    if (!IS_TOUCH_DEVICE) {
       inputEl.focus();
     }
   } catch (err) {
@@ -1163,27 +1330,146 @@ btnPaste.addEventListener('click', async () => {
   }
 });
 
-// Tiron
-btnCopy.addEventListener('click', async () => {
-  if (!outputEl.value) return;
-  await navigator.clipboard.writeText(outputEl.value);
-  animateButtonMorph(btnCopy, 'Ditiron!', true);
-  clearTimeout(copyFeedbackTimer);
-  copyFeedbackTimer = setTimeout(() => {
-    animateButtonMorph(btnCopy, 'Tiron', false);
-  }, 1500);
+// Kibor Sunda Popup Toggle & Drag
+btnPopupKb.addEventListener('click', () => {
+  btnPopupKb.classList.remove('is-tapping');
+  void btnPopupKb.offsetWidth;
+  btnPopupKb.classList.add('is-tapping');
+  clearTimeout(btnPopupKb._tapTimer);
+  btnPopupKb._tapTimer = setTimeout(() => {
+    btnPopupKb.classList.remove('is-tapping');
+  }, 420);
+
+  const nextState = !isKbPopupOpen;
+  setKbPopupVisible(nextState);
+  if (nextState) {
+    inputEl.blur();
+    inputEl.focus({ preventScroll: true });
+  }
 });
 
+btnClosePopup.addEventListener('click', () => {
+  setKbPopupVisible(false);
+});
+
+(function makePopupDraggable() {
+  let isDragging = false;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  kbPopupHeaderEl.addEventListener('mousedown', (e) => {
+    if (window.innerWidth <= 540 || e.target === btnClosePopup) return;
+    isDragging = true;
+    const rect = kbPopupEl.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    kbPopupEl.style.bottom = 'auto';
+    kbPopupEl.style.right = 'auto';
+    kbPopupEl.style.left = `${rect.left}px`;
+    kbPopupEl.style.top = `${rect.top}px`;
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const maxLeft = window.innerWidth - kbPopupEl.offsetWidth;
+    const maxTop = window.innerHeight - kbPopupEl.offsetHeight;
+    const nextLeft = Math.max(0, Math.min(e.clientX - offsetX, maxLeft));
+    const nextTop = Math.max(0, Math.min(e.clientY - offsetY, maxTop));
+    kbPopupEl.style.left = `${nextLeft}px`;
+    kbPopupEl.style.top = `${nextTop}px`;
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+})();
+
+// Floating Preview Bar Events & Observer
+fpInputTextEl.addEventListener('compositionstart', () => {
+  isComposing = true;
+});
+
+fpInputTextEl.addEventListener('compositionend', () => {
+  isComposing = false;
+  if (mode === 'SUNDA_TO_LATIN') {
+    const converted = liveConvertInputToSunda(fpInputTextEl.value, fpInputTextEl.selectionStart);
+    fpInputTextEl.value = converted.text;
+    fpInputTextEl.selectionStart = fpInputTextEl.selectionEnd = converted.cursor;
+  }
+  inputEl.value = fpInputTextEl.value;
+  updateOutput(true);
+});
+
+fpInputTextEl.addEventListener('input', () => {
+  if (mode === 'SUNDA_TO_LATIN' && !isComposing) {
+    const converted = liveConvertInputToSunda(fpInputTextEl.value, fpInputTextEl.selectionStart);
+    fpInputTextEl.value = converted.text;
+    fpInputTextEl.selectionStart = fpInputTextEl.selectionEnd = converted.cursor;
+  }
+  inputEl.value = fpInputTextEl.value;
+  updateOutput(true);
+});
+
+fpBtnSwap.addEventListener('pointerdown', () => {
+  wasFpInputFocused = document.activeElement === fpInputTextEl;
+});
+
+fpBtnSwap.addEventListener('click', () => {
+  swapDirection({ fromFloatingBar: true });
+  if (wasFpInputFocused) {
+    fpInputTextEl.focus();
+    wasFpInputFocused = false;
+  }
+});
+
+fpBtnSpace.addEventListener('click', () => {
+  insertAtCursor(' ', { fromReference: true, autoSwapIfEmpty: false });
+});
+
+fpBtnBackspace.addEventListener('click', () => {
+  backspaceAtCursor({ skipFocus: IS_TOUCH_DEVICE && !isKbPopupOpen });
+});
+
+fpBtnClear.addEventListener('click', () => handleClearAction(true));
+fpBtnCopy.addEventListener('click', handleCopyAction);
+
+fpBtnTop.addEventListener('click', () => {
+  fpBtnTop.classList.remove('is-launching');
+  void fpBtnTop.offsetWidth;
+  fpBtnTop.classList.add('is-launching');
+  clearTimeout(fpBtnTop._launchTimer);
+  fpBtnTop._launchTimer = setTimeout(() => {
+    fpBtnTop.classList.remove('is-launching');
+  }, 440);
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (!IS_TOUCH_DEVICE) {
+    inputEl.focus({ preventScroll: true });
+  }
+});
+
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(syncFpTagWidth);
+}
+
+if ('IntersectionObserver' in window && editorGridEl) {
+  const editorObserver = new IntersectionObserver(
+    (entries) => {
+      const entry = entries[0];
+      const scrolledPastEditor = !entry.isIntersecting && entry.boundingClientRect.bottom < 0;
+      setFloatingPreviewVisible(scrolledPastEditor);
+    },
+    { threshold: 0 }
+  );
+  editorObserver.observe(editorGridEl);
+}
+
 // =========================================================
-// BANGUN PITUDUH TETEP & POPUP KIBOR
+// 7. INISIALISASI PITUDUH & POPUP KIBOR
 // =========================================================
 function initSundaKeyboards() {
   const refSubtitleEl = document.getElementById('ref-subtitle');
-  const isTouchDevice =
-    window.matchMedia('(hover: none) and (pointer: coarse)').matches ||
-    'ontouchstart' in window;
-
-  if (refSubtitleEl && isTouchDevice) {
+  if (refSubtitleEl && IS_TOUCH_DEVICE) {
     refSubtitleEl.textContent = 'Toél aksara kanggo nyelapkeun kana kotak input.';
   }
 
@@ -1193,7 +1479,7 @@ function initSundaKeyboards() {
     btn.className = `kb-key ${isBuhun ? 'buhun-tag' : ''}`;
     btn.title = tooltip;
     btn.innerHTML = `<span class="notranslate" translate="no">${displayChar}</span><small>${label}</small>`;
-    btn.addEventListener('click', () => insertAtCursor(insertChar));
+    btn.addEventListener('click', () => insertAtCursor(insertChar, { fromReference: true, autoSwapIfEmpty: true }));
     return btn;
   }
 
@@ -1333,7 +1619,9 @@ function initSundaKeyboards() {
       insertChar: item.s,
       displayChar: item.display,
       label: `${item.label}${item.morpheme ? `<span class="notranslate" translate="no"> ${item.morpheme}</span>` : ''}`,
-      tooltip: item.buhun ? `Rarangkén Sunda Buhun: ${item.label}${item.morpheme ? ` ${item.morpheme}` : ''}` : `Rarangkén: ${item.label}${item.morpheme ? ` ${item.morpheme}` : ''}`,
+      tooltip: item.buhun
+        ? `Rarangkén Sunda Buhun: ${item.label}${item.morpheme ? ` ${item.morpheme}` : ''}`
+        : `Rarangkén: ${item.label}${item.morpheme ? ` ${item.morpheme}` : ''}`,
       isBuhun: item.buhun
     };
     refRarangken.appendChild(createRefBtn(cfg));
@@ -1386,7 +1674,7 @@ function initSundaKeyboards() {
     popNgalagena.appendChild(createPopBtn(cfg));
   });
 
-  // SUNDA BUHUN
+  // SUNDA BUHUN KHUSUS
   const refBuhunKhusus = document.getElementById('kb-buhun-khusus');
   const popBuhunKhusus = document.getElementById('pop-buhun-khusus');
   const toggleDescBuhun = document.getElementById('toggle-desc-buhun');
@@ -1416,7 +1704,7 @@ function initSundaKeyboards() {
         } else {
           btn.innerHTML = `${item.s}<small>${item.label}${item.sound ? `<span class="notranslate" translate="no"> ${item.sound}</span>` : ''}</small>`;
         }
-        btn.addEventListener('click', () => insertAtCursor(item.s));
+        btn.addEventListener('click', () => insertAtCursor(item.s, { fromReference: true, autoSwapIfEmpty: true }));
         refBuhunKhusus.appendChild(btn);
       });
     };
@@ -1475,7 +1763,7 @@ function initSundaKeyboards() {
         } else {
           btn.innerHTML = `${item.char}<small>${item.name}</small>`;
         }
-        btn.addEventListener('click', () => insertAtCursor(item.char));
+        btn.addEventListener('click', () => insertAtCursor(item.char, { fromReference: true, autoSwapIfEmpty: true }));
         refBindu.appendChild(btn);
       });
     };
@@ -1497,10 +1785,8 @@ function initSundaKeyboards() {
           binduExtraNotes.classList.add('is-entering');
           return null;
         } else {
-          // Sembunyikan sementara agar tinggi akhir kontainer terukur akurat
           binduExtraNotes.classList.add('hidden');
           return () => {
-            // Tampilkan kembali selama transisi menyusut agar ikut memudar halus
             binduExtraNotes.classList.remove('hidden', 'is-entering');
             binduExtraNotes.classList.add('is-collapsing');
           };
@@ -1527,9 +1813,7 @@ function initSundaKeyboards() {
   renderBinduRef(false, false);
   toggleDescBindu.addEventListener('change', (e) => renderBinduRef(e.target.checked, true));
 
-  // =========================================================
   // DOCK HANDAP KIBOR
-  // =========================================================
   const dockRow1 = document.getElementById('pop-dock-row1');
   const dockRow2 = document.getElementById('pop-dock-row2');
   let symbolState = 0;
@@ -1562,7 +1846,7 @@ function initSundaKeyboards() {
         tooltip: 'Hapus hiji aksara ka tukang (Backspace)',
         span: 2,
         extraClass: 'danger-key',
-        onClick: backspaceAtCursor
+        onClick: () => backspaceAtCursor()
       }));
     } else if (symbolState === 1) {
       SYMBOL_SET_1.forEach(sym => {
@@ -1579,7 +1863,7 @@ function initSundaKeyboards() {
         tooltip: 'Hapus hiji aksara ka tukang (Backspace)',
         span: 2,
         extraClass: 'danger-key',
-        onClick: backspaceAtCursor
+        onClick: () => backspaceAtCursor()
       }));
     } else {
       SYMBOL_SET_2.forEach(sym => {

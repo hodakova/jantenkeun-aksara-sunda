@@ -8,7 +8,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sundanese:wght@400;600&family=Noto+Serif+Sundanese:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sundanese:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,10 +22,12 @@
         Ketik téks basa Sunda nganggo huruf <strong class="notranslate" translate="no">e</strong> (pamepet), <strong class="notranslate" translate="no">é</strong> (panéléng), sareng <strong class="notranslate" translate="no">eu</strong> (paneuleung) anu leres supados hasilna merenah.
       </p>
 
-      <!-- Liron Arah -->
       <div class="mode-bar">
         <button type="button" id="btn-swap" class="swap-btn" title="Liron arah alih aksara">
-          <svg class="swap-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4M7 4L3 8M7 4l4 4"/><path d="M17 8v12m0 0 4-4m-4 4-4-4"/></svg>
+          <svg class="swap-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 16V4M7 4L3 8M7 4l4 4"/>
+            <path d="M17 8v12m0 0 4-4m-4 4-4-4"/>
+          </svg>
           <span>Liron Arah</span>
         </button>
       </div>
@@ -41,23 +43,48 @@
               <button type="button" class="char-btn notranslate" translate="no" data-char="é" title="Selapkeun aksara é">é</button>
               <button type="button" class="char-btn notranslate" translate="no" data-char="É" title="Selapkeun aksara É">É</button>
             </div>
-            <button type="button" id="btn-popup-kb" class="action-btn hidden" title="Buka popup kibor ringkes Aksara Sunda">
-              ⌨ Kibor Sunda
+
+            <button type="button" id="btn-popup-kb" class="hidden" title="Buka popup kibor Aksara Sunda">
+              <svg class="kb-btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect class="kb-frame" x="2" y="4" width="20" height="16" rx="2.5" ry="2.5"></rect>
+                <line class="kb-key-dot kb-k1" x1="6" y1="9" x2="6.01" y2="9"></line>
+                <line class="kb-key-dot kb-k2" x1="10" y1="9" x2="10.01" y2="9"></line>
+                <line class="kb-key-dot kb-k3" x1="14" y1="9" x2="14.01" y2="9"></line>
+                <line class="kb-key-dot kb-k4" x1="18" y1="9" x2="18.01" y2="9"></line>
+                <line class="kb-key-dot kb-k2" x1="8" y1="13" x2="8.01" y2="13"></line>
+                <line class="kb-key-dot kb-k3" x1="12" y1="13" x2="12.01" y2="13"></line>
+                <line class="kb-key-dot kb-k4" x1="16" y1="13" x2="16.01" y2="13"></line>
+                <line class="kb-spacebar" x1="7" y1="17" x2="17" y2="17"></line>
+              </svg>
+              <span>Kibor Sunda</span>
             </button>
-            <button type="button" id="btn-clear" class="action-btn danger"><span>Hapus</span></button>
+
+            <button type="button" id="btn-clear" class="danger" title="Hapus sadaya téks">
+              <svg class="trash-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <g class="trash-lid">
+                  <path d="M3 6h18"></path>
+                  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </g>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+              </svg>
+              <span>Hapus</span>
+            </button>
           </div>
         </div>
+
         <div class="textarea-wrap">
-          <textarea 
-            id="input-text" 
-            placeholder="Ketik téks basa Sunda di dieu, pastikeun nganggo huruf e/é/eu anu leres..."
-            autofocus
-          ></textarea>
+          <textarea id="input-text" placeholder="Ketik téks basa Sunda di dieu, pastikeun nganggo huruf e/é/eu anu leres..." spellcheck="false" autofocus></textarea>
           <button type="button" id="btn-paste" class="floating-paste-btn" title="Témpél téks tina clipboard">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
-              <span>Témpél</span>
+            <svg class="paste-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+            </svg>
+            <span>Témpél</span>
           </button>
         </div>
+
         <div class="card-footer">
           <span id="char-count">0 aksara</span>
           <button type="button" id="btn-sample" class="link-btn">Cobi conto kalimah</button>
@@ -69,41 +96,39 @@
         <div class="card-header">
           <label for="output-text" id="output-label">Aksara Sunda</label>
           <div class="helper-buttons output-controls">
-            <!-- Modeu Sunda Buhun + Dropdown Gaya Naskah (Modeu Latén -> Sunda) -->
             <div id="buhun-controls" class="inline-helpers buhun-group">
               <select id="buhun-style" class="style-select hidden" title="Pilih gaya tanda baca naskah Sunda Buhun">
                 <option value="sajarah">Gaya Sajarah</option>
                 <option value="religi">Gaya Religi</option>
                 <option value="prasasti">Gaya Prasasti</option>
               </select>
-              <label class="toggle-pill compact" title="Aktipkeun papagon aksara sareng tanda baca Sunda Buhun">
+              <label class="toggle-pill" title="Aktifkeun papagon aksara sareng tanda baca Sunda Buhun">
                 <input type="checkbox" id="toggle-buhun">
                 <span class="toggle-slider"></span>
-                <span class="toggle-label notranslate" translate="no">Sunda Buhun</span>
+                <span class="notranslate" translate="no">Sunda Buhun</span>
               </label>
             </div>
 
-            <!-- Alih Aksara Simbol Bindu (Modeu Sunda -> Latén) -->
-            <label id="bindu-translate-wrapper" class="toggle-pill compact hidden" title="Alih aksarakeun simbol Bindu sareng garis prasasti kana tanda baca modéren">
+            <label id="bindu-translate-wrapper" class="toggle-pill hidden" title="Alih aksarakeun simbol Bindu sareng garis prasasti kana tanda baca modéren">
               <input type="checkbox" id="toggle-translate-bindu">
               <span class="toggle-slider"></span>
-              <span class="toggle-label">Alih Aksara Simbol Bindu</span>
+              <span>Alih Aksara Simbol Bindu</span>
             </label>
 
-            <button type="button" id="btn-copy" class="action-btn primary">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <button type="button" id="btn-copy" class="primary" title="Tiron hasil alih aksara kana clipboard">
+              <svg class="copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect class="copy-front" x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path class="copy-back" d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
               <span>Tiron</span>
             </button>
           </div>
         </div>
-        <textarea 
-          id="output-text" 
-          class="sunda-font" 
-          readonly 
-          placeholder="ᮠᮞᮤᮜ᮪ᮔ ᮘᮊᮜ᮪ ᮊᮜᮥᮃᮁ ᮓᮤ ᮓᮤᮉ..."
-        ></textarea>
+
+        <textarea id="output-text" class="sunda-font" readonly placeholder="ᮠᮞᮤᮜ᮪ᮔ ᮘᮊᮜ᮪ ᮊᮜᮥᮃᮁ ᮓᮤ ᮓᮤᮉ..."></textarea>
+
         <div class="card-footer">
-          <span class="hint-text" id="standard-hint">Standar Unicode Aksara Sunda Baku</span>
+          <span id="standard-hint">Standar Unicode Aksara Sunda Baku</span>
         </div>
       </section>
     </div>
@@ -112,22 +137,22 @@
     <section class="guide-box">
       <div class="guide-item">
         <span class="guide-key notranslate" translate="no">e</span>
-        <span class="guide-desc">Pamepet (<em>seblak, segah</em>)</span>
+        <span>Pamepet (<em>seblak, segah</em>)</span>
       </div>
       <div class="guide-item">
         <span class="guide-key notranslate" translate="no">é</span>
-        <span class="guide-desc">Panéléng (<em>sapédah, kasép</em>)</span>
+        <span>Panéléng (<em>sapédah, kasép</em>)</span>
       </div>
       <div class="guide-item">
         <span class="guide-key notranslate" translate="no">eu</span>
-        <span class="guide-desc">Paneuleung (<em>Ciumbuleuit, peuyeum</em>)</span>
+        <span>Paneuleung (<em>Ciumbuleuit, peuyeum</em>)</span>
       </div>
     </section>
 
     <!-- Daptar Pituduh -->
     <section id="sunda-reference" class="keyboard-box">
       <div class="ref-header">
-        <h2>Pituduh & Daptar Aksara Sunda</h2>
+        <h2>Pituduh &amp; Daptar Aksara Sunda</h2>
         <span class="ref-sub" id="ref-subtitle">Sorot aksara kanggo ningali kateranganana, atanapi toél kanggo nyelapkeun kana kotak input.</span>
       </div>
 
@@ -142,7 +167,7 @@
       </div>
 
       <div class="kb-group">
-        <span class="kb-title">Rarangkén (Baku & Buhun)</span>
+        <span class="kb-title">Rarangkén (Baku &amp; Buhun)</span>
         <div class="kb-keys" id="kb-rarangken"></div>
       </div>
 
@@ -194,11 +219,80 @@
 
     <!-- Footer -->
     <footer class="site-footer">
-      <a href="https://github.com/hodakova" target="_blank" rel="noopener noreferrer">
-        hodakova 2026
-      </a>
+      <a href="https://github.com/hodakova" target="_blank" rel="noopener noreferrer">hodakova 2026</a>
     </footer>
   </main>
+
+  <!-- Preview Bar -->
+  <div id="floating-preview" class="floating-preview hidden" aria-label="Pratinjau gancang input sareng output">
+    <div class="floating-preview-inner">
+      <div class="fp-top-badge">
+        <div class="badge notranslate" translate="no">ᮃᮊ᮪ᮞᮛ ᮞᮥᮔ᮪ᮓ</div>
+      </div>
+
+      <div class="fp-left-group">
+        <div class="fp-box fp-input-box">
+          <span id="fp-input-tag" class="fp-tag">Latén</span>
+          <input
+            type="text"
+            id="fp-input-text"
+            class="fp-text fp-input-field notranslate"
+            translate="no"
+            placeholder="Ketik nganggo e/é/eu anu leres..."
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+          >
+        </div>
+
+        <div class="fp-edit-actions">
+          <button type="button" id="fp-btn-space" class="fp-btn" title="Selapkeun spasi">Spasi</button>
+          <button type="button" id="fp-btn-backspace" class="fp-btn fp-icon-btn" title="Hapus hiji aksara ka tukang">⌫</button>
+          <button type="button" id="fp-btn-clear" class="fp-btn danger" title="Hapus sadaya téks">
+            <svg class="trash-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <g class="trash-lid">
+                <path d="M3 6h18"></path>
+                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </g>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+              <line x1="10" y1="11" x2="10" y2="17"></line>
+              <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+            <span>Hapus</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="fp-right-half">
+        <button type="button" id="fp-btn-swap" class="fp-btn fp-swap-btn" title="Liron arah alih aksara">
+          <svg class="swap-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 16V4M7 4L3 8M7 4l4 4"/>
+            <path d="M17 8v12m0 0 4-4m-4 4-4-4"/>
+          </svg>
+          <span>Liron</span>
+        </button>
+
+        <div class="fp-right-group">
+          <div class="fp-box fp-output-box">
+            <span id="fp-output-tag" class="fp-tag">Sunda</span>
+            <div id="fp-output-text" class="fp-text sunda-font notranslate" translate="no" data-placeholder="ᮠᮞᮤᮜ᮪ ᮃᮜᮤᮂ ᮃᮊ᮪ᮞᮛ..."></div>
+          </div>
+
+          <button type="button" id="fp-btn-copy" class="fp-btn primary" title="Tiron hasil alih aksara kana clipboard">
+            <svg class="copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect class="copy-front" x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path class="copy-back" d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>Tiron</span>
+          </button>
+
+          <button type="button" id="fp-btn-top" class="fp-btn fp-top-btn" title="Balik ka luhur (éditor utami)">
+            <span class="fp-top-icon" aria-hidden="true">↑</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Kibor Sunda -->
   <div id="kb-popup" class="kb-popup hidden" role="dialog" aria-label="Kibor Aksara Sunda">

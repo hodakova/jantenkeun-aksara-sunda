@@ -52,8 +52,8 @@ const SISIPAN_BAKU = {
 
 const SISIPAN_BUHUN = {
   ...SISIPAN_BAKU,
-  'w': 'ᮭ',   // papasangan -wa (buhun)
-  'm': 'ᮬ'    // papasangan -ma (buhun)
+  'w': 'ᮭ',   // papasangan -wa
+  'm': 'ᮬ'    // papasangan -ma
 };
 
 const ANGKA_ORDERED = [
@@ -91,78 +91,6 @@ const REV_SISIPAN = {
   'ᮭ': 'w',
   'ᮬ': 'm'
 };
-
-// Metadata Pituduh & Kibor
-const BUHUN_KHUSUS_LIST = [
-  {
-    s: 'ᮺ',
-    label: 'avagraha',
-    desc: 'Pananda yén huruf vokal awal dina kecap kadua parantos lebur atanapi ical alatan papagon panyambungan kecap (sandi dina basa Sanskerta sareng Jawa Kuna/Kawi).'
-  },
-  {
-    s: 'ᮻ',
-    label: 'pangreureu',
-    sound: '(reu)',
-    desc: 'Aksara khusus Sunda Buhun kanggo soanten reu.'
-  },
-  {
-    s: 'ᮼ',
-    label: 'pangwilet',
-    sound: '(leu)',
-    desc: 'Aksara khusus Sunda Buhun kanggo soanten leu.'
-  }
-];
-
-const BINDU_LIST = [
-  {
-    char: '᳃',
-    name: 'Bindu Cakra',
-    category: 'Jeda & Panutup',
-    desc: 'Tanda koma (,) universal kanggo randegan singget di tengah kalimah dina sagala rupi naskah.'
-  },
-  {
-    char: '᳁',
-    name: 'Bindu Panglong',
-    category: 'Jeda & Panutup',
-    desc: 'Tanda jeda sedeng (;) atanapi pamisah antarklausa/baris, khusus dina naskah anu témana kaagamaan.'
-  },
-  {
-    char: '᳂',
-    name: 'Bindu Purnama',
-    category: 'Jeda & Panutup',
-    desc: 'Tanda titik (.) utami dina naskah sajarah, atanapi turun janten titik koma (;) dina naskah kaagamaan.'
-  },
-  {
-    char: '᳀',
-    name: 'Bindu Surya',
-    category: 'Jeda & Panutup',
-    desc: 'Tanda titik panutup akhir (.) anu pangbeuratna, khusus dina naskah anu témana kaagamaan atanapi religius.'
-  },
-  {
-    char: '᳅',
-    name: 'Bindu Ka Satanga',
-    category: 'Satanga (Struktur)',
-    desc: 'Khusus papasangan sareng Bindu Purnama (᳅᳂᳅) kanggo nandakeun naskah anu témana sajarah atanapi kronik; teu dianggo ngapit simbol panonpoé.'
-  },
-  {
-    char: '᳆',
-    name: 'Bindu Da Satanga',
-    category: 'Satanga (Struktur)',
-    desc: 'Khusus papasangan sareng Bindu Surya (᳆᳀᳆) atanapi Bindu Panglong (᳆᳁᳆) kanggo nandakeun naskah anu témana kaagamaan, dua, atanapi piwuruk moral.'
-  },
-  {
-    char: '᳇',
-    name: 'Bindu Ba Satanga',
-    category: 'Satanga (Struktur)',
-    desc: 'Tiasa papasangan sareng dirina nyalira (᳇᳇) tanpa buleudan di tengah kanggo misahkeun bait puisi/paragraf anyar, atanapi nyalira di awal (᳇) salaku tanda butir wincikan.'
-  },
-  {
-    char: '᳄',
-    name: 'Bindu Leu Satanga',
-    category: 'Satanga (Struktur)',
-    desc: 'Dominan salaku ornamén éstétika palapis luar (bingkai hiasan tambihan) dina bagéan pangtungtungna bubuka atanapi panutup utami naskah (conto: ᳄᳆᳀᳆᳄).'
-  }
-];
 
 // Conto Kalimah
 const LATIN_SAMPLES = [
@@ -228,14 +156,32 @@ const SUNDA_SAMPLES = [
 // =========================================================
 const SH_TO_S_EXCEPTIONS = [
   'sholat', 'shalat',
+  'ishoma',
+  'shubuh', 'shubhi', 'shubh',
+  'ashar', 'ashri', 'ashr',
   'sholeh', 'sholih', 'shalah', 'shaleh', 'shalih',
-  'shobar', 'shabr', 'shabar',
+  'shobar', 'shabr', 'shabar', 'shobr',
   'shodaqoh', 'shadaqah',
   'shohih', 'shahih',
   'shohabat', 'sahabat', 'shohabah', 'sahabah',
   'shuf', 'shof', 'shaf',
   'musholla', 'mushalla', 'mushola', 'mushala',
-  'nashihat', 'nashihah'
+  'nashihat', 'nashihah',
+  'shafar',
+  'shaum', 'shiyam',
+  'shiddiq', 'shidiq',
+  'shifat',
+  'shirah', 'shirath', 'sirath',
+  'shilaturahmi', 'shilaturrahmi', 'shilah',
+  'shuhuf',
+  'shulh', 'shuluh',
+  'shurah', 'shurat',
+  'ishlah',
+  'ushul',
+  'mashlahat',
+  'khushus',
+  'ikhlash',
+  'mashum'
 ];
 
 const SH_EXCEPTION_REGEX = new RegExp(
@@ -243,11 +189,66 @@ const SH_EXCEPTION_REGEX = new RegExp(
   'g'
 );
 
+const FALSE_DIGRAPH_MAP = {
+  // sh
+  'mushaf': "mus'haf",
+  'mashaf': "mas'haf",
+  'ashab': "as'hab",
+  'ishak': "is'hak", 'ishaq': "is'haq", 'ishaak': "is'haak", 'ishaaq': "is'haaq",
+  'tashih': "tas'hih",
+  'fusha': "fus'ha",
+  'nashab': "nas'hab",
+  // sj
+  'masjid': "mas'jid",
+  'asjad': "as'jad",
+  'transj': "trans'j",
+  // th
+  'fathah': "fat'hah",
+  'fathul': "fat'hul",
+  'fathi': "fat'hi",
+  'ithaf': "it'haf",
+  // bh
+  'subh': "sub'h",
+  // dj
+  'adjektif': "ad'jektif",
+  'adjudan': "ad'judan",
+  // jh
+  'ajhar': "aj'har",
+  // zh
+  'azhar': "az'har",
+  'izhar': "id'har",
+  'mazhab': "mad'hab",
+  // dh
+  'adha': "ad'ha",
+  'idhar': "id'har",
+  'madhab': "mad'hab"
+};
+
+const FALSE_DIGRAPH_REGEX = new RegExp(
+  `([a-zé]*)(${Object.keys(FALSE_DIGRAPH_MAP).join('|')})([a-zé]*)`,
+  'g'
+);
+
+const RESTORE_FALSE_DIGRAPH_MAP = Object.fromEntries(
+  Object.entries(FALSE_DIGRAPH_MAP).map(([clean, quoted]) => [quoted, clean])
+);
+
+const RESTORE_FALSE_DIGRAPH_REGEX = new RegExp(
+  Object.keys(RESTORE_FALSE_DIGRAPH_MAP)
+    .sort((a, b) => b.length - a.length)
+    .join('|'),
+  'g'
+);
+
 function normalizeLatin(text, isBuhun = false) {
   let s = text.toLowerCase();
 
+  s = s.replace(FALSE_DIGRAPH_REGEX, (match, prefix, root, suffix) => {
+    return prefix + (FALSE_DIGRAPH_MAP[root] || root) + suffix;
+  });
+
   s = s.replace(SH_EXCEPTION_REGEX, (match, prefix, root, suffix) => {
-    return prefix + root.replace(/^mush/, 'mus').replace(/^nash/, 'nas').replace(/^sh/, 's') + suffix;
+    return prefix + root.replace(/sh/g, 's').replace(/th/g, 't') + suffix;
   });
 
   if (!isBuhun) {
@@ -255,12 +256,14 @@ function normalizeLatin(text, isBuhun = false) {
   }
 
   return s
-    .replace(/sh/g, 'sy')
-    .replace(/(nh|ñ)/g, 'ny')
-    .replace(/(ph|fh)/g, 'f')
+    .replace(/oeeu/g, "oe'eu")
+    .replace(/oeu/g, "o'eu")
+    .replace(/(sh|sj)/g, 'sy')
+    .replace(/ñ/g, 'ny')
+    .replace(/ph/g, 'f')
     .replace(/(tj|ch)/g, 'c')
-    .replace(/(dj|zh|jh)/g, 'j')
     .replace(/(dh|dz)/g, 'd')
+    .replace(/(dj|zh|jh)/g, 'j')
     .replace(/th/g, 's')
     .replace(/gh/g, 'g')
     .replace(/oe/g, 'u');
@@ -275,12 +278,13 @@ function latinToSunda(text, isBuhun = false, buhunStyle = 'sajarah') {
   }
 
   if (isBuhun) {
-    const buhunPattern = /(^|[^a-zé])(reu|leu)(?![a-zé])|(^|[^a-zé])'(?=[a-zé])|(bh|ng|ny|kh|sy|[bcdfghjklmnpqrstvwxyz])([yrlwm])?(eu|[aiuéoe])((?:ng|[rhkm])(?![aiuéoe]))?|(eu|[aiuéoe])((?:ng|[rhkm])(?![aiuéoe]))?|(bh|ng|ny|kh|sy|[bcdfghjklmnpqrstvwxyz])|([0-9]+)|([.,;!?])|([^a-zé0-9.,;!?]+)/g;
+    const buhunPattern = /(^|[^a-zé])(reu|leu)(?![a-zé])|(?<=[a-zé])(')(?=[a-zé])|(bh|ng|ny|kh|sy|[bcdfghjklmnpqrstvwxyz])'a|(bh|ng|ny|kh|sy|[bcdfghjklmnpqrstvwxyz])(?!\5)([yrlwm])?(eu|[aiuéoe])((?:ng|[rhkm])(?![aiuéoe]|'a))?|(eu|[aiuéoe])((?:ng|[rhkm])(?![aiuéoe]|'a))?|(bh|ng|ny|kh|sy|[bcdfghjklmnpqrstvwxyz])|([0-9]+)|([.,;!?])|([^a-zé0-9.,;!?]+)/g;
 
     return processed.replace(buhunPattern, (
       match,
       prefixSpecial, specialSyllable,
-      prefixAvagraha,
+      midWordQuote,
+      avagrahaCons,
       cons, medial, vowelAfterCons, codaAfterCons,
       standaloneVowel, codaAfterSwara,
       deadCons,
@@ -291,8 +295,11 @@ function latinToSunda(text, isBuhun = false, buhunStyle = 'sajarah') {
       if (specialSyllable) {
         return (prefixSpecial || '') + (specialSyllable === 'reu' ? PANGREUREU : PANGWILET);
       }
-      if (prefixAvagraha !== undefined) {
-        return prefixAvagraha + AVAGRAHA;
+      if (midWordQuote) {
+        return '';
+      }
+      if (avagrahaCons) {
+        return (NGALAGENA_ALL[avagrahaCons] || '') + AVAGRAHA;
       }
       if (cons && vowelAfterCons) {
         const baseCons = NGALAGENA_ALL[cons] || '';
@@ -335,16 +342,20 @@ function latinToSunda(text, isBuhun = false, buhunStyle = 'sajarah') {
     });
   }
 
-  const bakuPattern = /(ng|ny|kh|sy|[bcdfghjklmnpqrstvwxyz])([yrl])?(eu|[aiuéoe])((?:ng|[rh])(?![aiuéoe]))?|(eu|[aiuéoe])((?:ng|[rh])(?![aiuéoe]))?|(ng|ny|kh|sy|[bcdfghjklmnpqrstvwxyz])|([0-9]+)|([^a-zé0-9]+)/g;
+  const bakuPattern = /(?<=[a-zé])(')(?=[a-zé])|(ng|ny|kh|sy|[bcdfghjklmnpqrstvwxyz])(?!\2)([yrl])?(eu|[aiuéoe])((?:ng|[rh])(?![aiuéoe]))?|(eu|[aiuéoe])((?:ng|[rh])(?![aiuéoe]))?|(ng|ny|kh|sy|[bcdfghjklmnpqrstvwxyz])|([0-9]+)|([^a-zé0-9]+)/g;
 
   return processed.replace(bakuPattern, (
     match,
+    midWordQuote,
     cons, medial, vowelAfterCons, codaAfterCons,
     standaloneVowel, codaAfterSwara,
     deadCons,
     digits,
     other
   ) => {
+    if (midWordQuote) {
+      return '';
+    }
     if (cons && vowelAfterCons) {
       const baseCons = NGALAGENA_BAKU[cons] || '';
       const medialSign = medial ? (SISIPAN_BAKU[medial] || '') : '';
@@ -367,19 +378,85 @@ function latinToSunda(text, isBuhun = false, buhunStyle = 'sajarah') {
   });
 }
 
+let liveWordState = {
+  sundaBeforeWord: '',
+  wordSunda: '',
+  wordLatin: '',
+  sundaAfterWord: ''
+};
+
 function liveConvertInputToSunda(rawText, cursorPos) {
+  if (!rawText) {
+    liveWordState = { sundaBeforeWord: '', wordSunda: '', wordLatin: '', sundaAfterWord: '' };
+    return { text: '', cursor: 0 };
+  }
+
   const before = rawText.slice(0, cursorPos);
   const after = rawText.slice(cursorPos);
+  const tailMatch = before.match(/([a-zA-ZéÉñÑ']+)$/);
+
+  if (tailMatch) {
+    const latinTail = tailMatch[1];
+    const prefixBeforeTail = before.slice(0, -latinTail.length);
+    const prevTrailingLatin = (liveWordState.wordSunda.match(/([a-zA-ZéÉñÑ']+)$/) || ['', ''])[1];
+    const prevPureWordSunda = prevTrailingLatin
+      ? liveWordState.wordSunda.slice(0, -prevTrailingLatin.length)
+      : liveWordState.wordSunda;
+
+    if (
+      liveWordState.wordLatin &&
+      prefixBeforeTail === liveWordState.sundaBeforeWord + prevPureWordSunda &&
+      after === liveWordState.sundaAfterWord &&
+      latinTail.startsWith(prevTrailingLatin)
+    ) {
+      const newlyTyped = latinTail.slice(prevTrailingLatin.length);
+      const nextWordLatin = liveWordState.wordLatin + newlyTyped;
+      const nextWordSunda = latinToSunda(nextWordLatin, false);
+
+      liveWordState.wordLatin = nextWordLatin;
+      liveWordState.wordSunda = nextWordSunda;
+
+      const fullBefore = liveWordState.sundaBeforeWord + nextWordSunda;
+      return {
+        text: fullBefore + after,
+        cursor: fullBefore.length
+      };
+    }
+
+    const sundaWordMatch = prefixBeforeTail.match(/([ᮃ-ᮯᮾᮿ]+)$/);
+    const prevSundaWord = sundaWordMatch ? sundaWordMatch[1] : '';
+    const sundaBeforeWord = prevSundaWord
+      ? prefixBeforeTail.slice(0, -prevSundaWord.length)
+      : prefixBeforeTail;
+    const baseWordLatin = prevSundaWord ? sundaToLatin(prevSundaWord, false, false) : '';
+    const nextWordLatin = baseWordLatin + latinTail;
+    const nextWordSunda = latinToSunda(nextWordLatin, false);
+
+    liveWordState = {
+      sundaBeforeWord,
+      wordSunda: nextWordSunda,
+      wordLatin: nextWordLatin,
+      sundaAfterWord: after
+    };
+
+    const fullBefore = sundaBeforeWord + nextWordSunda;
+    return {
+      text: fullBefore + after,
+      cursor: fullBefore.length
+    };
+  }
+
+  liveWordState = { sundaBeforeWord: '', wordSunda: '', wordLatin: '', sundaAfterWord: '' };
 
   function convertChunk(chunk) {
-    const contextPattern = /((?:[ᮊ-ᮠᮮᮯ]᮪)?(?:[ᮊ-ᮠᮮᮯ][ᮡ-ᮣ]?[ᮤ-ᮩ]?|[ᮃ-ᮉ])?(?:[ᮊ-ᮠᮮᮯ][ᮡ-ᮣ]?[᮪ᮤ-ᮩ]?[ᮀ-ᮂ]?|[ᮃ-ᮉ][ᮀ-ᮂ]?))([a-zA-ZéÉñÑ']+)/g;
+    const contextPattern = /([ᮃ-ᮯᮾᮿ]+)([a-zA-ZéÉñÑ']+)/g;
 
     let merged = chunk.replace(contextPattern, (_, sundaPart, latinTail) => {
       return sundaToLatin(sundaPart, false, false) + latinTail;
     });
 
-    merged = merged.replace(/[a-zA-ZéÉñÑ]+/g, (latinWord) => {
-      return latinToSunda(latinWord, false);
+    merged = merged.replace(/'?[a-zA-ZéÉñÑ]+(?:'[a-zA-ZéÉñÑ]*)*'?/g, (latinToken) => {
+      return latinToSunda(latinToken, false);
     });
 
     merged = merged.replace(/\|([᮰-᮹]+)\|([0-9]+)|(\|[᮰-᮹]+\|)|([0-9]+)/g, (
@@ -420,6 +497,16 @@ function applyLatinCapitalization(text) {
   return out;
 }
 
+const DIGRAPH_PAIRS = new Set([
+  'sh', 'sj', 'sy',
+  'ny', 'ng',
+  'kh', 'ph',
+  'tj', 'ch',
+  'dj', 'dh', 'dz',
+  'th', 'gh', 'bh',
+  'oe', 'eu'
+]);
+
 function sundaToLatin(text, translateBindu = false, capitalize = true) {
   let workingText = text;
 
@@ -430,7 +517,9 @@ function sundaToLatin(text, translateBindu = false, capitalize = true) {
     workingText = workingText.replace(/[᳄᳅᳆]/g, '');
   }
 
-  const pattern = /([ᮊ-ᮠᮮᮯᮽ])([ᮡ-ᮣᮬᮭ])?([᮪ᮤ-ᮩ])?|([ᮀ-ᮂᮾᮿ])|([ᮃ-ᮉ])|(ᮺ)|(ᮻ)|(ᮼ)|\|([᮰-᮹]+)\||([᮰-᮹])|(\|\|)|(\|)|([᳀-᳇])/g;
+  const pattern = /([ᮊ-ᮠᮮᮯᮽ])([ᮡ-ᮣᮬᮭ])?([᮪ᮤ-ᮩ])?|([ᮀ-ᮂᮾᮿ])|([ᮃ-ᮉ])|(ᮺ)|(ᮻ)|(ᮼ)|\|([᮰-᮹]+)\||([᮰-᮹])|(\|\|)|(\|)|([᳀-᳇])|([\s\S])/g;
+  let prevEndedWithConsonant = false;
+  let prevLastChar = '';
 
   let result = workingText.replace(pattern, (
     match,
@@ -444,26 +533,63 @@ function sundaToLatin(text, translateBindu = false, capitalize = true) {
     singleAngka,
     doublePipe,
     singlePipe,
-    bindu
+    bindu,
+    other,
+    offset,
+    fullString
   ) => {
+    const withBoundaryQuote = (chunk) => {
+      if (!chunk) return '';
+      const firstChar = chunk[0];
+      const needsQuote = prevLastChar && DIGRAPH_PAIRS.has(prevLastChar + firstChar);
+      prevLastChar = chunk[chunk.length - 1];
+      return (needsQuote ? "'" : '') + chunk;
+    };
+
     if (ngalagena) {
       let base = REV_NGALAGENA[ngalagena] || '';
       if (sisipan) {
         base += REV_SISIPAN[sisipan] || '';
       }
       if (modifier === PAMAEH) {
-        return base;
+        prevEndedWithConsonant = true;
+        return withBoundaryQuote(base);
       }
+      prevEndedWithConsonant = false;
       if (modifier && REV_RARANGKEN_VOKAL[modifier]) {
-        return base + REV_RARANGKEN_VOKAL[modifier];
+        return withBoundaryQuote(base + REV_RARANGKEN_VOKAL[modifier]);
       }
-      return base + 'a';
+      if (!modifier && fullString[offset + match.length] === AVAGRAHA) {
+        return withBoundaryQuote(base);
+      }
+      return withBoundaryQuote(base + 'a');
     }
-    if (akhir) return REV_RARANGKEN_AKHIR[akhir] || '';
-    if (swara) return REV_SWARA[swara] || '';
-    if (avagraha) return "'";
-    if (pangreureu) return 'reu';
-    if (pangwilet) return 'leu';
+    if (akhir) {
+      prevEndedWithConsonant = true;
+      return withBoundaryQuote(REV_RARANGKEN_AKHIR[akhir] || '');
+    }
+    if (swara) {
+      const glottalPrefix = prevEndedWithConsonant ? "'" : '';
+      prevEndedWithConsonant = false;
+      const vowelStr = REV_SWARA[swara] || '';
+      if (glottalPrefix) {
+        prevLastChar = vowelStr ? vowelStr[vowelStr.length - 1] : '';
+        return glottalPrefix + vowelStr;
+      }
+      return withBoundaryQuote(vowelStr);
+    }
+
+    prevEndedWithConsonant = false;
+
+    if (avagraha) {
+      prevLastChar = 'a';
+      return "'a";
+    }
+    if (pangreureu) return withBoundaryQuote('reu');
+    if (pangwilet) return withBoundaryQuote('leu');
+
+    prevLastChar = '';
+
     if (pipedAngka) return pipedAngka.split('').map(d => REV_ANGKA[d] || d).join('');
     if (singleAngka) return REV_ANGKA[singleAngka] || '';
     if (doublePipe) return translateBindu ? '.' : '||';
@@ -477,8 +603,13 @@ function sundaToLatin(text, translateBindu = false, capitalize = true) {
       if (bindu === '᳇') return '• ';
       return '';
     }
-    return match;
+    return other ?? match;
   });
+
+  result = result
+    .replace(RESTORE_FALSE_DIGRAPH_REGEX, (m) => RESTORE_FALSE_DIGRAPH_MAP[m] || m)
+    .replace(/o'e'eu/g, 'oeeu')
+    .replace(/o'eu/g, 'oeu');
 
   if (translateBindu) {
     result = result.replace(/\s+([.,;])/g, '$1').trim();
@@ -494,6 +625,17 @@ const IS_TOUCH_DEVICE =
   window.matchMedia('(hover: none) and (pointer: coarse)').matches ||
   'ontouchstart' in window;
 
+const STORAGE_THEME_KEY = 'sunda_theme';
+const STORAGE_LANG_KEY = 'sunda_lang';
+
+let currentLang = 'su';
+try {
+  const savedLang = localStorage.getItem(STORAGE_LANG_KEY);
+  if (savedLang && I18N_DATA[savedLang]) {
+    currentLang = savedLang;
+  }
+} catch (e) {}
+
 let mode = 'LATIN_TO_SUNDA';
 let isComposing = false;
 let isKbPopupOpen = false;
@@ -506,8 +648,23 @@ let lastBuhunSelectWidth = 0;
 let isFloatingPreviewVisible = false;
 let floatingPreviewAnimToken = 0;
 let wasFpInputFocused = false;
+let refreshKeyboardLangFn = null;
 
-// Header & Mode Bar
+function t() {
+  return I18N_DATA[currentLang] || I18N_DATA.su;
+}
+
+// Header, Utility Bar & Mode Bar
+const metaDescEl = document.getElementById('meta-description');
+const langDropdownEl = document.getElementById('lang-dropdown');
+const btnLang = document.getElementById('btn-lang');
+const langCodeEl = document.getElementById('lang-code');
+const langMenuEl = document.getElementById('lang-menu');
+const langOptionBtns = document.querySelectorAll('.lang-option');
+
+const themeSwitchLabelEl = document.getElementById('theme-switch-label');
+const themeToggleEl = document.getElementById('theme-toggle');
+
 const mainTitleEl = document.getElementById('main-title');
 const subtitleTextEl = document.getElementById('subtitle-text');
 const btnSwap = document.getElementById('btn-swap');
@@ -525,6 +682,11 @@ const standardHintEl = document.getElementById('standard-hint');
 const latinHelpersEl = document.getElementById('latin-helpers');
 const charBtns = document.querySelectorAll('.char-btn');
 const btnPopupKb = document.getElementById('btn-popup-kb');
+const kbPopupEl = document.getElementById('kb-popup');
+const kbPopupHeaderEl = document.getElementById('kb-popup-header');
+const kbHeaderTitleEl = document.getElementById('kb-header-title');
+const btnClosePopup = document.getElementById('btn-close-popup');
+
 const btnPaste = document.getElementById('btn-paste');
 const btnClear = document.getElementById('btn-clear');
 const btnCopy = document.getElementById('btn-copy');
@@ -533,14 +695,32 @@ const btnSample = document.getElementById('btn-sample');
 const buhunControlsEl = document.getElementById('buhun-controls');
 const toggleBuhunEl = document.getElementById('toggle-buhun');
 const buhunStyleEl = document.getElementById('buhun-style');
+const buhunTogglePillEl = document.getElementById('buhun-toggle-pill');
+const optStyleSajarahEl = document.getElementById('opt-style-sajarah');
+const optStyleReligiEl = document.getElementById('opt-style-religi');
+const optStylePrasastiEl = document.getElementById('opt-style-prasasti');
 
 const binduTranslateWrapper = document.getElementById('bindu-translate-wrapper');
 const toggleTranslateBinduEl = document.getElementById('toggle-translate-bindu');
+const binduToggleLabelEl = document.getElementById('bindu-toggle-label');
 
-// Kibor Sunda Popup
-const kbPopupEl = document.getElementById('kb-popup');
-const kbPopupHeaderEl = document.getElementById('kb-popup-header');
-const btnClosePopup = document.getElementById('btn-close-popup');
+// Guide & Reference Section
+const guideDescEEl = document.getElementById('guide-desc-e');
+const guideDescEAcuteEl = document.getElementById('guide-desc-eacute');
+const guideDescEuEl = document.getElementById('guide-desc-eu');
+const guideDescQuoteEl = document.getElementById('guide-desc-quote');
+const refTitleEl = document.getElementById('ref-title');
+const refSubtitleEl = document.getElementById('ref-subtitle');
+const toggleRefDetailsEl = document.getElementById('toggle-ref-details');
+const toggleRefDetailsLabelEl = document.getElementById('toggle-ref-details-label');
+const toggleRefDetailsTextEl = document.getElementById('toggle-ref-details-text');
+const angkaExampleNoteEl = document.getElementById('angka-example-note');
+const catAngkaEl = document.getElementById('cat-angka');
+const catSwaraEl = document.getElementById('cat-swara');
+const catRarangkenEl = document.getElementById('cat-rarangken');
+const catNgalagenaEl = document.getElementById('cat-ngalagena');
+const catBuhunKhususEl = document.getElementById('cat-buhun-khusus');
+const catBinduEl = document.getElementById('cat-bindu');
 
 // Floating Preview Bar
 const floatingPreviewEl = document.getElementById('floating-preview');
@@ -556,7 +736,187 @@ const fpBtnCopy = document.getElementById('fp-btn-copy');
 const fpBtnTop = document.getElementById('fp-btn-top');
 
 // =========================================================
-// 4. SINKRONISASI INPUT, OUTPUT & PREVIEW BAR
+// 4. TEMA & BASA
+// =========================================================
+function applyTheme(theme, { persist = false } = {}) {
+  const normalized = theme === 'dark' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', normalized);
+  themeToggleEl.checked = normalized === 'dark';
+
+  if (persist) {
+    try {
+      localStorage.setItem(STORAGE_THEME_KEY, normalized);
+    } catch (e) {}
+  }
+}
+
+function initTheme() {
+  const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  themeToggleEl.checked = initialTheme === 'dark';
+
+  themeToggleEl.addEventListener('change', () => {
+    applyTheme(themeToggleEl.checked ? 'dark' : 'light', { persist: true });
+  });
+
+  if (window.matchMedia) {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemThemeChange = (e) => {
+      try {
+        if (localStorage.getItem(STORAGE_THEME_KEY)) return;
+      } catch (err) {}
+      applyTheme(e.matches ? 'dark' : 'light', { persist: false });
+    };
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', handleSystemThemeChange);
+    } else if (mediaQuery.addListener) {
+      mediaQuery.addListener(handleSystemThemeChange);
+    }
+  }
+}
+
+function setLangMenuOpen(open) {
+  btnLang.setAttribute('aria-expanded', String(open));
+  if (open) {
+    langMenuEl.classList.remove('hidden', 'is-opening');
+    void langMenuEl.offsetWidth;
+    langMenuEl.classList.add('is-opening');
+  } else {
+    langMenuEl.classList.add('hidden');
+    langMenuEl.classList.remove('is-opening');
+  }
+}
+
+function applyDirectionTexts() {
+  const dict = t();
+  const isSundaInput = mode === 'SUNDA_TO_LATIN';
+
+  if (isSundaInput) {
+    mainTitleEl.innerHTML = dict.titleSundaToLatin;
+    subtitleTextEl.textContent = dict.subtitleSundaToLatin;
+    inputLabelEl.textContent = dict.labelSunda;
+    outputLabelEl.textContent = dict.labelLatin;
+    inputEl.placeholder = dict.inputPlaceholderSunda;
+    outputEl.placeholder = dict.outputPlaceholderLatin;
+  } else {
+    mainTitleEl.innerHTML = dict.titleLatinToSunda;
+    subtitleTextEl.innerHTML = dict.subtitleLatinToSunda;
+    inputLabelEl.textContent = dict.labelLatin;
+    outputLabelEl.textContent = dict.labelSunda;
+    inputEl.placeholder = dict.inputPlaceholderLatin;
+    outputEl.placeholder = dict.outputPlaceholderSunda;
+  }
+}
+
+function applyLanguage(lang, { persist = false } = {}) {
+  if (!I18N_DATA[lang]) return;
+  currentLang = lang;
+  const dict = t();
+
+  if (persist) {
+    try {
+      localStorage.setItem(STORAGE_LANG_KEY, lang);
+    } catch (e) {}
+  }
+
+  document.documentElement.lang = lang;
+  document.title = dict.pageTitle;
+  if (metaDescEl) metaDescEl.setAttribute('content', dict.pageDesc);
+
+  // Header Controls
+  langCodeEl.textContent = lang.toUpperCase();
+  btnLang.title = dict.langBtnTitle;
+  langMenuEl.setAttribute('aria-label', dict.langMenuAria);
+  langOptionBtns.forEach(opt => {
+    const isSelected = opt.dataset.lang === lang;
+    opt.classList.toggle('is-selected', isSelected);
+    opt.setAttribute('aria-selected', String(isSelected));
+  });
+
+  themeSwitchLabelEl.title = dict.themeSwitchTitle;
+  themeToggleEl.setAttribute('aria-label', dict.themeSwitchAria);
+
+  // Mode & Editor Titles/Placeholders
+  applyDirectionTexts();
+
+  // Buttons & Tooltips
+  btnSwap.title = dict.swapBtnTitle;
+  if (!btnSwap._feedbackTimer) btnSwap.querySelector('span').textContent = dict.swapBtn;
+
+  charBtns.forEach(btn => {
+    btn.title = dict.insertCharTitle(btn.dataset.char);
+  });
+
+  btnPopupKb.title = dict.kbBtnTitle;
+  btnPopupKb.querySelector('span').textContent = dict.kbBtn;
+
+  btnClear.title = dict.clearBtnTitle;
+  if (!btnClear._feedbackTimer) btnClear.querySelector('span').textContent = dict.clearBtn;
+
+  btnPaste.title = dict.pasteBtnTitle;
+  if (!pasteFeedbackTimer) btnPaste.querySelector('span').textContent = dict.pasteBtn;
+
+  btnCopy.title = dict.copyBtnTitle;
+  if (!btnCopy._feedbackTimer) btnCopy.querySelector('span').textContent = dict.copyBtn;
+
+  btnSample.textContent = dict.sampleBtn;
+
+  // Buhun & Bindu Controls
+  buhunStyleEl.title = dict.buhunStyleTitle;
+  syncBuhunStyleLabels(false);
+  buhunTogglePillEl.title = dict.buhunToggleTitle;
+
+  binduTranslateWrapper.title = dict.binduToggleTitle;
+  binduToggleLabelEl.textContent = dict.binduToggle;
+
+  // Guide Box
+  guideDescEEl.innerHTML = dict.guideE;
+  guideDescEAcuteEl.innerHTML = dict.guideEAcute;
+  guideDescEuEl.innerHTML = dict.guideEu;
+  if (guideDescQuoteEl) guideDescQuoteEl.innerHTML = dict.guideQuote;
+
+  // Reference Section
+  refTitleEl.textContent = dict.refTitle;
+  refSubtitleEl.textContent = IS_TOUCH_DEVICE ? dict.refSubtitleTouch : dict.refSubtitleDesktop;
+
+  toggleRefDetailsLabelEl.title = dict.toggleDetailsTitle;
+  toggleRefDetailsTextEl.textContent = dict.toggleDetailsLabel;
+
+  catAngkaEl.textContent = dict.catAngka;
+  catSwaraEl.textContent = dict.catSwara;
+  catRarangkenEl.textContent = dict.catRarangken;
+  catNgalagenaEl.textContent = dict.catNgalagena;
+  catBuhunKhususEl.textContent = dict.catBuhunKhusus;
+  catBinduEl.textContent = dict.catBindu;
+
+  // Floating Preview Bar
+  floatingPreviewEl.setAttribute('aria-label', dict.fpAria);
+  fpBtnSpace.textContent = dict.fpSpaceBtn;
+  fpBtnSpace.title = dict.fpSpaceTitle;
+  fpBtnBackspace.title = dict.fpBackspaceTitle;
+  fpBtnClear.title = dict.clearBtnTitle;
+  if (!fpBtnClear._feedbackTimer) fpBtnClear.querySelector('span').textContent = dict.clearBtn;
+  fpBtnSwap.title = dict.swapBtnTitle;
+  if (!fpBtnSwap._feedbackTimer) fpBtnSwap.querySelector('span').textContent = dict.fpSwapBtn;
+  fpBtnCopy.title = dict.copyBtnTitle;
+  if (!fpBtnCopy._feedbackTimer) fpBtnCopy.querySelector('span').textContent = dict.copyBtn;
+  fpBtnTop.title = dict.fpTopTitle;
+
+  // Popup Kibor Header
+  kbPopupEl.setAttribute('aria-label', dict.kbDialogAria);
+  kbPopupHeaderEl.title = dict.kbHeaderTitle;
+  kbHeaderTitleEl.innerHTML = dict.kbHeaderHtml;
+  btnClosePopup.title = dict.kbCloseTitle;
+
+  if (refreshKeyboardLangFn) {
+    refreshKeyboardLangFn();
+  }
+
+  updateOutput();
+}
+
+// =========================================================
+// 5. SINKRONISASI INPUT, OUTPUT & PREVIEW BAR
 // =========================================================
 function syncMobileInputMode() {
   if (isKbPopupOpen) {
@@ -638,17 +998,71 @@ function syncFpTagWidth() {
   }
 }
 
-function syncFloatingPreview(skipFpInputSync = false) {
-  const isSundaInput = mode === 'SUNDA_TO_LATIN';
-  fpInputTagEl.textContent = isSundaInput ? 'Sunda' : 'Latén';
-  fpInputTextEl.placeholder = isSundaInput
-    ? 'ᮊᮨᮒᮤᮊ᮪ ᮓᮤ ᮓᮤᮉ...'
-    : 'Ketik nganggo e/é/eu anu leres...';
+const SUPPORTS_BASE_SELECT =
+  typeof CSS !== 'undefined' && CSS.supports && CSS.supports('appearance', 'base-select');
 
-  fpOutputTagEl.textContent = isSundaInput ? 'Latén' : 'Sunda';
+function syncBuhunStyleLabels(isOpen = false) {
+  const dict = t();
+  if (SUPPORTS_BASE_SELECT) {
+    const currentIdx = buhunStyleEl.selectedIndex;
+    optStyleSajarahEl.innerHTML = dict.styleSajarahHtml;
+    optStyleReligiEl.innerHTML = dict.styleReligiHtml;
+    optStylePrasastiEl.innerHTML = dict.stylePrasastiHtml;
+    if (currentIdx >= 0) {
+      buhunStyleEl.selectedIndex = -1;
+      buhunStyleEl.selectedIndex = currentIdx;
+    }
+    return;
+  }
+
+  const val = buhunStyleEl.value;
+  optStyleSajarahEl.textContent =
+    !isOpen && val === 'sajarah' ? dict.styleSajarahShort : dict.styleSajarahFull;
+  optStyleReligiEl.textContent =
+    !isOpen && val === 'religi' ? dict.styleReligiShort : dict.styleReligiFull;
+  optStylePrasastiEl.textContent =
+    !isOpen && val === 'prasasti' ? dict.stylePrasastiShort : dict.stylePrasastiFull;
+}
+
+function syncTransliterationNoTranslate() {
+  const isSundaInput = mode === 'SUNDA_TO_LATIN';
+  const inputTargets = [inputEl, fpInputTextEl];
+  const outputTargets = [outputEl, fpOutputTextEl];
+
+  inputTargets.forEach(el => {
+    if (!el) return;
+    el.classList.toggle('notranslate', isSundaInput);
+    if (isSundaInput) {
+      el.setAttribute('translate', 'no');
+    } else {
+      el.removeAttribute('translate');
+    }
+  });
+
+  outputTargets.forEach(el => {
+    if (!el) return;
+    el.classList.toggle('notranslate', !isSundaInput);
+    if (!isSundaInput) {
+      el.setAttribute('translate', 'no');
+    } else {
+      el.removeAttribute('translate');
+    }
+  });
+}
+
+function syncFloatingPreview(skipFpInputSync = false) {
+  const dict = t();
+  const isSundaInput = mode === 'SUNDA_TO_LATIN';
+
+  fpInputTagEl.textContent = isSundaInput ? dict.fpTagSunda : dict.fpTagLatin;
+  fpInputTextEl.placeholder = isSundaInput
+    ? dict.fpInputPlaceholderSunda
+    : dict.fpInputPlaceholderLatin;
+
+  fpOutputTagEl.textContent = isSundaInput ? dict.fpTagLatin : dict.fpTagSunda;
   fpOutputTextEl.dataset.placeholder = isSundaInput
-    ? 'Hasil alih aksara...'
-    : 'ᮠᮞᮤᮜ᮪ ᮃᮜᮤᮂ ᮃᮊ᮪ᮞᮛ...';
+    ? dict.fpOutputPlaceholderLatin
+    : dict.fpOutputPlaceholderSunda;
 
   fpInputTextEl.classList.toggle('sunda-font', isSundaInput);
   fpOutputTextEl.classList.toggle('sunda-font', !isSundaInput);
@@ -665,6 +1079,9 @@ function syncFloatingPreview(skipFpInputSync = false) {
 }
 
 function updateOutput(skipFpInputSync = false) {
+  syncTransliterationNoTranslate();
+
+  const dict = t();
   const val = inputEl.value;
 
   if (!pasteFeedbackTimer) {
@@ -677,29 +1094,27 @@ function updateOutput(skipFpInputSync = false) {
     outputEl.value = latinToSunda(val, isBuhun, style);
 
     if (!isBuhun) {
-      standardHintEl.textContent = 'Standar Unicode Aksara Sunda Baku';
+      standardHintEl.textContent = dict.hintBaku;
     } else {
       const styleNames = {
-        sajarah: 'Sunda Buhun — Gaya Naskah Sajarah',
-        religi: 'Sunda Buhun — Gaya Naskah Religi',
-        prasasti: 'Sunda Buhun — Gaya Prasasti Batu'
+        sajarah: dict.hintSajarah,
+        religi: dict.hintReligi,
+        prasasti: dict.hintPrasasti
       };
       standardHintEl.textContent = styleNames[style];
     }
   } else {
     const translateBindu = toggleTranslateBinduEl.checked;
     outputEl.value = sundaToLatin(val, translateBindu, true);
-    standardHintEl.textContent = translateBindu
-      ? 'Alih Aksara Latén (Simbol Bindu Dialihaksarakeun)'
-      : 'Alih Aksara Diplomatik (Simbol Bindu Dipertahankeun)';
+    standardHintEl.textContent = translateBindu ? dict.hintBinduOn : dict.hintBinduOff;
   }
 
-  charCountEl.textContent = `${val.length} aksara`;
+  charCountEl.textContent = dict.charCount(val.length);
   syncFloatingPreview(skipFpInputSync);
 }
 
 // =========================================================
-// 5. ANIMASI & FEEDBACK UI
+// 6. ANIMASI & FEEDBACK UI
 // =========================================================
 function animateButtonMorph(btn, nextLabel, isFeedback = false) {
   if (!btn) return;
@@ -760,7 +1175,7 @@ function animateButtonMorph(btn, nextLabel, isFeedback = false) {
   }, 250);
 }
 
-function triggerButtonFeedback(btn, feedbackLabel, defaultLabel, duration = 1500) {
+function triggerButtonFeedback(btn, getFeedbackLabel, getDefaultLabel, duration = 1500) {
   if (!btn) return;
   clearTimeout(btn._feedbackTimer);
 
@@ -769,10 +1184,10 @@ function triggerButtonFeedback(btn, feedbackLabel, defaultLabel, duration = 1500
     void btn.offsetWidth;
   }
 
-  animateButtonMorph(btn, feedbackLabel, true);
+  animateButtonMorph(btn, getFeedbackLabel(), true);
   btn._feedbackTimer = setTimeout(() => {
     btn._feedbackTimer = null;
-    animateButtonMorph(btn, defaultLabel, false);
+    animateButtonMorph(btn, getDefaultLabel(), false);
   }, duration);
 }
 
@@ -895,7 +1310,7 @@ function setPasteButtonVisible(show) {
 
     if (wasHidden || wasLeaving) {
       btnPaste.classList.remove('hidden', 'is-leaving', 'is-entering', 'is-feedback');
-      btnPaste.querySelector('span').textContent = 'Témpél';
+      btnPaste.querySelector('span').textContent = t().pasteBtn;
       void btnPaste.offsetWidth;
       btnPaste.classList.add('is-entering');
     }
@@ -913,7 +1328,7 @@ function setPasteButtonVisible(show) {
       pasteHideTimer = null;
       btnPaste.classList.add('hidden');
       btnPaste.classList.remove('is-leaving', 'is-feedback');
-      btnPaste.querySelector('span').textContent = 'Témpél';
+      btnPaste.querySelector('span').textContent = t().pasteBtn;
     }, 185);
   }
 }
@@ -946,14 +1361,15 @@ function setFloatingPreviewVisible(show) {
   if (isFloatingPreviewVisible === show) return;
   isFloatingPreviewVisible = show;
   const token = ++floatingPreviewAnimToken;
+  const dict = t();
 
   if (show) {
     if (isKbPopupOpen) {
       setKbPopupVisible(false);
     }
-    if (!fpBtnSwap._feedbackTimer) animateButtonMorph(fpBtnSwap, 'Liron', false);
-    if (!fpBtnClear._feedbackTimer) animateButtonMorph(fpBtnClear, 'Hapus', false);
-    if (!fpBtnCopy._feedbackTimer) animateButtonMorph(fpBtnCopy, 'Tiron', false);
+    if (!fpBtnSwap._feedbackTimer) animateButtonMorph(fpBtnSwap, dict.fpSwapBtn, false);
+    if (!fpBtnClear._feedbackTimer) animateButtonMorph(fpBtnClear, dict.clearBtn, false);
+    if (!fpBtnCopy._feedbackTimer) animateButtonMorph(fpBtnCopy, dict.copyBtn, false);
 
     floatingPreviewEl.classList.remove('hidden', 'is-closing', 'is-opening');
     void floatingPreviewEl.offsetWidth;
@@ -1052,7 +1468,7 @@ function triggerClearAnimation() {
 }
 
 // =========================================================
-// 6. ACTION HANDLERS & EVENT LISTENERS
+// 7. ACTION HANDLERS & EVENT LISTENERS
 // =========================================================
 function swapDirection({ fromFloatingBar = false } = {}) {
   const prevClearLeft = btnClear.getBoundingClientRect().left;
@@ -1063,15 +1479,8 @@ function swapDirection({ fromFloatingBar = false } = {}) {
 
   if (mode === 'LATIN_TO_SUNDA') {
     mode = 'SUNDA_TO_LATIN';
-    mainTitleEl.innerHTML = 'Aksara Sunda <span class="arrow">→</span> Aksara Latén';
-    subtitleTextEl.textContent = 'Ketik langsung ku kibor Latén anu téksna otomatis robih janten Aksara Sunda atanapi ketik / témpél Aksara Sunda, teras kaluar hasil Laténna.';
-    inputLabelEl.textContent = 'Aksara Sunda';
-    outputLabelEl.textContent = 'Aksara Latén';
-
     inputEl.classList.add('sunda-font');
     outputEl.classList.remove('sunda-font');
-    inputEl.placeholder = 'ᮊᮨᮒᮤᮊ᮪ ᮊᮥ ᮃᮊ᮪ᮞᮛ ᮞᮥᮔ᮪ᮓ ᮓᮤ ᮓᮤᮉ...';
-    outputEl.placeholder = 'Conto hasil: Wilujeng sumping di Bandung.';
 
     buhunControlsEl.classList.add('hidden');
     binduTranslateWrapper.classList.remove('hidden');
@@ -1082,15 +1491,8 @@ function swapDirection({ fromFloatingBar = false } = {}) {
     inputEl.value = converted.text;
   } else {
     mode = 'LATIN_TO_SUNDA';
-    mainTitleEl.innerHTML = 'Aksara Latén <span class="arrow">→</span> Aksara Sunda';
-    subtitleTextEl.innerHTML = 'Ketik téks basa Sunda nganggo huruf <strong class="notranslate" translate="no">e</strong> (pamepet), <strong class="notranslate" translate="no">é</strong> (panéléng), sareng <strong class="notranslate" translate="no">eu</strong> (paneuleung) anu leres supados hasilna merenah.';
-    inputLabelEl.textContent = 'Aksara Latén';
-    outputLabelEl.textContent = 'Aksara Sunda';
-
     inputEl.classList.remove('sunda-font');
     outputEl.classList.add('sunda-font');
-    inputEl.placeholder = 'Ketik téks basa Sunda di dieu, pastikeun nganggo huruf e/é/eu anu leres...';
-    outputEl.placeholder = 'ᮠᮞᮤᮜ᮪ᮔ ᮘᮊᮜ᮪ ᮊᮜᮥᮃᮁ ᮓᮤ ᮓᮤᮉ...';
 
     buhunControlsEl.classList.remove('hidden');
     binduTranslateWrapper.classList.add('hidden');
@@ -1100,6 +1502,9 @@ function swapDirection({ fromFloatingBar = false } = {}) {
     setKbPopupVisible(false);
     inputEl.value = prevOutput;
   }
+
+  syncTransliterationNoTranslate();
+  applyDirectionTexts();
 
   const enteringControls = mode === 'SUNDA_TO_LATIN'
     ? [btnPopupKb, binduTranslateWrapper]
@@ -1130,8 +1535,8 @@ function swapDirection({ fromFloatingBar = false } = {}) {
     }
   });
 
-  triggerButtonFeedback(btnSwap, 'Arah Dilironkeun!', 'Liron Arah', 1500);
-  triggerButtonFeedback(fpBtnSwap, 'Diliron!', 'Liron', 1500);
+  triggerButtonFeedback(btnSwap, () => t().swapBtnFeedback, () => t().swapBtn, 1500);
+  triggerButtonFeedback(fpBtnSwap, () => t().fpSwapBtnFeedback, () => t().fpSwapBtn, 1500);
 
   updateOutput();
   if (!fromFloatingBar && !IS_TOUCH_DEVICE) {
@@ -1150,15 +1555,15 @@ function handleClearAction(skipFocus = false) {
     pasteFeedbackTimer = null;
     pasteHideTimer = null;
     btnPaste.classList.remove('is-leaving', 'is-feedback');
-    btnPaste.querySelector('span').textContent = 'Témpél';
+    btnPaste.querySelector('span').textContent = t().pasteBtn;
   }
 
   updateOutput();
 
   if (hadText) {
     triggerClearAnimation();
-    triggerButtonFeedback(btnClear, 'Dihapus!', 'Hapus', 1500);
-    triggerButtonFeedback(fpBtnClear, 'Dihapus!', 'Hapus', 1500);
+    triggerButtonFeedback(btnClear, () => t().clearBtnFeedback, () => t().clearBtn, 1500);
+    triggerButtonFeedback(fpBtnClear, () => t().clearBtnFeedback, () => t().clearBtn, 1500);
   }
 
   if (!skipFocus && !IS_TOUCH_DEVICE) {
@@ -1172,8 +1577,8 @@ async function handleCopyAction() {
   await navigator.clipboard.writeText(outputEl.value);
   if (token !== copyActionToken) return;
 
-  triggerButtonFeedback(btnCopy, 'Ditiron!', 'Tiron', 1500);
-  triggerButtonFeedback(fpBtnCopy, 'Ditiron!', 'Tiron', 1500);
+  triggerButtonFeedback(btnCopy, () => t().copyBtnFeedback, () => t().copyBtn, 1500);
+  triggerButtonFeedback(fpBtnCopy, () => t().copyBtnFeedback, () => t().copyBtn, 1500);
 
   const outputCardEl = document.querySelector('.output-card');
   const fpOutputBoxEl = document.querySelector('.fp-output-box');
@@ -1197,6 +1602,36 @@ async function handleCopyAction() {
   });
 }
 
+// Language Dropdown Events
+btnLang.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const isOpen = btnLang.getAttribute('aria-expanded') === 'true';
+  setLangMenuOpen(!isOpen);
+});
+
+langOptionBtns.forEach(opt => {
+  opt.addEventListener('click', () => {
+    const selectedLang = opt.dataset.lang;
+    setLangMenuOpen(false);
+    if (selectedLang !== currentLang) {
+      applyLanguage(selectedLang, { persist: true });
+    }
+  });
+});
+
+document.addEventListener('click', (e) => {
+  if (!langDropdownEl.contains(e.target)) {
+    setLangMenuOpen(false);
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && btnLang.getAttribute('aria-expanded') === 'true') {
+    setLangMenuOpen(false);
+    btnLang.focus();
+  }
+});
+
 // Editor Input & IME Events
 inputEl.addEventListener('compositionstart', () => {
   isComposing = true;
@@ -1205,7 +1640,8 @@ inputEl.addEventListener('compositionstart', () => {
 inputEl.addEventListener('compositionend', () => {
   isComposing = false;
   if (mode === 'SUNDA_TO_LATIN') {
-    const converted = liveConvertInputToSunda(inputEl.value, inputEl.selectionStart);
+    const cursorPos = inputEl.selectionStart ?? inputEl.value.length;
+    const converted = liveConvertInputToSunda(inputEl.value, cursorPos);
     inputEl.value = converted.text;
     inputEl.selectionStart = inputEl.selectionEnd = converted.cursor;
   }
@@ -1214,7 +1650,8 @@ inputEl.addEventListener('compositionend', () => {
 
 inputEl.addEventListener('input', () => {
   if (mode === 'SUNDA_TO_LATIN' && !isComposing) {
-    const converted = liveConvertInputToSunda(inputEl.value, inputEl.selectionStart);
+    const cursorPos = inputEl.selectionStart ?? inputEl.value.length;
+    const converted = liveConvertInputToSunda(inputEl.value, cursorPos);
     inputEl.value = converted.text;
     inputEl.selectionStart = inputEl.selectionEnd = converted.cursor;
   }
@@ -1232,10 +1669,16 @@ toggleBuhunEl.addEventListener('change', () => {
     if (!buhunStyleEl.classList.contains('hidden')) {
       lastBuhunSelectWidth = buhunStyleEl.getBoundingClientRect().width;
     }
+    syncBuhunStyleLabels(true);
   });
 });
 
+buhunStyleEl.addEventListener('blur', () => {
+  syncBuhunStyleLabels(false);
+});
+
 buhunStyleEl.addEventListener('change', () => {
+  syncBuhunStyleLabels(false);
   animateSelectWidth(buhunStyleEl, lastBuhunSelectWidth);
   updateOutput();
 });
@@ -1264,6 +1707,7 @@ btnSample.addEventListener('click', () => {
       ? buhunStyleEl.getBoundingClientRect().width
       : 0;
     buhunStyleEl.value = chosen.style;
+    syncBuhunStyleLabels(false);
     animateSelectWidth(buhunStyleEl, prevWidth);
   } else {
     const candidates = SUNDA_SAMPLES.filter(item => item.trim() !== currentVal);
@@ -1298,7 +1742,7 @@ btnPaste.addEventListener('click', async () => {
     pasteHideTimer = null;
 
     btnPaste.classList.remove('hidden', 'is-leaving', 'is-entering');
-    animateButtonMorph(btnPaste, 'Ditémpél!', true);
+    animateButtonMorph(btnPaste, t().pasteBtnFeedback, true);
 
     const inputCardEl = document.querySelector('.editor-grid .card:not(.output-card)');
     if (inputCardEl) {
@@ -1317,7 +1761,7 @@ btnPaste.addEventListener('click', async () => {
       if (inputEl.value.length > 0) {
         setPasteButtonVisible(false);
       } else {
-        animateButtonMorph(btnPaste, 'Témpél', false);
+        animateButtonMorph(btnPaste, t().pasteBtn, false);
       }
     }, 850);
 
@@ -1326,7 +1770,9 @@ btnPaste.addEventListener('click', async () => {
       inputEl.focus();
     }
   } catch (err) {
-    inputEl.focus();
+    if (!IS_TOUCH_DEVICE) {
+      inputEl.focus();
+    }
   }
 });
 
@@ -1392,7 +1838,8 @@ fpInputTextEl.addEventListener('compositionstart', () => {
 fpInputTextEl.addEventListener('compositionend', () => {
   isComposing = false;
   if (mode === 'SUNDA_TO_LATIN') {
-    const converted = liveConvertInputToSunda(fpInputTextEl.value, fpInputTextEl.selectionStart);
+    const cursorPos = fpInputTextEl.selectionStart ?? fpInputTextEl.value.length;
+    const converted = liveConvertInputToSunda(fpInputTextEl.value, cursorPos);
     fpInputTextEl.value = converted.text;
     fpInputTextEl.selectionStart = fpInputTextEl.selectionEnd = converted.cursor;
   }
@@ -1402,7 +1849,8 @@ fpInputTextEl.addEventListener('compositionend', () => {
 
 fpInputTextEl.addEventListener('input', () => {
   if (mode === 'SUNDA_TO_LATIN' && !isComposing) {
-    const converted = liveConvertInputToSunda(fpInputTextEl.value, fpInputTextEl.selectionStart);
+    const cursorPos = fpInputTextEl.selectionStart ?? fpInputTextEl.value.length;
+    const converted = liveConvertInputToSunda(fpInputTextEl.value, cursorPos);
     fpInputTextEl.value = converted.text;
     fpInputTextEl.selectionStart = fpInputTextEl.selectionEnd = converted.cursor;
   }
@@ -1465,31 +1913,37 @@ if ('IntersectionObserver' in window && editorGridEl) {
 }
 
 // =========================================================
-// 7. INISIALISASI PITUDUH & POPUP KIBOR
+// 8. INISIALISASI PITUDUH & POPUP KIBOR
 // =========================================================
 function initSundaKeyboards() {
-  const refSubtitleEl = document.getElementById('ref-subtitle');
-  if (refSubtitleEl && IS_TOUCH_DEVICE) {
-    refSubtitleEl.textContent = 'Toél aksara kanggo nyelapkeun kana kotak input.';
+  const localizedUpdaters = [];
+
+  function registerTooltip(el, getTipFn) {
+    localizedUpdaters.push(() => {
+      el.title = getTipFn(t());
+    });
   }
 
-  function createRefBtn({ insertChar, displayChar, label, tooltip, isBuhun = false }) {
+  function createRefBtn({ insertChar, displayChar, label, getTooltip, isBuhun = false }) {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = `kb-key ${isBuhun ? 'buhun-tag' : ''}`;
-    btn.title = tooltip;
     btn.innerHTML = `<span class="notranslate" translate="no">${displayChar}</span><small>${label}</small>`;
     btn.addEventListener('click', () => insertAtCursor(insertChar, { fromReference: true, autoSwapIfEmpty: true }));
+    registerTooltip(btn, getTooltip);
     return btn;
   }
 
-  function createPopBtn({ insertChar, displayChar, tooltip, isBuhun = false }) {
+  function createPopBtn({ insertChar, displayChar, getTooltip, isBuhun = false, extraClass = '' }) {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = `pop-key ${isBuhun ? 'buhun-tag' : ''}`;
-    btn.title = tooltip;
+    const classes = ['pop-key'];
+    if (isBuhun) classes.push('buhun-tag');
+    if (extraClass && extraClass !== 'buhun-tag') classes.push(extraClass);
+    btn.className = classes.join(' ');
     btn.innerHTML = `<span class="notranslate" translate="no">${displayChar}</span>`;
     btn.addEventListener('click', () => insertAtCursor(insertChar));
+    registerTooltip(btn, getTooltip);
     return btn;
   }
 
@@ -1532,44 +1986,245 @@ function initSundaKeyboards() {
     }, 290);
   }
 
+  const EXAMPLE_DATA = {
+    swara: {
+      'a':  { sunda: 'ᮃᮔᮊ᮪', latin: 'anak', soundEn: '<strong>a</strong> in <em>father</em>' },
+      'i':  { sunda: 'ᮄᮙᮂ', latin: 'imah', soundEn: '<strong>ee</strong> in <em>see</em>' },
+      'u':  { sunda: 'ᮅᮛᮀ', latin: 'urang', soundEn: '<strong>oo</strong> in <em>boot</em>' },
+      'é':  { sunda: 'ᮆᮜᮤᮀ', latin: 'éling', soundEn: '<strong>e</strong> in <em>bed</em>, <strong>é</strong> in <em>fiancé</em>' },
+      'o':  { sunda: 'ᮇᮕᮒ᮪', latin: 'opat', soundEn: '<strong>o</strong> in <em>go</em>' },
+      'e':  { sunda: 'ᮈᮙᮞ᮪', latin: 'emas', soundEn: '<strong>e</strong> in <em>taken</em>, <strong>a</strong> in <em>about</em>' },
+      'eu': { sunda: 'ᮉᮞᮤ', latin: 'eusi', soundEn: '<strong>ur</strong> in British <em>burn</em>, <strong>er</strong> in British <em>her</em>' }
+    },
+    rarangken: {
+      'ᮤ': { sunda: 'ᮠᮤᮏᮤ', latin: 'hiji', soundEn: '<strong>ee</strong> in <em>see</em>' },
+      'ᮥ': { sunda: 'ᮘᮥᮊᮥ', latin: 'buku', soundEn: '<strong>oo</strong> in <em>boot</em>' },
+      'ᮦ': { sunda: 'ᮜᮦᮜᮦ', latin: 'lélé', soundEn: '<strong>e</strong> in <em>bed</em>, <strong>é</strong> in <em>fiancé</em>' },
+      'ᮧ': { sunda: 'ᮒᮧᮕᮤ', latin: 'topi', soundEn: '<strong>o</strong> in <em>go</em>' },
+      'ᮨ': { sunda: 'ᮌᮨᮜᮞ᮪', latin: 'gelas', soundEn: '<strong>e</strong> in <em>taken</em>, <strong>a</strong> in <em>about</em>' },
+      'ᮩ': { sunda: 'ᮞᮩᮛᮤ', latin: 'seuri', soundEn: '<strong>ur</strong> in British <em>burn</em>, <strong>er</strong> in British <em>her</em>' },
+      'ᮡ': { sunda: 'ᮞᮒᮡ', latin: 'satya', soundEn: '<strong>y</strong> in <em>canyon</em>' },
+      'ᮢ': { sunda: 'ᮎᮊᮢ', latin: 'cakra', soundEn: '<strong>r</strong> in <em>crab</em>' },
+      'ᮣ': { sunda: 'ᮊᮣᮞᮤᮊ᮪', latin: 'klasik', soundEn: '<strong>l</strong> in <em>clap</em>' },
+      'ᮁ': { sunda: 'ᮓᮠᮁ', latin: 'dahar', soundEn: '<strong>r</strong> in <em>car</em>' },
+      'ᮀ': { sunda: 'ᮊᮎᮀ', latin: 'kacang', soundEn: '<strong>ng</strong> in <em>sing</em>' },
+      'ᮂ': { sunda: 'ᮞᮝᮂ', latin: 'sawah', soundEn: '<strong>h</strong> in <em>hat</em> (final breath)' },
+      '᮪': { sunda: 'ᮊᮕᮜ᮪', latin: 'kapal', soundEn: 'silences inherent <strong>-a</strong> (like <strong>l</strong> in <em>pal</em>)' },
+      'ᮭ': { sunda: 'ᮞᮭ', latin: 'swa', soundEn: '<strong>w</strong> in <em>swan</em>' },
+      'ᮬ': { sunda: 'ᮞᮥᮊᮬ', latin: 'sukma', soundEn: '<strong>m</strong> in <em>small</em>' },
+      'ᮾ': { sunda: 'ᮕᮛᮾ', latin: 'parak', soundEn: 'final <strong>k</strong> in <em>book</em>' },
+      'ᮿ': { sunda: 'ᮓᮜᮿ', latin: 'dalam', soundEn: 'final <strong>m</strong> in <em>drum</em>' }
+    },
+    ngalagena: {
+      'ka':  { sunda: 'ᮊᮎ', latin: 'kaca', soundEn: '<strong>k</strong> in <em>kite</em>' },
+      'ga':  { sunda: 'ᮌᮚ', latin: 'gaya', soundEn: '<strong>g</strong> in <em>go</em>' },
+      'nga': { sunda: 'ᮍᮛᮔ᮪', latin: 'ngaran', soundEn: '<strong>ng</strong> in <em>singer</em>' },
+      'ca':  { sunda: 'ᮎᮄ', latin: 'cai', soundEn: '<strong>ch</strong> in <em>chat</em>' },
+      'ja':  { sunda: 'ᮏᮜᮔ᮪', latin: 'jalan', soundEn: '<strong>j</strong> in <em>jar</em>' },
+      'nya': { sunda: 'ᮑᮃᮂ', latin: 'nyaah', soundEn: 'Spanish <strong>ñ</strong> in <em>jalapeño</em>, <em>El Niño</em>' },
+      'ta':  { sunda: 'ᮒᮔᮩᮂ', latin: 'taneuh', soundEn: '<strong>t</strong> in <em>star</em>' },
+      'da':  { sunda: 'ᮓᮙᮀ', latin: 'damang', soundEn: '<strong>d</strong> in <em>day</em>' },
+      'na':  { sunda: 'ᮔᮌᮛ', latin: 'nagara', soundEn: '<strong>n</strong> in <em>name</em>' },
+      'pa':  { sunda: 'ᮕᮔᮧᮔ᮪', latin: 'panon', soundEn: '<strong>p</strong> in <em>spin</em>' },
+      'ba':  { sunda: 'ᮘᮒᮥ', latin: 'batu', soundEn: '<strong>b</strong> in <em>bat</em>' },
+      'ma':  { sunda: 'ᮙᮔᮥᮊ᮪', latin: 'manuk', soundEn: '<strong>m</strong> in <em>man</em>' },
+      'ya':  { sunda: 'ᮚᮊᮤᮔ᮪', latin: 'yakin', soundEn: '<strong>y</strong> in <em>yes</em>' },
+      'ra':  { sunda: 'ᮛᮏ', latin: 'raja', soundEn: 'rolled <strong>r</strong> (like Spanish <em>perro</em>)' },
+      'la':  { sunda: 'ᮜᮅᮊ᮪', latin: 'lauk', soundEn: '<strong>l</strong> in <em>lamp</em>' },
+      'wa':  { sunda: 'ᮝᮊ᮪ᮒᮥ', latin: 'waktu', soundEn: '<strong>w</strong> in <em>water</em>' },
+      'sa':  { sunda: 'ᮞᮥᮔ᮪ᮓ', latin: 'Sunda', soundEn: '<strong>s</strong> in <em>sun</em>' },
+      'ha':  { sunda: 'ᮠᮒᮥᮁ', latin: 'hatur', soundEn: '<strong>h</strong> in <em>hat</em>' },
+      'qa':  { sunda: 'ᮋᮥᮁᮃᮔ᮪', latin: "Qur'an", soundEn: "<strong>q</strong> in <em>Qur'an</em>" },
+      'za':  { sunda: 'ᮐᮙᮔ᮪', latin: 'zaman', soundEn: '<strong>z</strong> in <em>zoo</em>' },
+      'fa':  { sunda: 'ᮖᮊᮤᮁ', latin: 'fakir', soundEn: '<strong>f</strong> in <em>fan</em>' },
+      'va':  { sunda: 'ᮗᮤᮜ', latin: 'vila', soundEn: '<strong>v</strong> in <em>van</em>' },
+      'xa':  { sunda: 'ᮟᮤᮜᮧᮖᮧᮔ᮪', latin: 'xilofon', soundEn: '<strong>x</strong> / <strong>ks</strong> in <em>box</em>, <em>taxi</em>' },
+      'kha': { sunda: 'ᮮᮥᮞᮥᮞ᮪', latin: 'khusus', soundEn: '<strong>ch</strong> in Scottish <em>loch</em>' },
+      'sya': { sunda: 'ᮯᮛᮒ᮪', latin: 'syarat', soundEn: '<strong>sh</strong> in <em>sharp</em>' },
+      'bha': {
+        sunda: 'ᮽᮊ᮪ᮒᮤ',
+        latin: 'bhakti',
+        soundEn: 'aspirated <strong>bh</strong> in <em>clubhouse</em> (pronounced like regular <strong>b</strong> in modern Sundanese)'
+      }
+    },
+    buhunSpecial: {
+      'ᮺ': {
+        sunda: 'ᮃᮜᮥᮔᮺᮌᮥᮀ',
+        latin: "alun'agung",
+        soundEn: "silences preceding <strong>-a</strong> and marks elided initial <strong>a-</strong> (like an apostrophe in <em>'tis</em>)"
+      },
+      'ᮻ': {
+        sunda: 'ᮻᮞᮤ',
+        latin: 'reusi',
+        soundEn: '<strong>rur</strong> in British <em>interurban</em> (standalone syllable)'
+      },
+      'ᮼ': {
+        sunda: 'ᮼᮙ᮪ᮕᮀ',
+        latin: 'leumpang',
+        soundEn: '<strong>lur</strong> in British <em>blurred</em>, <em>blurt</em> (standalone syllable)'
+      }
+    },
+    bindu: {
+      '᳀': { sunda: 'ᮃᮞᮤᮂ ᮊ ᮞᮞᮙᮤ ᳀', latin: 'Asih ka sasami.' },
+      '᳁': { sunda: 'ᮍᮏᮌ ᮅᮎᮕ᮪ ᳁ ᮍᮛᮊ᮪ᮞ ᮜᮙ᮪ᮕᮂ ᳂', latin: 'Ngajaga ucap; ngaraksa lampah.' },
+      '᳂': { sunda: 'ᮛᮠᮚᮒ᮪ᮔ ᮠᮤᮛᮥᮕ᮪ ᮞᮅᮚᮥᮔᮔ᮪ ᳂', latin: 'Rahayatna hirup sauyunan.' },
+      '᳃': { sunda: 'ᮞᮧᮜᮒ᮪ ᮜᮤᮙ ᮝᮊ᮪ᮒᮥ ᳃ ᮞᮁᮒ ᮞᮘᮁ ᳀', latin: 'Solat lima waktu, sarta sabar.' },
+      '᳄': { sunda: '᳄᳆᳀᳆᳄ ᮝᮤᮜᮥᮏᮨᮀ ᮞᮥᮙ᮪ᮕᮤᮀ ᳀', latin: 'Wilujeng sumping.' },
+      '᳅': { sunda: '᳅᳂᳅ ᮎᮒᮨᮒᮔ᮪ ᮞᮏᮛᮂ ᳂', latin: 'Catetan sajarah.' },
+      '᳆': { sunda: '᳆᳁᳆ ᮕᮤᮒᮥᮓᮥᮂ ᮊᮛᮥᮠᮥᮔ᮪ ᳁', latin: 'Pituduh karuhun.' },
+      '᳇': { sunda: '᳇ ᮍᮏᮌ ᮅᮎᮕ᮪ ᮜᮙ᮪ᮕᮂ ᳃', latin: '• Ngajaga ucap lampah,' }
+    }
+  };
+
+  function buildDetailContentHtml(item) {
+    const dict = t();
+    const lines = [];
+
+    if (item.getDesc) {
+      lines.push(`<div class="kb-desc">${item.getDesc(dict)}</div>`);
+    }
+
+    if (item.example) {
+      const prefix = item.isSentenceExample ? dict.exampleSentencePrefix : dict.exampleWordPrefix;
+      lines.push(
+        `<span>${prefix} <span class="sunda-inline notranslate" translate="no">${item.example.sunda}</span> (<em class="notranslate" translate="no">${item.example.latin}</em>)</span>`
+      );
+      if (currentLang === 'en' && item.example.soundEn) {
+        lines.push(`<span>${dict.soundEquivPrefix} ${item.example.soundEn}</span>`);
+      }
+    }
+
+    return lines.length ? `<div class="kb-example-lines">${lines.join('')}</div>` : '';
+  }
+
+  function renderDetailGrid(containerEl, items, showDetails, animate) {
+    if (!containerEl) return;
+    containerEl.innerHTML = '';
+    containerEl.classList.toggle('show-details', showDetails);
+
+    items.forEach((item, idx) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `kb-key ${item.extraClass || ''}${animate ? ' kb-item-animate' : ''}`.trim();
+      if (animate) btn.style.setProperty('--i', idx);
+      btn.title = item.getTooltip(t());
+
+      if (showDetails && (item.example || item.getDesc)) {
+        const pillHtml = item.pillText ? `<span class="cat-pill">${item.pillText}</span>` : '';
+        btn.innerHTML = `
+          <div class="kb-key-head">
+            <span class="sym notranslate" translate="no">${item.displayChar}</span>
+            <span class="lbl${item.notranslateLabel ? ' notranslate' : ''}"${item.notranslateLabel ? ' translate="no"' : ''}>${item.plainLabel}</span>
+            ${pillHtml}
+          </div>
+          ${buildDetailContentHtml(item)}
+        `;
+      } else {
+        btn.innerHTML = `<span class="notranslate" translate="no">${item.displayChar}</span><small>${item.compactLabel}</small>`;
+      }
+
+      btn.addEventListener('click', () => insertAtCursor(item.insertChar, { fromReference: true, autoSwapIfEmpty: true }));
+      containerEl.appendChild(btn);
+    });
+  }
+
   // ANGKA
   const refAngka = document.getElementById('kb-angka');
   const popAngka = document.getElementById('pop-angka');
+  const angkaGroupEl = refAngka.closest('.kb-group');
 
   ANGKA_ORDERED.forEach(([l, s]) => {
     const item = {
       insertChar: s,
       displayChar: s,
       label: l,
-      tooltip: `Angka Sunda: ${l}`
+      getTooltip: (d) => d.tipNumeral(l)
     };
     refAngka.appendChild(createRefBtn(item));
     popAngka.appendChild(createPopBtn(item));
   });
 
-  const pipeItem = {
+  const pipeRefBtn = createRefBtn({
     insertChar: '|',
     displayChar: '|',
-    label: 'garis tegak (pangapit angka / tanda prasasti)',
-    tooltip: 'Garis Tegak (|): Pangapit angka Sunda (|᮲᮰᮲᮶|) atanapi tanda koma (|) / titik (||) dina prasasti batu'
-  };
-  refAngka.appendChild(createRefBtn(pipeItem));
-  popAngka.appendChild(createPopBtn(pipeItem));
+    label: t().pipeLabel,
+    getTooltip: (d) => d.pipeTooltip
+  });
+  const pipeLabelSmall = pipeRefBtn.querySelector('small');
+  localizedUpdaters.push(() => {
+    pipeLabelSmall.textContent = t().pipeLabel;
+  });
+  refAngka.appendChild(pipeRefBtn);
+
+  popAngka.appendChild(createPopBtn({
+    insertChar: '|',
+    displayChar: '|',
+    getTooltip: (d) => d.pipeTooltip
+  }));
+
+  function renderAngkaExample(showDetails, animate = true) {
+    if (!angkaExampleNoteEl) return;
+    if (!animate) {
+      angkaExampleNoteEl.innerHTML = t().angkaExampleHtml;
+      angkaExampleNoteEl.classList.toggle('hidden', !showDetails);
+      return;
+    }
+
+    animateKbGroupHeight(
+      angkaGroupEl,
+      () => {
+        if (showDetails) {
+          angkaExampleNoteEl.innerHTML = t().angkaExampleHtml;
+          angkaExampleNoteEl.classList.remove('hidden', 'is-collapsing', 'is-entering');
+          void angkaExampleNoteEl.offsetWidth;
+          angkaExampleNoteEl.classList.add('is-entering');
+          return null;
+        } else {
+          angkaExampleNoteEl.classList.add('hidden');
+          return () => {
+            angkaExampleNoteEl.classList.remove('hidden', 'is-entering');
+            angkaExampleNoteEl.classList.add('is-collapsing');
+          };
+        }
+      },
+      () => {
+        if (!showDetails) {
+          angkaExampleNoteEl.classList.add('hidden');
+          angkaExampleNoteEl.classList.remove('is-collapsing');
+        }
+      }
+    );
+  }
 
   // SWARA
   const refSwara = document.getElementById('kb-swara');
   const popSwara = document.getElementById('pop-swara');
+  const swaraGroupEl = refSwara.closest('.kb-group');
 
-  Object.entries(SWARA).forEach(([l, s]) => {
-    const item = {
-      insertChar: s,
-      displayChar: s,
-      label: `<span class="notranslate" translate="no">${l}</span>`,
-      tooltip: `Aksara Swara: ${l}`
-    };
-    refSwara.appendChild(createRefBtn(item));
+  const swaraRefItems = Object.entries(SWARA).map(([l, s]) => ({
+    insertChar: s,
+    displayChar: s,
+    plainLabel: l,
+    notranslateLabel: true,
+    compactLabel: `<span class="notranslate" translate="no">${l}</span>`,
+    getTooltip: (d) => d.tipSwara(l),
+    example: EXAMPLE_DATA.swara[l]
+  }));
+
+  swaraRefItems.forEach(item => {
     popSwara.appendChild(createPopBtn(item));
   });
+
+  function renderSwaraRef(showDetails, animate = true) {
+    if (!animate) {
+      renderDetailGrid(refSwara, swaraRefItems, showDetails, false);
+      return;
+    }
+    animateKbGroupHeight(swaraGroupEl, () => {
+      renderDetailGrid(refSwara, swaraRefItems, showDetails, true);
+    });
+  }
+  renderSwaraRef(false, false);
 
   // RARANGKÉN
   const rarangkenRow1 = [
@@ -1589,44 +2244,52 @@ function initSundaKeyboards() {
     { s: 'ᮀ', display: '◌ᮀ', label: 'panyecek', morpheme: '(-ng)', buhun: false },
     { s: 'ᮂ', display: '◌ᮂ', label: 'pangwisad', morpheme: '(-h)', buhun: false },
     { s: '᮪', display: '◌᮪', label: 'pamaéh', buhun: false },
-    { s: 'ᮭ', display: '◌ᮭ', label: 'papasangan', morpheme: '(-wa)', buhun: true },
-    { s: 'ᮬ', display: '◌ᮬ', label: 'papasangan', morpheme: '(-ma)', buhun: true },
+    { s: 'ᮭ', display: '◌ᮭ', label: 'papasangan wa', morpheme: '(-w-)', buhun: true },
+    { s: 'ᮬ', display: '◌ᮬ', label: 'papasangan ma', morpheme: '(-m-)', buhun: true },
     { s: 'ᮾ', display: 'ᮾ', label: 'akhiran', morpheme: '(-k)', buhun: true },
     { s: 'ᮿ', display: 'ᮿ', label: 'akhiran', morpheme: '(-m)', buhun: true }
   ];
 
   const refRarangken = document.getElementById('kb-rarangken');
   const popRarangken = document.getElementById('pop-rarangken');
+  const rarangkenGroupEl = refRarangken.closest('.kb-group');
+
+  const toRarangkenItem = (item) => {
+    const fullLbl = `${item.label}${item.morpheme ? ` ${item.morpheme}` : ''}`;
+    return {
+      insertChar: item.s,
+      displayChar: item.display,
+      plainLabel: fullLbl,
+      notranslateLabel: true,
+      compactLabel: `<span class="notranslate" translate="no">${fullLbl}</span>`,
+      getTooltip: (d) => d.tipRarangken(item.label, item.morpheme, item.buhun),
+      isBuhun: item.buhun,
+      extraClass: item.buhun ? 'buhun-tag' : '',
+      pillText: item.buhun ? 'Buhun' : '',
+      example: EXAMPLE_DATA.rarangken[item.s]
+    };
+  };
+
+  const rarangkenRefItems = [
+    ...rarangkenRow1.map(toRarangkenItem),
+    ...rarangkenRow2.map(toRarangkenItem)
+  ];
 
   popRarangken.appendChild(createPopSpacer());
-  rarangkenRow1.forEach(item => {
-    const cfg = {
-      insertChar: item.s,
-      displayChar: item.display,
-      label: `${item.label}${item.morpheme ? `<span class="notranslate" translate="no"> ${item.morpheme}</span> ` : ''}`,
-      tooltip: `Rarangkén: ${item.label}${item.morpheme ? ` ${item.morpheme}` : ''}`,
-      isBuhun: item.buhun
-    };
-    refRarangken.appendChild(createRefBtn(cfg));
-    popRarangken.appendChild(createPopBtn(cfg));
-  });
-  for (let i = 0; i < 5; i++) {
-    popRarangken.appendChild(createPopSpacer());
-  }
+  rarangkenRow1.map(toRarangkenItem).forEach(cfg => popRarangken.appendChild(createPopBtn(cfg)));
+  for (let i = 0; i < 5; i++) popRarangken.appendChild(createPopSpacer());
+  rarangkenRow2.map(toRarangkenItem).forEach(cfg => popRarangken.appendChild(createPopBtn(cfg)));
 
-  rarangkenRow2.forEach(item => {
-    const cfg = {
-      insertChar: item.s,
-      displayChar: item.display,
-      label: `${item.label}${item.morpheme ? `<span class="notranslate" translate="no"> ${item.morpheme}</span>` : ''}`,
-      tooltip: item.buhun
-        ? `Rarangkén Sunda Buhun: ${item.label}${item.morpheme ? ` ${item.morpheme}` : ''}`
-        : `Rarangkén: ${item.label}${item.morpheme ? ` ${item.morpheme}` : ''}`,
-      isBuhun: item.buhun
-    };
-    refRarangken.appendChild(createRefBtn(cfg));
-    popRarangken.appendChild(createPopBtn(cfg));
-  });
+  function renderRarangkenRef(showDetails, animate = true) {
+    if (!animate) {
+      renderDetailGrid(refRarangken, rarangkenRefItems, showDetails, false);
+      return;
+    }
+    animateKbGroupHeight(rarangkenGroupEl, () => {
+      renderDetailGrid(refRarangken, rarangkenRefItems, showDetails, true);
+    });
+  }
+  renderRarangkenRef(false, false);
 
   // NGALAGENA
   const ngalagenaRow1 = [
@@ -1648,170 +2311,170 @@ function initSundaKeyboards() {
 
   const refNgalagena = document.getElementById('kb-ngalagena');
   const popNgalagena = document.getElementById('pop-ngalagena');
+  const ngalagenaGroupEl = refNgalagena.closest('.kb-group');
 
-  ngalagenaRow1.forEach(([label, s]) => {
-    const cfg = { insertChar: s, displayChar: s, label: `<span class="notranslate" translate="no">${label}</span>`, tooltip: `Aksara Ngalagena: ${label}` };
-    refNgalagena.appendChild(createRefBtn(cfg));
-    popNgalagena.appendChild(createPopBtn(cfg));
+  const toNgalagenaItem = (label, s, isBuhun = false) => ({
+    insertChar: s,
+    displayChar: s,
+    plainLabel: label,
+    notranslateLabel: true,
+    compactLabel: `<span class="notranslate" translate="no">${label}</span>`,
+    getTooltip: (d) => d.tipNgalagena(label, isBuhun),
+    isBuhun,
+    extraClass: isBuhun ? 'buhun-tag' : '',
+    pillText: isBuhun ? 'Buhun' : '',
+    example: EXAMPLE_DATA.ngalagena[label]
   });
 
-  ngalagenaRow2.forEach(([label, s]) => {
-    const cfg = { insertChar: s, displayChar: s, label: `<span class="notranslate" translate="no">${label}</span>`, tooltip: `Aksara Ngalagena: ${label}` };
-    refNgalagena.appendChild(createRefBtn(cfg));
-    popNgalagena.appendChild(createPopBtn(cfg));
-  });
+  const ngalagenaRefItems = [
+    ...ngalagenaRow1.map(([l, s]) => toNgalagenaItem(l, s, false)),
+    ...ngalagenaRow2.map(([l, s]) => toNgalagenaItem(l, s, false)),
+    ...ngalagenaRow3.map(item => toNgalagenaItem(item.label, item.s, item.buhun))
+  ];
+
+  ngalagenaRow1.forEach(([l, s]) => popNgalagena.appendChild(createPopBtn(toNgalagenaItem(l, s, false))));
+  ngalagenaRow2.forEach(([l, s]) => popNgalagena.appendChild(createPopBtn(toNgalagenaItem(l, s, false))));
   popNgalagena.appendChild(createPopSpacer());
+  ngalagenaRow3.forEach(item => popNgalagena.appendChild(createPopBtn(toNgalagenaItem(item.label, item.s, item.buhun))));
 
-  ngalagenaRow3.forEach(item => {
-    const cfg = {
-      insertChar: item.s,
-      displayChar: item.s,
-      label: `<span class="notranslate" translate="no">${item.label}</span>`,
-      tooltip: item.buhun ? `Aksara Ngalagena Sunda Buhun: ${item.label}` : `Aksara Ngalagena: ${item.label}`,
-      isBuhun: item.buhun
-    };
-    refNgalagena.appendChild(createRefBtn(cfg));
-    popNgalagena.appendChild(createPopBtn(cfg));
-  });
-
-  // SUNDA BUHUN KHUSUS
-  const refBuhunKhusus = document.getElementById('kb-buhun-khusus');
-  const popBuhunKhusus = document.getElementById('pop-buhun-khusus');
-  const toggleDescBuhun = document.getElementById('toggle-desc-buhun');
-  const buhunGroupEl = refBuhunKhusus.closest('.kb-group');
-
-  function renderBuhunRef(showDesc, animate = true) {
-    const buildItems = () => {
-      refBuhunKhusus.innerHTML = '';
-      refBuhunKhusus.classList.toggle('show-details', showDesc);
-
-      BUHUN_KHUSUS_LIST.forEach((item, idx) => {
-        const tooltip = `${item.label}${item.sound ? ` ${item.sound}` : ''}: ${item.desc}`;
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = `kb-key buhun-tag${animate ? ' kb-item-animate' : ''}`;
-        if (animate) btn.style.setProperty('--i', idx);
-        btn.title = tooltip;
-
-        if (showDesc) {
-          btn.innerHTML = `
-            <div class="kb-key-head">
-              <span class="sym">${item.s}</span>
-              <span class="lbl">${item.label}${item.sound ? `<span class="notranslate" translate="no"> ${item.sound}</span>` : ''}</span>
-            </div>
-            <span class="kb-key-desc">${item.desc}</span>
-          `;
-        } else {
-          btn.innerHTML = `${item.s}<small>${item.label}${item.sound ? `<span class="notranslate" translate="no"> ${item.sound}</span>` : ''}</small>`;
-        }
-        btn.addEventListener('click', () => insertAtCursor(item.s, { fromReference: true, autoSwapIfEmpty: true }));
-        refBuhunKhusus.appendChild(btn);
-      });
-    };
-
+  function renderNgalagenaRef(showDetails, animate = true) {
     if (!animate) {
-      buildItems();
+      renderDetailGrid(refNgalagena, ngalagenaRefItems, showDetails, false);
       return;
     }
+    animateKbGroupHeight(ngalagenaGroupEl, () => {
+      renderDetailGrid(refNgalagena, ngalagenaRefItems, showDetails, true);
+    });
+  }
+  renderNgalagenaRef(false, false);
 
-    animateKbGroupHeight(buhunGroupEl, () => {
-      buildItems();
+  // SUNDA BUHUN KHUSUS (NON-NGALAGENA & NON-RARANGKÉN)
+  const refBuhunSpecial = document.getElementById('kb-buhun-special');
+  const popBuhunSpecial = document.getElementById('pop-buhun-khusus');
+  const buhunGroupEl = refBuhunSpecial.closest('.kb-group');
+
+  function getBuhunDetailItems() {
+    return t().buhunKhususItems.map(item => {
+      const fullLbl = `${item.label}${item.sound ? ` ${item.sound}` : ''}`;
+      return {
+        insertChar: item.s,
+        displayChar: item.s,
+        plainLabel: fullLbl,
+        notranslateLabel: true,
+        compactLabel: `<span class="notranslate" translate="no">${fullLbl}</span>`,
+        getTooltip: (d) => {
+          const current = d.buhunKhususItems.find(x => x.s === item.s) || item;
+          const lbl = `${current.label}${current.sound ? ` ${current.sound}` : ''}`;
+          return current.desc ? `${lbl} — ${current.desc}` : lbl;
+        },
+        isBuhun: true,
+        extraClass: 'buhun-tag',
+        pillText: 'Buhun',
+        getDesc: (d) => {
+          const current = d.buhunKhususItems.find(x => x.s === item.s) || item;
+          return current.desc || '';
+        },
+        example: EXAMPLE_DATA.buhunSpecial[item.s]
+      };
     });
   }
 
-  BUHUN_KHUSUS_LIST.forEach(item => {
-    popBuhunKhusus.appendChild(createPopBtn({
-      insertChar: item.s,
-      displayChar: item.s,
-      tooltip: `${item.label}: ${item.desc}`,
-      isBuhun: true
-    }));
-  });
+  getBuhunDetailItems().forEach(cfg => popBuhunSpecial.appendChild(createPopBtn(cfg)));
 
-  renderBuhunRef(false, false);
-  toggleDescBuhun.addEventListener('change', (e) => renderBuhunRef(e.target.checked, true));
+  function renderBuhunSpecialRef(showDetails, animate = true) {
+    const items = getBuhunDetailItems();
+    if (!animate) {
+      renderDetailGrid(refBuhunSpecial, items, showDetails, false);
+      return;
+    }
+    animateKbGroupHeight(buhunGroupEl, () => {
+      renderDetailGrid(refBuhunSpecial, items, showDetails, true);
+    });
+  }
+  renderBuhunSpecialRef(false, false);
 
   // KARAKTER BINDU
   const refBindu = document.getElementById('kb-bindu');
   const popBindu = document.getElementById('pop-bindu');
-  const toggleDescBindu = document.getElementById('toggle-desc-bindu');
-  const binduExtraNotes = document.getElementById('bindu-extra-notes');
+  const binduNotesEl = document.getElementById('bindu-notes');
   const binduGroupEl = refBindu.closest('.kb-group');
 
-  function renderBinduRef(showDesc, animate = true) {
-    const buildItems = () => {
-      refBindu.innerHTML = '';
-      refBindu.classList.toggle('show-details', showDesc);
+  function getBinduDetailItems() {
+    return t().binduItems.map(item => ({
+      insertChar: item.char,
+      displayChar: item.char,
+      plainLabel: item.name,
+      notranslateLabel: false,
+      compactLabel: item.name,
+      getTooltip: (d) => {
+        const current = d.binduItems.find(x => x.char === item.char) || item;
+        return current.desc ? `${current.name} (${current.category}) — ${current.desc}` : current.name;
+      },
+      extraClass: 'bindu-tag',
+      pillText: item.category,
+      getDesc: (d) => {
+        const current = d.binduItems.find(x => x.char === item.char) || item;
+        return current.desc || '';
+      },
+      example: EXAMPLE_DATA.bindu[item.char],
+      isSentenceExample: true
+    }));
+  }
 
-      BINDU_LIST.forEach((item, idx) => {
-        const tooltip = `${item.name} (${item.category}): ${item.desc}`;
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = `kb-key buhun-tag${animate ? ' kb-item-animate' : ''}`;
-        if (animate) btn.style.setProperty('--i', idx);
-        btn.title = tooltip;
+  getBinduDetailItems().forEach(cfg => popBindu.appendChild(createPopBtn(cfg)));
 
-        if (showDesc) {
-          btn.innerHTML = `
-            <div class="kb-key-head">
-              <span class="sym">${item.char}</span>
-              <span class="lbl">${item.name}</span>
-              <span class="cat-pill">${item.category}</span>
-            </div>
-            <span class="kb-key-desc">${item.desc}</span>
-          `;
-        } else {
-          btn.innerHTML = `${item.char}<small>${item.name}</small>`;
-        }
-        btn.addEventListener('click', () => insertAtCursor(item.char, { fromReference: true, autoSwapIfEmpty: true }));
-        refBindu.appendChild(btn);
-      });
-    };
-
+  function renderBinduRef(showDetails, animate = true) {
+    const items = getBinduDetailItems();
     if (!animate) {
-      buildItems();
-      binduExtraNotes.classList.toggle('hidden', !showDesc);
+      renderDetailGrid(refBindu, items, showDetails, false);
+      if (showDetails) {
+        binduNotesEl.innerHTML = t().binduNotesHtml;
+        binduNotesEl.classList.remove('hidden');
+      } else {
+        binduNotesEl.classList.add('hidden');
+      }
       return;
     }
 
     animateKbGroupHeight(
       binduGroupEl,
       () => {
-        buildItems();
-
-        if (showDesc) {
-          binduExtraNotes.classList.remove('hidden', 'is-collapsing', 'is-entering');
-          void binduExtraNotes.offsetWidth;
-          binduExtraNotes.classList.add('is-entering');
+        renderDetailGrid(refBindu, items, showDetails, true);
+        if (showDetails) {
+          binduNotesEl.innerHTML = t().binduNotesHtml;
+          binduNotesEl.classList.remove('hidden', 'is-collapsing', 'is-entering');
+          void binduNotesEl.offsetWidth;
+          binduNotesEl.classList.add('is-entering');
           return null;
         } else {
-          binduExtraNotes.classList.add('hidden');
+          binduNotesEl.classList.add('hidden');
           return () => {
-            binduExtraNotes.classList.remove('hidden', 'is-entering');
-            binduExtraNotes.classList.add('is-collapsing');
+            binduNotesEl.classList.remove('hidden', 'is-entering');
+            binduNotesEl.classList.add('is-collapsing');
           };
         }
       },
       () => {
-        if (!showDesc) {
-          binduExtraNotes.classList.add('hidden');
-          binduExtraNotes.classList.remove('is-collapsing');
+        if (!showDetails) {
+          binduNotesEl.classList.add('hidden');
+          binduNotesEl.classList.remove('is-collapsing');
         }
       }
     );
   }
-
-  BINDU_LIST.forEach(item => {
-    popBindu.appendChild(createPopBtn({
-      insertChar: item.char,
-      displayChar: item.char,
-      tooltip: `${item.name}: ${item.desc}`,
-      isBuhun: true
-    }));
-  });
-
   renderBinduRef(false, false);
-  toggleDescBindu.addEventListener('change', (e) => renderBinduRef(e.target.checked, true));
+
+  if (toggleRefDetailsEl) {
+    toggleRefDetailsEl.addEventListener('change', (e) => {
+      const show = e.target.checked;
+      renderAngkaExample(show, true);
+      renderSwaraRef(show, true);
+      renderRarangkenRef(show, true);
+      renderNgalagenaRef(show, true);
+      renderBuhunSpecialRef(show, true);
+      renderBinduRef(show, true);
+    });
+  }
 
   // DOCK HANDAP KIBOR
   const dockRow1 = document.getElementById('pop-dock-row1');
@@ -1833,6 +2496,7 @@ function initSundaKeyboards() {
   }
 
   function renderDock() {
+    const dict = t();
     dockRow1.innerHTML = '';
     dockRow2.innerHTML = '';
 
@@ -1843,7 +2507,7 @@ function initSundaKeyboards() {
 
       dockRow1.appendChild(makeDockButton({
         label: '⌫',
-        tooltip: 'Hapus hiji aksara ka tukang (Backspace)',
+        tooltip: dict.dockBackspaceTip,
         span: 2,
         extraClass: 'danger-key',
         onClick: () => backspaceAtCursor()
@@ -1852,7 +2516,7 @@ function initSundaKeyboards() {
       SYMBOL_SET_1.forEach(sym => {
         dockRow1.appendChild(makeDockButton({
           label: sym,
-          tooltip: `Selapkeun simbol: ${sym}`,
+          tooltip: dict.dockSymbolTip(sym),
           span: 1,
           onClick: () => insertAtCursor(sym)
         }));
@@ -1860,7 +2524,7 @@ function initSundaKeyboards() {
 
       dockRow1.appendChild(makeDockButton({
         label: '⌫',
-        tooltip: 'Hapus hiji aksara ka tukang (Backspace)',
+        tooltip: dict.dockBackspaceTip,
         span: 2,
         extraClass: 'danger-key',
         onClick: () => backspaceAtCursor()
@@ -1869,7 +2533,7 @@ function initSundaKeyboards() {
       SYMBOL_SET_2.forEach(sym => {
         dockRow1.appendChild(makeDockButton({
           label: sym,
-          tooltip: `Selapkeun simbol: ${sym}`,
+          tooltip: dict.dockSymbolTip(sym),
           span: 1,
           onClick: () => insertAtCursor(sym)
         }));
@@ -1878,7 +2542,7 @@ function initSundaKeyboards() {
 
     dockRow2.appendChild(makeDockButton({
       label: '=\\<',
-      tooltip: 'Gentos susunan tanda baca sareng simbol',
+      tooltip: dict.dockSymbolToggleTip,
       span: 2,
       extraClass: symbolState > 0 ? 'active-mode' : '',
       onClick: () => {
@@ -1892,34 +2556,68 @@ function initSundaKeyboards() {
 
     dockRow2.appendChild(makeDockButton({
       label: leftPunct,
-      tooltip: `Selapkeun tanda: ${leftPunct}`,
+      tooltip: dict.dockPunctTip(leftPunct),
       span: 1,
       onClick: () => insertAtCursor(leftPunct)
     }));
 
     dockRow2.appendChild(makeDockButton({
-      label: 'Spasi',
-      tooltip: 'Selapkeun spasi',
+      label: dict.dockSpaceLabel,
+      tooltip: dict.dockSpaceTip,
       span: 6,
       onClick: () => insertAtCursor(' ')
     }));
 
     dockRow2.appendChild(makeDockButton({
       label: rightPunct,
-      tooltip: `Selapkeun tanda: ${rightPunct}`,
+      tooltip: dict.dockPunctTip(rightPunct),
       span: 1,
       onClick: () => insertAtCursor(rightPunct)
     }));
 
     dockRow2.appendChild(makeDockButton({
       label: '↵',
-      tooltip: 'Baris anyar (Enter)',
+      tooltip: dict.dockEnterTip,
       span: 2,
       onClick: () => insertAtCursor('\n')
     }));
   }
 
   renderDock();
+
+  refreshKeyboardLangFn = () => {
+    const dict = t();
+    const popCatMap = {
+      'pop-cat-angka': dict.popCatAngka,
+      'pop-cat-swara': dict.popCatSwara,
+      'pop-cat-rarangken': dict.popCatRarangken,
+      'pop-cat-ngalagena': dict.popCatNgalagena,
+      'pop-cat-buhun': dict.popCatBuhun,
+      'pop-cat-bindu': dict.popCatBindu
+    };
+
+    Object.entries(popCatMap).forEach(([id, label]) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = label;
+    });
+
+    localizedUpdaters.forEach(fn => fn());
+
+    const showDetails = toggleRefDetailsEl ? toggleRefDetailsEl.checked : false;
+    renderAngkaExample(showDetails, false);
+    renderSwaraRef(showDetails, false);
+    renderRarangkenRef(showDetails, false);
+    renderNgalagenaRef(showDetails, false);
+    renderBuhunSpecialRef(showDetails, false);
+    renderBinduRef(showDetails, false);
+
+    renderDock();
+  };
 }
 
+// =========================================================
+// 9. BOOTSTRAP APLIKASI
+// =========================================================
+initTheme();
 initSundaKeyboards();
+applyLanguage(currentLang);

@@ -1994,7 +1994,7 @@ function initSundaKeyboards() {
       'é':  { sunda: 'ᮆᮜᮤᮀ', latin: 'éling', soundEn: '<strong>e</strong> in <em>bed</em>, <strong>é</strong> in <em>fiancé</em>' },
       'o':  { sunda: 'ᮇᮕᮒ᮪', latin: 'opat', soundEn: '<strong>o</strong> in <em>go</em>' },
       'e':  { sunda: 'ᮈᮙᮞ᮪', latin: 'emas', soundEn: '<strong>e</strong> in <em>taken</em>, <strong>a</strong> in <em>about</em>' },
-      'eu': { sunda: 'ᮉᮞᮤ', latin: 'eusi', soundEn: '<strong>ur</strong> in British <em>burn</em>, <strong>er</strong> in British <em>her</em>' }
+      'eu': { sunda: 'ᮉᮞᮤ', latin: 'eusi', soundEn: '<strong>ur</strong> in British <em>burn</em>, <strong>er</strong> in British <em>hers</em>' }
     },
     rarangken: {
       'ᮤ': { sunda: 'ᮠᮤᮏᮤ', latin: 'hiji', soundEn: '<strong>ee</strong> in <em>see</em>' },
@@ -2246,8 +2246,8 @@ function initSundaKeyboards() {
     { s: '᮪', display: '◌᮪', label: 'pamaéh', buhun: false },
     { s: 'ᮭ', display: '◌ᮭ', label: 'papasangan wa', morpheme: '(-w-)', buhun: true },
     { s: 'ᮬ', display: '◌ᮬ', label: 'papasangan ma', morpheme: '(-m-)', buhun: true },
-    { s: 'ᮾ', display: 'ᮾ', label: 'akhiran', morpheme: '(-k)', buhun: true },
-    { s: 'ᮿ', display: 'ᮿ', label: 'akhiran', morpheme: '(-m)', buhun: true }
+    { s: 'ᮾ', display: 'ᮾ', label: 'akhiran k', morpheme: '(-k)', buhun: true },
+    { s: 'ᮿ', display: 'ᮿ', label: 'akhiran m', morpheme: '(-m)', buhun: true }
   ];
 
   const refRarangken = document.getElementById('kb-rarangken');

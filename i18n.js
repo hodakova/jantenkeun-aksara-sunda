@@ -230,7 +230,7 @@ const I18N_DATA = {
     titleLatinToSunda: 'Latin Script <span class="arrow">→</span> Sundanese Script',
     titleSundaToLatin: 'Sundanese Script <span class="arrow">→</span> Latin Script',
     subtitleLatinToSunda: 'Type Sundanese text using the proper vowels <strong class="notranslate" translate="no">e</strong> (<span class="notranslate" translate="no">pamepet</span>), <strong class="notranslate" translate="no">é</strong> (<span class="notranslate" translate="no">panéléng</span>), and <strong class="notranslate" translate="no">eu</strong> (<span class="notranslate" translate="no">paneuleung</span>) for accurate results.',
-    subtitleSundaToLatin: 'Type directly with a Latin keyboard to auto-convert into Sundanese script, or type / paste Sundanese script to get its Latin transliteration.',
+    subtitleSundaToLatin: 'Type directly with a Latin keyboard to autoconvert into Sundanese script, or type / paste Sundanese script to get its Latin transliteration.',
 
     swapBtn: 'Swap Direction',
     swapBtnFeedback: 'Direction Swapped!',
@@ -271,8 +271,8 @@ const I18N_DATA = {
 
     guideE: 'pepet (schwa) — as in <em>seblak</em> (like <strong>e</strong> in <em>taken</em>, <strong>a</strong> in <em>about</em>)',
     guideEAcute: 'téléng — as in <em>sapédah</em> (like <strong>e</strong> in <em>bed</em>, <strong>é</strong> in <em>fiancé</em>)',
-    guideEu: 'teuleung — as in <em>peuyeum</em> (like <strong>ur</strong> in British <em>burn</em>, <strong>er</strong> in British <em>her</em>)',
-    guideQuote: `<strong>Quotation mark</strong>: If placed mid-word, it acts as a <em>glottal stop</em> (e.g., <em class="notranslate" translate="no">Qur'an</em>) or splits digraphs (e.g., <em class="notranslate" translate="no">ad'ja</em>). In Buhun mode, the <code class="notranslate" translate="no"><strong>'a</strong></code> pattern becomes <em>avagraha</em> <span class="sunda-inline notranslate" translate="no">ᮺ</span> (e.g., <em class="notranslate" translate="no">alun'agung</em>). If at the start/end of a word, it remains a regular quotation mark.`,
+    guideEu: 'teuleung — as in <em>peuyeum</em> (like <strong>ur</strong> in British <em>burn</em>, <strong>er</strong> in British <em>hers</em>)',
+    guideQuote: `<strong>Quotation mark</strong>: If placed midword, it acts as a <em>glottal stop</em> (e.g., <em class="notranslate" translate="no">Qur'an</em>) or splits digraphs (e.g., <em class="notranslate" translate="no">ad'ja</em>). In Buhun mode, the <code class="notranslate" translate="no"><strong>'a</strong></code> pattern becomes <em>avagraha</em> <span class="sunda-inline notranslate" translate="no">ᮺ</span> (e.g., <em class="notranslate" translate="no">alun'agung</em>). If at the start/end of a word, it remains a regular quotation mark.`,
     
     toggleDetailsLabel: 'Examples & Details',
     toggleDetailsTitle: 'Show example words, sentences, and explanations for each character',
@@ -308,7 +308,7 @@ const I18N_DATA = {
 
     catAngka: 'Sundanese Numerals',
     catSwara: 'Aksara Swara (Independent Vowels)',
-    catRarangken: 'Aksara Rarangkén (Diacritics)',
+    catRarangken: 'Rarangkén (Diacritics)',
     catNgalagena: 'Aksara Ngalagena (Consonants)',
     catBuhunKhusus: 'Aksara Khusus Sunda Buhun (Special Old Sundanese Characters)',
     catBindu: 'Bindu Characters (Historical / Old Sundanese Punctuation)',
@@ -329,7 +329,7 @@ const I18N_DATA = {
       {
         s: 'ᮺ',
         label: 'avagraha',
-        desc: "Silences the preceding -a vowel and opens an initial a- vowel (auto-inserted via <consonant>'a in Buhun mode, e.g., alun'agung)."
+        desc: "Silences the preceding -a vowel and opens an initial a- vowel (autoinserted via <consonant>'a in Buhun mode, e.g., alun'agung)."
       },
       {
         s: 'ᮻ',
@@ -350,7 +350,7 @@ const I18N_DATA = {
         char: '᳃',
         name: 'Bindu Cakra',
         category: 'Pause & Closing',
-        desc: 'Universal comma (,) mark for brief mid-sentence pauses across all manuscript genres.'
+        desc: 'Universal comma (,) mark for brief midsentence pauses across all manuscript genres.'
       },
       {
         char: '᳁',
